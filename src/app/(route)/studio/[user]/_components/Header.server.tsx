@@ -1,53 +1,14 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
-import '@/app/_styles/studioPage.css';
-
-interface ButtonProps {
-  imageSrc: string;
-  desc: string;
-  width: number;
-  height: number;
-  padding?: number;
-}
-
-const HeaderButton = ({
-  imageSrc,
-  desc,
-  width,
-  height,
-  padding,
-}: ButtonProps) => {
-  return (
-    <button
-      className="transition-button relative group hover:bg-neutral-700"
-      style={{
-        padding: `${padding}px`,
-      }}
-    >
-      <Image src={imageSrc} width={width} height={height} alt={desc} />
-      <span
-        className="absolute-center group-button-desc transition-button hover-opacity"
-        style={{
-          marginTop: `${(padding || 0) + 2}px`,
-        }}
-      >
-        {desc}
-      </span>
-    </button>
-  );
-};
+import HeaderButton from './HeaderButton.client';
+import ExpandNavButton from './ExpandNavButton.client';
 
 const Header = () => {
   return (
     <header className="bg-[#222] fixed flex justify-between items-center px-[20px] py-[10px] w-full">
       <div className="flex items-center gap-2">
-        <HeaderButton
-          imageSrc={'/studioPage/Hamburger.svg'}
-          desc={'메뉴 확장'}
-          width={40}
-          height={40}
-        />
+        <ExpandNavButton />
         <Link href={'/'}>
           <Image
             src={'/studioPage/WhiteLogo.svg'}
