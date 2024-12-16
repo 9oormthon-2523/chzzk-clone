@@ -8,6 +8,9 @@ export default {
   ],
   theme: {
     extend: {
+      boxShadow: {
+        base: 'rgba(0, 0, 0, 0.05) 0px 0px 2px, rgba(0, 0, 0, 0.1) 0px 2px 8px',
+      },
       fontFamily: {
         sans: [
           '-apple-system',

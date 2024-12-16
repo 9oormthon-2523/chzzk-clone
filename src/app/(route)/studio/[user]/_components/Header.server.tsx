@@ -3,6 +3,7 @@ import Link from 'next/link';
 import React from 'react';
 import HeaderButton from './HeaderButton.client';
 import ExpandNavButton from './ExpandNavButton.client';
+import ProfileButton from './ProfileButton.client';
 
 const Header = () => {
   return (
@@ -36,15 +37,7 @@ const Header = () => {
             height={40}
           />
         </Link>
-        <Link href={'/'} className="h-[40px]">
-          <HeaderButton
-            imageSrc={'/studioPage/Profile.svg'}
-            desc={'내 프로필'}
-            width={30}
-            height={30}
-            padding={5}
-          />
-        </Link>
+        <ProfileButton />
       </div>
     </header>
   );

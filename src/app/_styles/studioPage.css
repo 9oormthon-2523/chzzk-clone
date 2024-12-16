@@ -11,5 +11,5 @@
 }
 
 .group-button-desc {
-  @apply bg-[#2e3033e6] text-white text-[12px] leading-[14px] px-[9px] py-[5px] pointer-events-none whitespace-nowrap;
+  @apply bg-[#2e3033] text-white text-[12px] leading-[14px] px-[9px] py-[5px] pointer-events-none whitespace-nowrap z-50;
 }
