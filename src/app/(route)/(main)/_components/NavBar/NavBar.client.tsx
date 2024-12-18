@@ -1,4 +1,4 @@
-"use clitne";
+"use client";
 import React from "react";
 import useNavToggle from "@/app/_store/main/useNavToggle.client";
 const NavBar = () => {
