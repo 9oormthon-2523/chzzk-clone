@@ -13,7 +13,7 @@ export default function UserOptionNav(){
             <div className="relative ml-[8px]">
                 <button className="box-border text-[inherit] p-[3px] cursor-pointer border outline-none rounded-full border-none hover:[background:linear-gradient(45deg,#5bda30,#00000080)]">
                     <div className="rounded-[inherit] bg-white" >
-                        <Image className="rounded-[inherit]" width={37} height={37} alt="userImage" src="/userImage.webp"/>
+                        <Image className="rounded-[inherit]" width={37} height={37} alt="userImage" src="/CzzIcon/userImage.webp"/>
                     </div>
                 </button>
 

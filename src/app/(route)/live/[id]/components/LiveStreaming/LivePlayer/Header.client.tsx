@@ -1,8 +1,10 @@
 import React from 'react'
 import SvgIcon, { SvgComponentNames } from '../../../../../../_components/SVGIcon.server'
 import useChatToggle from '@/app/_store/live/useChatToggle'
+import LiveBox from '../../liveBox';
+import OpacityAnimation from '../../../utils/OpacityAnimation.client';
 
-export default function PlayerHeader() {
+function Header() {
 
   const { isFold, toggle } = useChatToggle();
 
@@ -17,7 +19,7 @@ export default function PlayerHeader() {
         <div className='flex justify-end gap-[0_40px] p-[15px_15px_0] w-full'>
           <div className='flex flex-col'>
             {/* LIVE BOX */}
-            <HeaderInfo/>
+            <LiveBox/>
 
             {/* CONTROL BUTTONS */}
             <div className='items-end flex flex-col gap-[10px_0] mt-[20px]'>
@@ -30,13 +32,11 @@ export default function PlayerHeader() {
   )
 }
 
-function HeaderInfo(){
-  return (
-      <em className='m-w-[55px] h-[25px] leading-[25px] bg-[#e02020] items-center rounded-[4px] text-white inline-flex text-[12px] font-bold justify-center p-[0_4px] align-top'>
-        <SvgIcon name='Live' width={39} height={13}/>
-      </em>
-  )
-}
+//애니메이션 적용
+const PlayerHeader = OpacityAnimation(Header);
+export default PlayerHeader;
+
+
 
 interface HeaderItemButtonProps {
   fnName?:string
