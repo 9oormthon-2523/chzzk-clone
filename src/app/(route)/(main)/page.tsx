@@ -1,8 +1,8 @@
 "use client";
 import Header from "../../_components/Header/Header.server";
-import StreamList from "./_components/StreamList/StreamList";
+import StreamList from "./_components/StreamList/StreamList.server";
 import useNavToggle from "@/app/_store/main/useNavToggle.client";
-import NavBar from "./_components/NavBar/NavBar";
+import NavBar from "./_components/NavBar/NavBar.client";
 export default function Home() {
   const { isOpen } = useNavToggle();
   return (

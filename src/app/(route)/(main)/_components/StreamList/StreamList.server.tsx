@@ -1,6 +1,6 @@
 import React from "react";
 import { DummyData, StreamCardData } from "./dummy";
-import StreamCard from "../StreamCard/StreamCard";
+import StreamCard from "../StreamCard/StreamCard.server";
 
 const StreamList: React.FC = () => {
   return (
