@@ -1,5 +1,5 @@
 import React from 'react'
-import SvgIcon, { SvgComponentNames } from '../../_utils/SVGIcon.server'
+import SvgIcon, { SvgComponentNames } from '../../../../../../_components/SVGIcon.server'
 import useChatToggle from '@/app/_store/live/useChatToggle'
 
 export default function PlayerHeader() {

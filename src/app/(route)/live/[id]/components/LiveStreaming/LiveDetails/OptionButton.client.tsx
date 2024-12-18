@@ -1,5 +1,5 @@
 import React from 'react'
-import SvgIcon from '../../_utils/SVGIcon.server'
+import SvgIcon from '../../../../../../_components/SVGIcon.server'
 
 //모달 추가해야함..
 function LiveOptionButton() {

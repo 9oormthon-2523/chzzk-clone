@@ -4,7 +4,6 @@ import useChatToggle from "@/app/_store/live/useChatToggle";
 import ChatLayout from "./components/Chat/_Chat.client";
 import { useState } from "react";
 
-
 export default function Page(){
 
     //임시 대체 nav state

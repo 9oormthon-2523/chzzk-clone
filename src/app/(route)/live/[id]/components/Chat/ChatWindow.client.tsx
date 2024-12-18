@@ -31,7 +31,7 @@ function ChatBox(){
                 닉네임
             </span>
 
-            <span style={{ wordBreak: "break-word", textAlign: "left" }} className="text-[#2e3033] text-left break-words leading-[20px]">
+            <span className="text-[#2e3033] text-left break-words leading-[20px]">
                 ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ
             </span>
         </button>
