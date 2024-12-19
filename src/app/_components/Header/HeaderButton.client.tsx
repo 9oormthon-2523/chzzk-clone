@@ -1,6 +1,6 @@
 "use client";
 
-import "@/app/_styles/studioPage.css";
+import "@/app/_styles/header.css";
 import Image from "next/image";
 
 interface ButtonProps {
