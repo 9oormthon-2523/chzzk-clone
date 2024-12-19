@@ -5,7 +5,7 @@ import SvgIcon from '../../../../../_components/SVGIcon.server'
  * 채팅 입력란
  */
 
-function ChatInput() {
+const ChatInput = () => {
   return (
     <div id="live-chatting-area" className="flex-none p-[10px_20px] relative z-[100]">
         <div className="items-center bg-[#f5f5f5] rounded-[8px] flex p-[5px] relative w-full">

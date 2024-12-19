@@ -1,7 +1,5 @@
-import LivePlayer from "./LivePlayer/_LivePlayer.client";
-import LiveDetails from "./LiveDetails/_LiveDetails.client";
-import LiveStreamFooter from "./Footer.client";
-import { useState } from "react";
+import LivePlayer from "./VideoPlayer/VideoPlayer.client";
+import LiveDetails from "./LiveDetails/LiveDetails.client";
 
 
 /**
@@ -25,7 +23,9 @@ export default function LiveStreamingLayout(){
             <div id="live-banner-container" className=""></div>
 
             {/* footer 정보란... */}
-            <LiveStreamFooter/>
+            <footer className="border-t-[1px] border-solid border-[#0000001f] flex flex-wrap justify-center m-[0_30px] p-[25px_0_85px] items-center">
+
+            </footer>
 
         </main>
 )}

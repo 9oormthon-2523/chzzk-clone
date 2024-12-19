@@ -6,7 +6,7 @@ import useChatToggle from '@/app/_store/live/useChatToggle';
  * 채팅 헤더
  */
 
-function ChatHeader() {
+const ChatHeader = () => {
     const { toggle } = useChatToggle();
 
     const onClickChatFold = () => toggle();

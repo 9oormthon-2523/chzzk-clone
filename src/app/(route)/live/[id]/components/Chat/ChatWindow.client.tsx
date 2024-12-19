@@ -4,7 +4,7 @@
 
 //프롭스는 나중에
 
-export default function ChatWindow(){
+const ChatWindow = () => {
     return (
         <div id="chatting-list-container" className="flex flex-1 overflow-hidden relative">
             <div style={{ scrollbarWidth:"none" }} className="flex flex-col overflow-y-auto p-[0_12px] w-full">
@@ -23,8 +23,10 @@ export default function ChatWindow(){
     )
 }
 
+export default ChatWindow;
+
 //채팅 박스
-function ChatBox(){
+const ChatBox = () => {
     return (
         <button className="px-[6px] py-[4px] text-left">
             <span className="mr-[4px] leading-[18px] m-[-2px_0] p-[2px_4px_2px_2px] relative text-green-500">

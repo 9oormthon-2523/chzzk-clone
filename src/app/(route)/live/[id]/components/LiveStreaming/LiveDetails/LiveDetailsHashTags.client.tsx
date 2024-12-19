@@ -6,20 +6,22 @@ interface HashTagLiProps {
     path:string
 }
 
-function LiveHashTag({ tags }: { tags: HashTagLiProps[] }) {
-    
-  return (
-    <ul id="관련태그" className="text-[#666] mt-[8px] overflow-hidden flex flex-wrap text-[11px] gap-[4px] leading-[19px]">
-        {tags.map((tag, idx) => (
-          <HashTagLi key={`${tag.tagname}-${idx}`} {...tag} />
-        ))}
-    </ul>
-  )
+function LiveHashTag(props: { tags: HashTagLiProps[] }) {
+    const { tags } = props
+
+    return (
+        <ul id="관련태그" className="text-[#666] mt-[8px] overflow-hidden flex flex-wrap text-[11px] gap-[4px] leading-[19px]">
+            {tags.map((tag, idx) => (
+            <HashTagLi key={`${tag.tagname}-${idx}`} {...tag} />
+            ))}
+        </ul>
+    )
 }
 
 export default LiveHashTag
 
-function HashTagLi({ path, tagname } : HashTagLiProps){
+function HashTagLi(props : HashTagLiProps){
+    const { path, tagname } = props
     return (
         <li className="m-0 p-0">
             <Link href={path} className="inline-block align-top rounded-[5px] relative text-[inherit]">

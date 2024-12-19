@@ -1,5 +1,6 @@
 "use client"
-import LiveStreamingLayout from "./components/LiveStreaming/_LiveStreaming.client";
+
+import LiveStreamingLayout from "./components/LiveStreaming/LiveStreaming.client";
 import useChatToggle from "@/app/_store/live/useChatToggle";
 import ChatLayout from "./components/Chat/_Chat.client";
 import { useState } from "react";

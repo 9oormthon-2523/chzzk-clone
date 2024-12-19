@@ -3,7 +3,7 @@
  *
  * @example
  * // HOC로 감싸기
- * function Frame () {return {...</div>}}
+ * const Frame = () => {return {...</div>}}
  * const AnimatedFrame = OpacityAnimation(Frame);
  * export default AnimatedFrame 
  * */

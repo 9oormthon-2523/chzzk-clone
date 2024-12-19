@@ -7,7 +7,7 @@ import ChatInput from "./Input.client";
  * 채팅 컨테이너 컴포넌트
  */
 
-export default function ChatLayout(){
+const ChatLayout = () =>{
 
     return(
         <aside id="view-chat" className="w-[353px] bg-white flex relative flex-col">
@@ -22,3 +22,5 @@ export default function ChatLayout(){
         </aside>
     )
 }
+
+export default ChatLayout;
