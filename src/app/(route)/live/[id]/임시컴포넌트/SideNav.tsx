@@ -18,19 +18,19 @@ const IMGURL = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbS
             <section className="flex-1 overflow-auto pb-[30px]" style={{scrollbarWidth: "none"}}>
                 <div id="basic-contents" className="p-[4px_16px_10px] box-border flex flex-col">
                 <a className="text-[#808080] text-[10px] leading-[15px] p-[6px_6px_4px] mx-auto rounded-sm hover:bg-[#6666662c] hover:text-[#666] box-content cursor-pointer flex flex-col items-center text-center">
-                        <SvgIcon name="Video" width={26} height={26}/>
+                        <SvgIcon name="HeaderVideo" width={26} height={26}/>
                         <span className="">전체<br/>방송</span>
                     </a>
                     <a className="text-[#808080] text-[10px] leading-[15px] p-[6px_6px_4px] mx-auto rounded-sm hover:bg-[#6666662c] hover:text-[#666] box-content cursor-pointer flex flex-col items-center text-center">
-                        <SvgIcon name="Sessor" width={26} height={26}/>
+                        <SvgIcon name="HeaderClip" width={26} height={26}/>
                         <span className="">인기<br/>클립</span>
                     </a>
                     <a className="text-[#808080] text-[10px] leading-[15px] p-[6px_6px_4px] mx-auto rounded-sm hover:bg-[#6666662c] hover:text-[#666] hover: box-content cursor-pointer flex flex-col items-center text-center">
-                        <SvgIcon name="Category" width={26} height={26}/>
+                        <SvgIcon name="HeaderCategory" width={26} height={26}/>
                         <span className="whitespace-nowrap">카테고리</span>
                     </a>
                     <a className="text-[#808080] text-[10px] leading-[15px] p-[6px_6px_4px] mx-auto rounded-sm hover:bg-[#6666662c] hover:text-[#666] box-content cursor-pointer flex flex-col items-center text-center">
-                        <SvgIcon name="EmptyHeart" width={26} height={26}/>
+                        <SvgIcon name="HeaderFollow" width={26} height={26}/>
                         <span className="">팔로잉</span>
                     </a>
                 </div>

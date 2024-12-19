@@ -11,3 +11,22 @@ a, abbr, address, article, aside, audio, b, blockquote, body, br, button, canvas
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
 }
+/* chrome & safari */
+#volume-range::-webkit-slider-thumb {
+    appearance: none; 
+    width: 12px;
+    height: 12px;
+    background: #ffffff;
+    border-radius: 50%; 
+    border: 2px solid #ffffff; 
+}
+/* Firefox */
+#volume-range::-moz-range-thumb {
+    width: 12px;
+    height: 12px;
+    background: #ffffff;
+    border-radius: 50%;
+    border: 2px solid #ffffff;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}

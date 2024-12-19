@@ -1,61 +1,80 @@
-import Bell from "@public/CzzIcon/bell.svg";
-import BrokenHeart from "@public/CzzIcon/brokenHeart.svg";
-import Category from "@public/CzzIcon/category.svg";
-import Cheeze from "@public/CzzIcon/cheeze.svg";
-import CrownCoin from "@public/CzzIcon/crownCoin.svg";
-import Cup from "@public/CzzIcon/cup.svg";
-import CZZcoin from "@public/CzzIcon/CZZcoin.svg";
-import EmptyBrokenHeart from "@public/CzzIcon/emptyBrokenHeart.svg";
-import EmptyHeart from "@public/CzzIcon/emptyHeart.svg";
-import Enter from "@public/CzzIcon/enter.svg";
-import FullHeart from "@public/CzzIcon/fullHeart.svg";
-import Game from "@public/CzzIcon/game.svg";
-import Key from "@public/CzzIcon/key.svg";
-import Menu from "@public/CzzIcon/menu.svg";
-import Moon from "@public/CzzIcon/moon.svg";
-import OptionVertical from "@public/CzzIcon/option_vertical.svg";
-import Option from "@public/CzzIcon/option.svg";
-import Pc from "@public/CzzIcon/pc.svg";
-import Sessor from "@public/CzzIcon/sessor.svg";
-import Subscribe from "@public/CzzIcon/subscribe.svg";
-import Ticket from "@public/CzzIcon/ticket.svg";
-import Video from "@public/CzzIcon/video.svg";
-import Setting from "@public/CzzIcon/setting.svg";
-import LiveFollow from "@public/CzzIcon/liveFollow.svg";
-import ChatFold from "@public/CzzIcon/chatFold.svg";
-import Live from "@public/CzzIcon/live.svg";
+
+
+// 헤더
+import HeaderBell from "@public/CzzIcon/Header/bell.svg"
+import HeaderCategory from "@public/CzzIcon/Header/category.svg"
+import HeaderCheeze from "@public/CzzIcon/Header/cheeze.svg"
+import HeaderCrownCoin from "@public/CzzIcon/Header/crownCoin.svg"
+import HeaderCup from "@public/CzzIcon/Header/cup.svg"
+import HeaderFollow from "@public/CzzIcon/Header/follow.svg"
+import HeaderKey from "@public/CzzIcon/Header/key.svg"
+import HeaderMoon from "@public/CzzIcon/Header/moon.svg"
+import HeaderPc from "@public/CzzIcon/Header/pc.svg"
+import HeaderClip from "@public/CzzIcon/Header/clip.svg"
+import HeaderTicket from "@public/CzzIcon/Header/ticket.svg"
+import HeaderVideo from "@public/CzzIcon/Header/video.svg"
+
+
+// 비디오
+import VideoChatFold from "@public/CzzIcon/Video/chatFold.svg";
+import VideoDots from "@public/CzzIcon/Video/dots.svg";
+import VideoFullscreen from "@public/CzzIcon/Video/fullscreen.svg";
+import VideoLive from "@public/CzzIcon/Video/live.svg";
+import VideoFollow from "@public/CzzIcon/Video/follow.svg";
+import VideoBrokenFollow from "@public/CzzIcon/Video/brokenFollow.svg";
+import VideoUnFollow from "@public/CzzIcon/Video/unFollow.svg";
+import VideoPause from "@public/CzzIcon/Video/pause.svg";
+import VideoPlay from "@public/CzzIcon/Video/play.svg";
+import VideoSetting from "@public/CzzIcon/Video/videoSetting.svg";
+import VideoVolume0 from "@public/CzzIcon/Video/volume0.svg";
+import VideoVolume100 from "@public/CzzIcon/Video/volume100.svg";
+import VideoVolume50 from "@public/CzzIcon/Video/volume50.svg";
+import VideoWidescreen from "@public/CzzIcon/Video/widescreen.svg";
+
+//채팅
+import ChatOption from "@public/CzzIcon/Chat/dots_vertical.svg";
+import ChatFold from "@public/CzzIcon/Chat/exit.svg";
+import ChatSetting from "@public/CzzIcon/Chat/setting.svg";
 
 /**
  * 원하는 SVG를 가져오는 컴포넌트
  */
 
 const SvgComponents = {
-    Bell,
-    BrokenHeart,
-    Category,
-    Cheeze,
-    CrownCoin,
-    Cup,
-    CZZcoin,
-    EmptyBrokenHeart,
-    EmptyHeart,
-    Enter,
-    FullHeart,
-    Game,
-    Key,
-    Menu,
-    Moon,
-    OptionVertical,
-    Option,
-    Pc,
-    Sessor,
-    Subscribe,
-    Ticket,
-    Video,
-    Setting,
-    LiveFollow,
-    ChatFold,
-    Live,
+  // 헤더
+  HeaderBell,
+  HeaderCategory,
+  HeaderCheeze,
+  HeaderCrownCoin,
+  HeaderCup,
+  HeaderFollow,
+  HeaderKey,
+  HeaderMoon,
+  HeaderPc,
+  HeaderClip,
+  HeaderTicket,
+  HeaderVideo,
+
+  // 비디오
+  VideoChatFold,
+  VideoDots,
+  VideoFullscreen,
+  VideoLive,
+  VideoFollow,
+  VideoUnFollow,
+  VideoBrokenFollow,
+  VideoPause,
+  VideoPlay,
+  VideoSetting,
+  VideoVolume0,
+  VideoVolume100,
+  VideoVolume50,
+  VideoWidescreen,
+
+  // 채팅
+  ChatOption,
+  ChatFold,
+  ChatSetting,
 };
 
 export type SvgComponentNames = keyof typeof SvgComponents;
@@ -74,7 +93,14 @@ const SvgIcon = (props: SvgProps) => {
     if (!SelectedSvg) return <div>SVG not found</div>;
 
 
-    return <SelectedSvg className={className} width={width} height={height}/>;
+    return (
+      <SelectedSvg
+        className={className}
+        width={width}
+        height={height}
+        preserveAspectRatio="xMidYMid meet" // 비율 유지하며 중앙에 맞춤
+      />
+    )
 };
 
 export default SvgIcon;

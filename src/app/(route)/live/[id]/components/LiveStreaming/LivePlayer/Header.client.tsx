@@ -1,8 +1,8 @@
 import React from 'react'
-import SvgIcon, { SvgComponentNames } from '../../../../../../_components/SVGIcon.server'
-import useChatToggle from '@/app/_store/live/useChatToggle'
 import LiveBox from '../../liveBox';
+import useChatToggle from '@/app/_store/live/useChatToggle'
 import OpacityAnimation from '../../../utils/OpacityAnimation.client';
+import SvgIcon, { SvgComponentNames } from '../../../../../../_components/SVGIcon.server'
 
 function Header() {
 
@@ -10,7 +10,7 @@ function Header() {
 
   const ChattingControl:HeaderItemButtonProps = {
     fnName:"채팅 토글",
-    iconName:"ChatFold",
+    iconName:"VideoChatFold",
     onClick: () => toggle(),
   }
 

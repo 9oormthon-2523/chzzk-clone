@@ -20,13 +20,13 @@ function ChatHeader() {
             
             <div className="left-0 absolute top-0 z-[100] box-border w-[44px] h-[44px]">
                 <button onClick={onClickChatFold} type="button" aria-label="채팅 접기" className="text-[#666] overflow-hidden p-[8px] w-[inherit] h-[inherit]">
-                    <SvgIcon name="Enter" width={28} height={28} className="rounded-lg hover:bg-[#58585820] hover:text-black"/>
+                    <SvgIcon name="ChatFold" width={28} height={28} className="rounded-lg hover:bg-[#58585820] hover:text-black"/>
                 </button>
             </div>  
 
             <div className="right-0 absolute top-0 z-[100] box-border w-[44px] h-[44px]">
                 <button type="button" aria-label="채팅 접기" className="text-[#666] overflow-hidden p-[8px] w-[inherit] h-[inherit]">
-                    <SvgIcon name="OptionVertical" width={20} height={28} className="rounded-lg hover:bg-[#58585820] hover:text-black"/>
+                    <SvgIcon name="ChatOption" width={20} height={28} className="rounded-lg hover:bg-[#58585820] hover:text-black"/>
                 </button>
             </div>  
         </div>

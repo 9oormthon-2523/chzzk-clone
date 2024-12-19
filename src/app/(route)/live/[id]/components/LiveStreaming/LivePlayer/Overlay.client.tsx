@@ -1,6 +1,6 @@
 "use client"
 
-import OpacityAnimation from "../../utils/OpacityAnimation.client";
+import OpacityAnimation from "../../../utils/OpacityAnimation.client";
 
 /**
  * 비디오 오버레이 컴포넌트 
@@ -19,3 +19,16 @@ function Overlay() {
 //애니메이션 적용
 const PlayerOverlay = OpacityAnimation(Overlay);
 export default PlayerOverlay;
+
+interface exProps {
+    title: string
+    id: string
+}
+
+const Component = (props: exProps) => {
+    const {title, id} = props
+
+    return (
+        <></>
+    )
+}

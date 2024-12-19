@@ -1,13 +1,12 @@
 import React from 'react'
 import LiveTitle from './Title.client';
+import LiveButton from './Button.client';
+import LiveHashTag from './HashTag.client';
 import LiveProfile from './Profile.client';
 import LiveNickName from './NickName.client';
 import LiveCategory from './Category.client';
-import LiveHashTag from './HashTag.client';
-import LiveViewerAndTime from './ViewerAndTime.client';
-import LiveFollowButton from './FollowButton.client';
 import LiveOptionButton from './OptionButton.client';
-
+import LiveViewerAndTime from './ViewerAndTime.client';
 
 /**
  * 라이브 스트리밍 정보 컴포넌트
@@ -47,7 +46,7 @@ export default function LiveDetails() {
                     {/* 팔로잉 및 구독 */}
                     <div className="flex ml-4 pt-[19px] relative">
                         <div className="mr-[6px] relative flex gap-2">
-                            <LiveFollowButton/>
+                            <LiveButton svgIcon='VideoUnFollow' title='팔로우' svgWight={20} svgHeight={20} style='bg-[#1bb373] text-[#fff]'/>
                             <LiveOptionButton/>
                         </div>
                     </div>

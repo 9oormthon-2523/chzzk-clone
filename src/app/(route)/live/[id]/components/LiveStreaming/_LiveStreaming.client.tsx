@@ -1,6 +1,7 @@
 import LivePlayer from "./LivePlayer/_LivePlayer.client";
 import LiveDetails from "./LiveDetails/_LiveDetails.client";
 import LiveStreamFooter from "./Footer.client";
+import { useState } from "react";
 
 
 /**
@@ -25,5 +26,7 @@ export default function LiveStreamingLayout(){
 
             {/* footer 정보란... */}
             <LiveStreamFooter/>
+
         </main>
 )}
+
