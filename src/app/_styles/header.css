@@ -1,0 +1,15 @@
+.transition-button {
+  @apply rounded-md transition ease-in-out;
+}
+
+.absolute-center {
+  @apply absolute transform left-1/2 -translate-x-1/2;
+}
+
+.hover-opacity {
+  @apply opacity-0 group-hover:opacity-100;
+}
+
+.group-button-desc {
+  @apply bg-[#2e3033] text-white text-[12px] leading-[14px] px-[9px] py-[5px] pointer-events-none whitespace-nowrap z-50;
+}
