@@ -4,7 +4,7 @@ import DashBoardTitle from "../component/DashBoardTitle.server";
 import DashBoardBoxInfo from "../component/DashBoardInfo.server"; 
 import DashBoardButton from "../component/DashBoardButton.server";
 
-const FstWidget = () => {
+const Widget1 = () => {
   const list = [
     { title: "스트리밍 소프트웨어를 다운로드 하세요", info: "설명 없어요" },
     { title: "스트림 키를 소프트웨어에 붙여 넣어주세요.", info: "스트림 키는 방송 관리 > 설정 에서 확인 가능합니다." },
@@ -17,14 +17,14 @@ const FstWidget = () => {
       <DashBoardTitle highlight="방송" title="시작하기" />
 
       {/* 리스트 */}
-      <ol className="mt-[20px] list-none m-0 p-0 font-[14px] leading-[1.2]">
+      <ol className="mt-[14px] list-none m-0 p-0 font-[14px] leading-[1.2]">
         {list.map((item, idx) => (
           <NumberedListItem key={idx} idx={idx + 1} {...item} />
         ))}
       </ol>
 
       {/* 버튼 */}
-      <div className="mt-[20px] text-center">
+      <div className="mt-[16px] text-center">
         <DashBoardButton>
             방송하기
         </DashBoardButton>
@@ -33,7 +33,7 @@ const FstWidget = () => {
   );
 };
 
-export default FstWidget;
+export default Widget1;
 
 interface NumberedListItemProps extends DashBoardBoxInfoProps {
     idx: number;

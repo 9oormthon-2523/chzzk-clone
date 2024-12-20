@@ -1,6 +1,6 @@
 export interface DashBoardBoxInfoProps {
     title:string
-    info:string
+    info?:string
 
 }
 
@@ -11,10 +11,12 @@ const DashBoardBoxInfo = (props: DashBoardBoxInfoProps) =>{
             <span className="block leading-[18px]">
                 {title}
             </span>
-
-            <p className="opacity-[80%] font-extralight tracking-tight leading-5 mt-2 m-0 p-0 text-[13px]">
-                {info}
-            </p>
+            { info && 
+                <p className="opacity-[80%] font-extralight tracking-tight leading-5 mt-[0.5px] m-0 p-0 text-[13px]">
+                    {info}
+                </p>
+            }
+            
 
         </div>
     )
