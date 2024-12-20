@@ -1,11 +1,13 @@
 'use client';
 
-import React, { ReactNode, useState } from 'react';
+import React, { ReactNode, useEffect, useState } from 'react';
 import MenuButtonBox from '../MenuButtonBox.client';
 import ArrowDownIcon from '@public/studioPage/ArrowDown.svg';
 import ArrowUpIcon from '@public/studioPage/ArrowUp.svg';
 import NavDeptIcon from '@public/studioPage/NavDept.svg';
 import { useRouter } from 'next/navigation';
+import useNavSizeToggle from '@/app/_store/studio/useNavSizeToggle.client';
+import '@/app/_styles/studioPage.css';
 
 interface MenuType {
   text: string;
@@ -36,11 +38,17 @@ interface Props {
 const NavMenu = (props: Props) => {
   const { text, hideMenu, icon, menuRoute } = props;
 
+  const { isFold, toggle } = useNavSizeToggle();
+
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const router = useRouter();
 
+  useEffect(() => {
+    if (isFold) setIsOpen(false);
+  }, [isFold]);
+
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col relative group">
       <li className="flex items-center py-[1px] px-[10px] box-border font-blackHanSans text-[15px]">
         <MenuButtonBox
           icon={icon}
@@ -49,15 +57,20 @@ const NavMenu = (props: Props) => {
           px={15}
           py={10}
           gap={10}
-          onClick={() => setIsOpen((prev) => !prev)}
+          onClick={() => {
+            if (isFold) toggle();
+            setIsOpen((prev) => !prev);
+          }}
         />
 
-        <button
-          className="absolute right-[25px]"
-          onClick={() => setIsOpen((prev) => !prev)}
-        >
-          {hideMenu && (isOpen ? <ArrowUpIcon /> : <ArrowDownIcon />)}
-        </button>
+        {!isFold && hideMenu && (
+          <button
+            className="absolute right-[25px]"
+            onClick={() => setIsOpen((prev) => !prev)}
+          >
+            {isOpen ? <ArrowUpIcon /> : <ArrowDownIcon />}
+          </button>
+        )}
       </li>
 
       {hideMenu && isOpen && (
@@ -80,6 +93,12 @@ const NavMenu = (props: Props) => {
             />
           ))}
         </div>
+      )}
+
+      {isFold && (
+        <span className="absolute transform top-1/2 -translate-y-1/2 right-1/4 translate-x-full group-button-desc rounded-md hover-opacity">
+          {text}
+        </span>
       )}
     </div>
   );

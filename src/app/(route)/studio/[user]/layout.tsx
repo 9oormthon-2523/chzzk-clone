@@ -1,12 +1,21 @@
+'use client';
+
 import React, { ReactNode } from 'react';
 import Header from './_components/Header.server';
-import Navigation from './_components/Nav/Navigation.server';
+import Navigation from './_components/Nav/Navigation.client';
+import useNavSizeToggle from '@/app/_store/studio/useNavSizeToggle.client';
 
-const layout = ({ children }: { children: ReactNode }) => {
+const StudioLayout = ({ children }: { children: ReactNode }) => {
+  const { isFold } = useNavSizeToggle();
   return (
     <div>
       <Header />
-      <div className="flex pt-[61px] pl-[240px] bg-[#f1f3f5]">
+      <div
+        className="flex pt-[61px] bg-[#f1f3f5] transition-all duration-200 ease-in-out"
+        style={{
+          paddingLeft: isFold ? '69px' : '240px',
+        }}
+      >
         <Navigation />
         <section className="overflow-auto">{children}</section>
       </div>
@@ -14,4 +23,4 @@ const layout = ({ children }: { children: ReactNode }) => {
   );
 };
 
-export default layout;
+export default StudioLayout;

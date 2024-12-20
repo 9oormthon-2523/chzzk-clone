@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
+import useNavSizeToggle from '@/app/_store/studio/useNavSizeToggle.client';
 
 interface Props {
   icon: React.ReactNode;
@@ -16,6 +17,8 @@ interface Props {
 
 const MenuButtonBox = (props: Props) => {
   const { icon, text, onClick, menuRoute, px, py, gap, fontSize } = props;
+
+  const { isFold } = useNavSizeToggle();
   const [isMatchDomain, setIsMatchDomain] = useState(false);
   const pathname = usePathname();
 
@@ -25,10 +28,9 @@ const MenuButtonBox = (props: Props) => {
 
   return (
     <button
-      className={`w-full flex gap-[5px] p-[10px] hover:bg-[#f5f6f8] rounded-[5px] items-center`}
+      className={`w-full flex p-[10px] hover:bg-[#f5f6f8] rounded-[5px] items-center`}
       style={{
         padding: `${py}px ${px}px`,
-        gap: `${gap}px`,
         color: `${
           isMatchDomain ? '#4e41db' : menuRoute ? '#222222' : '#525662'
         }`,
@@ -37,7 +39,16 @@ const MenuButtonBox = (props: Props) => {
       onClick={onClick}
     >
       {icon}
-      <span>{text}</span>
+      <span
+        className="flex transition-all duration-200 ease-in-out whitespace-nowrap overflow-hidden"
+        style={{
+          opacity: isFold ? '0' : '1',
+          marginLeft: isFold ? '0px' : `${gap}px`,
+          width: isFold ? '0px' : `137px`,
+        }}
+      >
+        {text}
+      </span>
     </button>
   );
 };
