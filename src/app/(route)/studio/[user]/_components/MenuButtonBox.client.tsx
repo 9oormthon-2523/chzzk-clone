@@ -8,9 +8,14 @@ interface Props {
   text: string;
   onClick?: () => void;
   menuRoute?: string;
+  gap?: number;
+  px?: number;
+  py?: number;
+  fontSize?: number;
 }
 
-const MenuButtonBox = ({ icon, text, onClick, menuRoute }: Props) => {
+const MenuButtonBox = (props: Props) => {
+  const { icon, text, onClick, menuRoute, px, py, gap, fontSize } = props;
   const [isMatchDomain, setIsMatchDomain] = useState(false);
   const pathname = usePathname();
 
@@ -18,16 +23,17 @@ const MenuButtonBox = ({ icon, text, onClick, menuRoute }: Props) => {
     if (menuRoute && menuRoute === pathname) setIsMatchDomain(true);
   }, [menuRoute, pathname]);
 
-  const colorVariants = {
-    on: 'text-[#4e41db]',
-    off: 'text-[#525662]',
-  };
-
   return (
     <button
-      className={`w-full flex gap-[5px] p-[10px] hover:bg-[#f5f6f8] rounded-[5px] ${
-        colorVariants[isMatchDomain ? 'on' : 'off']
-      }`}
+      className={`w-full flex gap-[5px] p-[10px] hover:bg-[#f5f6f8] rounded-[5px] items-center`}
+      style={{
+        padding: `${py}px ${px}px`,
+        gap: `${gap}px`,
+        color: `${
+          isMatchDomain ? '#4e41db' : menuRoute ? '#222222' : '#525662'
+        }`,
+        fontSize: `${fontSize}px`,
+      }}
       onClick={onClick}
     >
       {icon}
