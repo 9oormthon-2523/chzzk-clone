@@ -9,8 +9,8 @@ import OpacityAnimation from "../../../../utils/OpacityAnimation.client";
  */
 
 const Overlay= () => {
-    const BGCOLOR = "#313131";
-    const PERCENT = 20
+    const BGCOLOR = "#1c1c1c";
+    const PERCENT = 15;
     const style = { background: `linear-gradient(180deg, ${BGCOLOR} 0%, rgba(0, 0, 0, 0) ${PERCENT}%, rgba(0, 0, 0, 0) ${100 - PERCENT}%, ${BGCOLOR} 100%)`}
     const {videoToggle} = useVideoControl();
     return <div onClick={videoToggle} style={style} aria-label="비디오 오버레이 박스" className={`absolute w-full h-full`}/>

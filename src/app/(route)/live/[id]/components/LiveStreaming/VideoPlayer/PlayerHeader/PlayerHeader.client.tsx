@@ -1,20 +1,27 @@
 import React from 'react'
 import LiveBox from '../../../_ETC/liveBox';
-import useChatToggle from '@/app/_store/live/useChatToggle'
 import OpacityAnimation from '../../../../utils/OpacityAnimation.client';
 import PlayerHeaderButton, { PlayerHeaderButtonProps } from './PlayerHeaderButton.client';
+import useScreenControl from '@/app/_store/live/useScreenControl';
 
 /**
  * 비디오 플레이어 헤더
  */
 
 const Header = () => {
-  const { isFold, toggle } = useChatToggle();
+  const {   
+    isChatOpen, 
+    isWideScreen, 
+    isFullscreen, 
+    toggleChat, 
+    toggleFullscreen, 
+    toggleWideScreen 
+  } = useScreenControl();
 
   const ChattingControl:PlayerHeaderButtonProps = {
     fnName:"채팅 토글",
     iconName:"VideoChatFold",
-    onClick: () => toggle(),
+    onClick: () => toggleChat(),
   }
 
   return (
@@ -26,8 +33,7 @@ const Header = () => {
 
             {/* CONTROL BUTTONS */}
             <div className='items-end flex flex-col gap-[10px_0] mt-[20px]'>
-              { !isFold && <PlayerHeaderButton {...ChattingControl}/> }
-
+              { !isChatOpen && <PlayerHeaderButton {...ChattingControl}/> }
             </div>
           </div>
       </div>

@@ -4,6 +4,7 @@ import { SvgComponentNames } from "@/app/_components/SVGIcon.server";
 import useVideoControl from "@/app/_store/live/useVideoControl";
 import PlayerBottomButton from "./PlayerBottomButton.client";
 import PlayerBottomBolumeControl from "./PlayerBottomVolume";
+import useScreenControl from "@/app/_store/live/useScreenControl";
 
 /**
  * 비디오 플레이어 바텀
@@ -13,6 +14,7 @@ import PlayerBottomBolumeControl from "./PlayerBottomVolume";
 const Bottom = () => {
     
     const { videoToggle, volumeControl, videoTrack, audioTrack } = useVideoControl();
+    const { toggleFullscreen, toggleWideScreen, isFullscreen } = useScreenControl();
 
     //svg 추출
     const getVolumeIcon = ():SvgComponentNames => {
@@ -38,8 +40,10 @@ const Bottom = () => {
 
                 <div className="min-w-0 items-center flex left-0 relative">
                     <PlayerBottomButton info="설정" svgName="VideoSetting" style="pl-[2.2px] pt-[2.2px]"/>
-                    <PlayerBottomButton info="와이드 모드" svgName="VideoWidescreen" style=""/>
-                    <PlayerBottomButton info="전체 화면" svgName="VideoFullscreen" style="pl-[2.2px] pt-[2.2px]"/>
+                    {/* 전체 화면 일때 와이드 버튼 없음  */}
+                    {!isFullscreen &&
+                        <PlayerBottomButton onClick={toggleWideScreen} info="와이드 모드" svgName="VideoWidescreen" style=""/>}
+                    <PlayerBottomButton onClick={toggleFullscreen} info="전체 화면" svgName="VideoFullscreen" style="pl-[2.2px] pt-[2.2px]"/>
                 </div>
 
             </div>

@@ -1,15 +1,16 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import SvgIcon from '../../../../../_components/SVGIcon.server'
-import useChatToggle from '@/app/_store/live/useChatToggle';
 
 /**
  * 채팅 헤더
  */
 
-const ChatHeader = () => {
-    const { toggle } = useChatToggle();
+interface ChatHeaderProps{
+    ChatFold: () => void
+}
 
-    const onClickChatFold = () => toggle();
+const ChatHeader = (props: ChatHeaderProps) => {
+    const { ChatFold } = props;
 
     return (
         
@@ -18,8 +19,8 @@ const ChatHeader = () => {
                 채팅
             </h2>
             
-            <div className="left-0 absolute top-0 z-[100] box-border w-[44px] h-[44px]">
-                <button onClick={onClickChatFold} type="button" aria-label="채팅 접기" className="text-[#666] overflow-hidden p-[8px] w-[inherit] h-[inherit]">
+            <div className=" absolute top-0 z-[100] box-border w-[44px] h-[44px]">
+                <button onClick={ChatFold} type="button" aria-label="채팅 접기" className="text-[#666] overflow-hidden p-[8px] w-[inherit] h-[inherit]">
                     <SvgIcon name="ChatFold" width={28} height={28} className="rounded-lg hover:bg-[#58585820] hover:text-black"/>
                 </button>
             </div>  
