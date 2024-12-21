@@ -7,7 +7,7 @@ import ProfileButton from './ProfileButton.client';
 
 const Header = () => {
   return (
-    <header className="bg-[#222] fixed flex justify-between items-center px-[20px] py-[10px] w-full">
+    <header className="bg-[#222] fixed top-0 right-0 flex justify-between items-center px-[20px] py-[10px] w-full z-50">
       <div className="flex items-center gap-2">
         <ExpandNavButton />
         <Link href={'/'}>
