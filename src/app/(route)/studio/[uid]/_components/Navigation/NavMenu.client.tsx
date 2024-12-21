@@ -1,7 +1,7 @@
 'use client';
 
 import React, { ReactNode, useEffect, useState } from 'react';
-import MenuButtonBox from '../MenuButtonBox.client';
+import MenuButtonBox from '../common/MenuButtonBox.client';
 import ArrowDownIcon from '@public/studioPage/ArrowDown.svg';
 import ArrowUpIcon from '@public/studioPage/ArrowUp.svg';
 import NavDeptIcon from '@public/studioPage/NavDept.svg';

@@ -1,9 +1,10 @@
 'use client';
 
 import React, { ReactNode } from 'react';
-import Header from './_components/Header.server';
-import Navigation from './_components/Nav/Navigation.client';
+import Header from '../_components/Header/Header.server';
+import Navigation from '../_components/Navigation/Navigation.client';
 import useNavSizeToggle from '@/app/_store/studio/useNavSizeToggle.client';
+import StudioWrapper from '../_components/common/StudioWrapper.server';
 
 const StudioLayout = ({ children }: { children: ReactNode }) => {
   const { isFold } = useNavSizeToggle();
@@ -17,7 +18,7 @@ const StudioLayout = ({ children }: { children: ReactNode }) => {
         }}
       >
         <Navigation />
-        <section className="overflow-auto">{children}</section>
+        <StudioWrapper>{children}</StudioWrapper>
       </div>
     </div>
   );
