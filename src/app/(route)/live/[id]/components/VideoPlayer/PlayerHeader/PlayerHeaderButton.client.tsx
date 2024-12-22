@@ -1,3 +1,4 @@
+"use client"
 import SvgIcon, { SvgComponentNames } from "@/app/_components/SVGIcon.server";
 
 /**
@@ -20,4 +21,4 @@ const PlayerHeaderButton = (props:PlayerHeaderButtonProps) => {
     )
 }
 
-export default PlayerHeaderButton
+export default PlayerHeaderButton;

@@ -1,22 +1,16 @@
+"use client"
 import React from 'react'
-import LiveBox from '../../../_ETC/liveBox';
-import OpacityAnimation from '../../../../utils/OpacityAnimation.client';
-import PlayerHeaderButton, { PlayerHeaderButtonProps } from './PlayerHeaderButton.client';
+import LiveBox from '../../_ETC/liveBox';
 import useScreenControl from '@/app/_store/live/useScreenControl';
+import PlayerHeaderButton, { PlayerHeaderButtonProps } from './PlayerHeaderButton.client';
 
 /**
  * 비디오 플레이어 헤더
  */
 
-const Header = () => {
-  const {   
-    isChatOpen, 
-    isWideScreen, 
-    isFullscreen, 
-    toggleChat, 
-    toggleFullscreen, 
-    toggleWideScreen 
-  } = useScreenControl();
+const PlayerHeader = () => {
+  const isChatOpen = useScreenControl(state => state.isChatOpen);
+  const toggleChat = useScreenControl(state => state.toggleChat);
 
   const ChattingControl:PlayerHeaderButtonProps = {
     fnName:"채팅 토글",
@@ -40,7 +34,5 @@ const Header = () => {
     </div>
   )
 }
-
-//애니메이션 적용
-const PlayerHeader = OpacityAnimation(Header);
-export default PlayerHeader;
+//리사이즈 될 때마다 불필요하게 렌더링 되서 memo사용
+export default React.memo(PlayerHeader);

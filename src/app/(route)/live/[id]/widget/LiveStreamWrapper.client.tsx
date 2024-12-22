@@ -1,7 +1,6 @@
 "use client"
-
 import useScreenControl from "@/app/_store/live/useScreenControl";
-import { CSSProperties, ReactNode, useEffect, useRef } from "react";
+import { CSSProperties, ReactNode, useRef } from "react";
 
 /**
  * 라이브 스트리밍 컨테이너 컴포넌트

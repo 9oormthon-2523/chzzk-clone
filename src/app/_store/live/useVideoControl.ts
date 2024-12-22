@@ -18,14 +18,14 @@ export type AudioTrack = {
   volumeLevel: number; 
 };
 
-interface Store {
+export interface VideoControlState {
     videoTrack: VideoTrack
     audioTrack: AudioTrack
     volumeControl: (vol: number) => void
     videoToggle:() => void
 }
 
-const useVideoControl = create<Store>()((set) => ({
+const useVideoControl = create<VideoControlState>()((set) => ({
   videoTrack: {
     isEnabled:true,
   },

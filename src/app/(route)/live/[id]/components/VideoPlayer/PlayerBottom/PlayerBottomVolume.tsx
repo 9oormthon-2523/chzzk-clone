@@ -1,8 +1,10 @@
+"use client"
 import useVideoControl from "@/app/_store/live/useVideoControl";
 
 //볼륨 조절 버튼
 const PlayerBottomBolumeControl = () => {
-    const { audioTrack, volumeControl } = useVideoControl();
+    const { volumeLevel } = useVideoControl((state) => state.audioTrack); 
+    const volumeControl = useVideoControl((state) => state.volumeControl);
 
     const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const newVolume = Number(e.target.value);
@@ -10,7 +12,7 @@ const PlayerBottomBolumeControl = () => {
         e.target.style.background = `linear-gradient(to right, #527cdc ${newVolume}%, #e5e5e5 ${newVolume}%)`;
     };
 
-    let volume = audioTrack.volumeLevel;
+    let volume = volumeLevel;
 
     return (
         <div className="flex items-center justify-center w-[84px]">

@@ -2,12 +2,9 @@
  * 채팅 창
  */
 
-import useScreenControl from "@/app/_store/live/useScreenControl";
-
 //프롭스는 나중에
 
 const ChatWindow = () => {
-    const { chatPosition } = useScreenControl();
 
     return (
         <div id="chatting-list-container" className="flex flex-[1_1] overflow-hidden relative">
@@ -16,7 +13,7 @@ const ChatWindow = () => {
                 <div id="empty-box-forChat" aria-label="빈 박스"/>
                 <div className="text-[14px]">
                     {
-                        Array.from({length:20}).map((_, idx)=>(
+                        Array.from({length:45}).map((_, idx)=>(
                             <ChatBox key={idx}/>
                         ))
                     }

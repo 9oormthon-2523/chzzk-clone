@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-interface AppState {
+export interface screenControlState {
   isChatOpen: boolean;
   isWideScreen: boolean;
   isFullscreen: boolean;
@@ -14,7 +14,7 @@ interface AppState {
   
 }
 
-const useScreenControl = create<AppState>((set, get) => ({
+const useScreenControl = create<screenControlState>((set, get) => ({
   isChatOpen: true, //채팅
   isWideScreen: false, //와이드
   isFullscreen: false, //전체화면
@@ -63,7 +63,8 @@ const useScreenControl = create<AppState>((set, get) => ({
     const heightRate = 0.6;
     set((state) => {
       // 와이드 모드, 전체화면이 아니거나 채팅이 닫혀있으면 작동 안함
-      // if (!state.isFullOrWide || !state.isChatOpen) return state;
+      if (!state.isFullOrWide || !state.isChatOpen) return state;
+      
       const h = window.innerWidth * resizeRate;
       const totalH = window.innerHeight;
       

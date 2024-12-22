@@ -1,17 +1,17 @@
 "use client"
-import OpacityAnimation from "../../../../utils/OpacityAnimation.client";
 import { SvgComponentNames } from "@/app/_components/SVGIcon.server";
+import useScreenControl from "@/app/_store/live/useScreenControl";
 import useVideoControl from "@/app/_store/live/useVideoControl";
 import PlayerBottomButton from "./PlayerBottomButton.client";
 import PlayerBottomBolumeControl from "./PlayerBottomVolume";
-import useScreenControl from "@/app/_store/live/useScreenControl";
+import React from "react";
 
 /**
  * 비디오 플레이어 바텀
  * 비디오 플레이어를 조정 할 수 있는 기능들이 있습니다.
  */
 
-const Bottom = () => {
+const PlayerBottom  = () => {
     
     const { videoToggle, volumeControl, videoTrack, audioTrack } = useVideoControl();
     const { toggleFullscreen, toggleWideScreen, isFullscreen } = useScreenControl();
@@ -42,7 +42,9 @@ const Bottom = () => {
                     <PlayerBottomButton info="설정" svgName="VideoSetting" style="pl-[2.2px] pt-[2.2px]"/>
                     {/* 전체 화면 일때 와이드 버튼 없음  */}
                     {!isFullscreen &&
-                        <PlayerBottomButton onClick={toggleWideScreen} info="와이드 모드" svgName="VideoWidescreen" style=""/>}
+                        <PlayerBottomButton onClick={toggleWideScreen} info="와이드 모드" svgName="VideoWidescreen" style=""/>
+                    }
+                    
                     <PlayerBottomButton onClick={toggleFullscreen} info="전체 화면" svgName="VideoFullscreen" style="pl-[2.2px] pt-[2.2px]"/>
                 </div>
 
@@ -51,7 +53,6 @@ const Bottom = () => {
     )
 }
 
-const PlayerBottom = OpacityAnimation(Bottom);
-export default PlayerBottom;
-
+//리사이즈 될 때마다 불필요하게 렌더링 되서 memo사용
+export default React.memo(PlayerBottom);
 

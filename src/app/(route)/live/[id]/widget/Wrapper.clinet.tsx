@@ -1,18 +1,16 @@
 "use client";
 
 import useScreenControl from "@/app/_store/live/useScreenControl";
-import { CSSProperties, ReactNode, useState } from "react";
+import { CSSProperties, ReactNode } from "react";
 
 interface LiveWrapperProps {
   children: ReactNode;
 }
 
 const LiveWrapper = ({ children }: LiveWrapperProps) => {
-  const [isNavFolded, setIsNavFolded] = useState(false); // 네비게이션 접힘 상태
   const { isFullOrWide, chatPosition, isChatOpen } = useScreenControl();
 
-  const navPadding = isNavFolded ? 240 : 78; // 좌측 패딩
-  const minWidth = !isFullOrWide ? 840 : 440; // 최소 너비
+  const navPadding = 78; // 좌측 패딩
 
   // 컨테이너 스타일
   const containerStyle: CSSProperties = {
@@ -23,7 +21,7 @@ const LiveWrapper = ({ children }: LiveWrapperProps) => {
     left: isFullOrWide ? 0 : undefined,
     top: isFullOrWide ? 0 : undefined,
     backgroundColor: isFullOrWide ? "black" : undefined,
-    minWidth: `${minWidth}px`,
+    minWidth: !isFullOrWide ? 840 : 440,
   }; 
 
   // 래퍼 스타일

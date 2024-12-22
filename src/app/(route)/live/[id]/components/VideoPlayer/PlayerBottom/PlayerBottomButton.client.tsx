@@ -1,4 +1,6 @@
+"use client"
 import SvgIcon, { SvgComponentNames } from "@/app/_components/SVGIcon.server"
+import React from "react"
 
 /**
  * 플레이어 비디오 기능 버튼
@@ -30,4 +32,4 @@ const PlayerBottomButton = (props:PlayerBottomButtonProps) => {
 
 }
 
-export default PlayerBottomButton
+export default PlayerBottomButton;

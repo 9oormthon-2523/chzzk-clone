@@ -8,8 +8,6 @@
  * export default AnimatedFrame 
  * */
 
-
-
 type OpacityAnimationProps = {
     isHover: boolean;
 };
