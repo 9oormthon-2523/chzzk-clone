@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
-import { Black_Han_Sans } from 'next/font/google';
 import '@/app/_styles/globals.css';
+import { Black_Han_Sans } from 'next/font/google';
+
 
 const blackHansSans = Black_Han_Sans({
   variable: '--font-black-han-sans',
