@@ -3,6 +3,7 @@ import Link from "next/link";
 import React from "react";
 import ExpandNavButton from "./ExpandNavButton.client";
 import LoginButton from "./LoginButton.client";
+import LoginModal from "../LoginModal/LoginModal.client";
 const Header = () => {
   return (
     <header className="bg-[#222] fixed flex justify-between items-center px-[20px] py-[10px] w-full z-40 ">
@@ -19,6 +20,7 @@ const Header = () => {
       </div>
       <div className="flex items-center gap-2">
         <LoginButton />
+        <LoginModal/>
       </div>
     </header>
   );
