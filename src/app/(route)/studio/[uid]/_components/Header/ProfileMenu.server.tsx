@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import MenuButtonBox from './MenuButtonBox.client';
+import MenuButtonBox from '../common/MenuButtonBox.client';
 import Link from 'next/link';
 import MiniChzzk from '@public/studioPage/MiniChzzk.svg';
 import MyChannel from '@public/studioPage/MyChannel.svg';

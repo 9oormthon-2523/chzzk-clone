@@ -31,6 +31,7 @@ export default {
           'sans-serif',
         ],
         blackHanSans: ['var(--font-black-han-sans)'],
+        gothic: ['"Gothic A1"', 'sans-serif'],
       },
       colors: {
         background: 'var(--background)',
