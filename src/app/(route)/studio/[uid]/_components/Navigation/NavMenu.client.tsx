@@ -13,18 +13,21 @@ interface MenuType {
   text: string;
   route: string;
 }
+
+const uid = '1d8940af-d8ce-43e6-9d59-549f988160ab';
+
 const menus: Record<string, MenuType[]> = {
   대시보드: [],
   '방송 관리': [
-    { text: '방송하기', route: 'studio/1/live' },
-    { text: '설정', route: 'studio/1/settings' },
-    { text: '알림', route: 'studio/1/notice' },
-    { text: '리허설 방송 하기', route: 'studio/1/rehearsal' },
+    { text: '방송하기', route: `studio/${uid}/live` },
+    { text: '설정', route: `studio/${uid}/settings` },
+    { text: '알림', route: `studio/${uid}/notice` },
+    { text: '리허설 방송 하기', route: `studio/${uid}/rehearsal` },
   ],
   '시청자 관리': [
-    { text: '팔로워', route: 'studio/1/follower' },
-    { text: '구독자', route: 'studio/1/subscriber' },
-    { text: '활동 제한', route: 'studio/1/blocklist' },
+    { text: '팔로워', route: `studio/${uid}/follower` },
+    { text: '구독자', route: `studio/${uid}/subscriber` },
+    { text: '활동 제한', route: `studio/${uid}/blocklist` },
   ],
 };
 
@@ -89,7 +92,9 @@ const NavMenu = (props: Props) => {
               py={13}
               gap={6}
               fontSize={14}
-              onClick={() => router.push(item.route)}
+              onClick={() => {
+                router.push(`/${item.route}`);
+              }}
             />
           ))}
         </div>

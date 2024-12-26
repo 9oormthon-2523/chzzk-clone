@@ -8,6 +8,8 @@ import ViewerIcon from '@public/studioPage/Viewer.svg';
 import Link from 'next/link';
 import useNavSizeToggle from '@/app/_store/studio/useNavSizeToggle.client';
 
+const uid = '1d8940af-d8ce-43e6-9d59-549f988160ab';
+
 const Navigation = () => {
   const { isFold } = useNavSizeToggle();
 
@@ -21,12 +23,12 @@ const Navigation = () => {
       }}
     >
       <ul>
-        <Link href={'/studio/10'}>
+        <Link href={`/studio/${uid}`}>
           <NavMenu
             text="대시보드"
             hideMenu={false}
             icon={<DashboardIcon />}
-            menuRoute="/studio/10"
+            menuRoute={`/studio/${uid}`}
           />
         </Link>
         <NavMenu
