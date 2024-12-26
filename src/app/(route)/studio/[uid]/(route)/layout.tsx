@@ -1,7 +1,6 @@
 import React, { ReactNode } from 'react';
 import Header from '../_components/Header/Header.server';
 import Navigation from '../_components/Navigation/Navigation.client';
-import StudioWrapper from '../_components/common/StudioWrapper.server';
 import ContentWrapper from '../_components/common/ContentWrapper.client';
 import { createClient } from '@/app/_utils/supabase/server';
 import { redirect } from 'next/navigation';
@@ -19,11 +18,13 @@ const StudioLayout = async ({
 
   if (match) {
     return (
-      <div>
+      <div className="fixed w-full h-full">
         <Header />
         <ContentWrapper>
           <Navigation />
-          <StudioWrapper>{children}</StudioWrapper>
+          <section className="flex overflow-auto flex-1 flex-col bg-[#f1f3f5] h-full">
+            {children}
+          </section>
         </ContentWrapper>
       </div>
     );

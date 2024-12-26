@@ -8,7 +8,7 @@ const ContentWrapper = ({ children }: { children: ReactNode }) => {
 
   return (
     <div
-      className="flex pt-[61px] bg-[#f1f3f5] transition-all duration-200 ease-in-out"
+      className="flex pt-[61px] bg-[#f1f3f5] transition-all duration-200 ease-in-out h-full"
       style={{
         paddingLeft: isFold ? '69px' : '240px',
       }}
