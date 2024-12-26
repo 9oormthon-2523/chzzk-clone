@@ -24,6 +24,7 @@ const MenuButtonBox = (props: Props) => {
 
   useEffect(() => {
     if (menuRoute && menuRoute === pathname) setIsMatchDomain(true);
+    else setIsMatchDomain(false);
   }, [menuRoute, pathname]);
 
   return (
