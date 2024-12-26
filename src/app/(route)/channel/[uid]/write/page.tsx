@@ -1,7 +1,7 @@
 'use client';
 import React, {useState} from 'react';
-import { createClient } from "../../../_utils/supabase/client";
-import ChannelProfile from '../[uid]/components/ChannelProfile';
+import { createClient } from "../../../../_utils/supabase/client";  
+import ChannelProfile from '../../../channel/[uid]/components/ChannelProfile';
 import { useRouter } from 'next/navigation';
 
 
