@@ -4,18 +4,33 @@ import Image from "next/image";
 import CzzSVG from "@public/loginModal/Logo.svg";
 import CloseSVG from "@public/loginModal/close.svg";
 import useLoginModalToggle from "@/app/_store/modal/useLoginModalToggle.cliet";
+import { createClient } from '@/app/_utils/supabase/client';
 
 const LoginModal = () => {
     const { isFold, toggle } = useLoginModalToggle();
 
     if(!isFold) return null;
 
+    const supabase = createClient();
+
+    async function signInWithOAuth() {
+        const { error } = await supabase.auth.signInWithOAuth({
+            provider: 'kakao',
+            options: {
+            redirectTo: `${window.location.origin}/api/auth/callback`,
+            },
+        });
+
+        if (error) console.error('OAuth 로그인 실패:', error.message);
+
+    }
+    
+    const onClickKakaoButton = (e: React.MouseEvent<HTMLButtonElement>) => {
+        signInWithOAuth();
+    }
+
     // before선 스타일
     const beforeLine = "before:content-[''] before:block before:w-full before:h-[0.5px] before:bg-[#66666671] before:absolute before:top-1/2 before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2"
-
-    const onClickKakaoButton = (e: React.MouseEvent<HTMLButtonElement>) => {
-        console.log('로그인 api? url')
-    }
 
     return (
             <div
