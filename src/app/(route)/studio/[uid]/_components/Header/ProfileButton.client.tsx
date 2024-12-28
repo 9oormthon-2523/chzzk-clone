@@ -5,7 +5,7 @@ import HeaderButton from './HeaderButton.client';
 import ProfileMenuList from './ProfileMenu.server';
 import OutsideClickDetector from '@/app/_components/OutsideClickWrapper.client';
 
-const ProfileButton = () => {
+const ProfileButton = ({ uid }: { uid: string }) => {
   const [isOpenMenu, setIsOpenMenu] = useState<boolean>(false);
 
   return (
@@ -21,7 +21,7 @@ const ProfileButton = () => {
 
       {isOpenMenu && (
         <OutsideClickDetector action={() => setIsOpenMenu(false)}>
-          <ProfileMenuList />
+          <ProfileMenuList uid={uid} />
         </OutsideClickDetector>
       )}
     </div>

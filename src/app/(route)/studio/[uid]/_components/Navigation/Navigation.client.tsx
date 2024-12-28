@@ -7,9 +7,7 @@ import StudioIcon from '@public/studioPage/Studio.svg';
 import ViewerIcon from '@public/studioPage/Viewer.svg';
 import useNavSizeToggle from '@/app/_store/studio/useNavSizeToggle.client';
 
-const uid = '1d8940af-d8ce-43e6-9d59-549f988160ab';
-
-const Navigation = () => {
+const Navigation = ({ uid }: { uid: string }) => {
   const { isFold } = useNavSizeToggle();
 
   return (
@@ -26,9 +24,10 @@ const Navigation = () => {
           menuName="대시보드"
           icon={<DashboardIcon />}
           menuRoute={`/studio/${uid}`}
+          uid={uid}
         />
-        <NavMenu menuName="방송 관리" icon={<StudioIcon />} />
-        <NavMenu menuName="시청자 관리" icon={<ViewerIcon />} />
+        <NavMenu menuName="방송 관리" icon={<StudioIcon />} uid={uid} />
+        <NavMenu menuName="시청자 관리" icon={<ViewerIcon />} uid={uid} />
       </ul>
     </nav>
   );

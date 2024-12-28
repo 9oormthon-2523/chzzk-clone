@@ -19,9 +19,9 @@ const StudioLayout = async ({
   if (match) {
     return (
       <div className="fixed w-full h-full">
-        <Header />
+        <Header uid={uid} />
         <ContentWrapper>
-          <Navigation />
+          <Navigation uid={uid} />
           <section className="flex overflow-auto flex-1 flex-col bg-[#f1f3f5] h-full">
             {children}
           </section>

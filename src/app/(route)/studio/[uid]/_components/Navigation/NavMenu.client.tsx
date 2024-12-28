@@ -13,10 +13,11 @@ interface Props {
   menuName: string;
   icon: ReactNode;
   menuRoute?: string;
+  uid: string;
 }
 
 const NavMenu = (props: Props) => {
-  const { menuName, icon, menuRoute } = props;
+  const { menuName, icon, menuRoute, uid } = props;
 
   const router = useRouter();
 
@@ -34,13 +35,13 @@ const NavMenu = (props: Props) => {
           icon={icon}
           text={menuName}
           menuRoute={menuRoute}
-          color="black"
+          color="gray"
           px={15}
           py={10}
           gap={10}
           onClick={() => {
             if (menuRoute) {
-              router.push(`/${menuRoute}`);
+              router.push(`${menuRoute}`);
             } else {
               if (isFold) toggle();
               setIsOpen((prev) => !prev);
@@ -59,7 +60,7 @@ const NavMenu = (props: Props) => {
       </li>
 
       {/* 서브 메뉴들이 존재하면서 열려있을때 서브메뉴 렌더링 */}
-      {!menuRoute && isOpen && <SubMenus menuName={menuName} />}
+      {!menuRoute && isOpen && <SubMenus menuName={menuName} uid={uid} />}
 
       {/* 네비게이션이 접혔을때, hover시 description 띄우기 */}
       {isFold && (
