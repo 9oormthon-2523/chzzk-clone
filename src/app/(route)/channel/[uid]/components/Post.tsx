@@ -1,10 +1,11 @@
-
 interface PostProps {
-  nickname: string; 
-  content: string; 
+  nickname: string;
+  content: string;
 }
 
-const Post: React.FC<PostProps> = ({nickname, content}) => {
+const Post = (props: PostProps) => {
+  const { nickname, content } = props;
+
   return (
     <div className="flex w-full h-48 p-4 bg-gray-50 rounded-lg ">
           <div className="flex flex-col flex-shrink-0 w-12 h-12 rounded-full bg-white shadow-md text-sm mr-2"/>
@@ -16,4 +17,4 @@ const Post: React.FC<PostProps> = ({nickname, content}) => {
   )
 }
 
-export default Post
+export default Post;
