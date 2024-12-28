@@ -13,7 +13,7 @@ interface Props {
   px?: number;
   py?: number;
   fontSize?: number;
-  color: 'black' | 'gray';
+  color: 'black' | 'gray' | 'blue';
 }
 
 const MenuButtonBox = (props: Props) => {
@@ -32,6 +32,7 @@ const MenuButtonBox = (props: Props) => {
   const fontColor = {
     black: 'text-[#222222]',
     gray: 'text-[#525662]',
+    blue: 'text-[#4e41db]',
   };
 
   return (
@@ -39,7 +40,6 @@ const MenuButtonBox = (props: Props) => {
       className={`w-full flex p-[10px] hover:bg-[#f5f6f8] rounded-[5px] items-center ${fontColor[color]}`}
       style={{
         padding: `${py}px ${px}px`,
-        color: `${isMatchDomain && '#4e41db'}`,
         fontSize: `${fontSize}px`,
       }}
       onClick={onClick}
@@ -51,6 +51,7 @@ const MenuButtonBox = (props: Props) => {
           opacity: isFold ? '0' : '1',
           marginLeft: isFold ? '0px' : `${gap}px`,
           width: isFold ? '0px' : `137px`,
+          color: isMatchDomain ? '#4e41db' : 'inherit',
         }}
       >
         {text}

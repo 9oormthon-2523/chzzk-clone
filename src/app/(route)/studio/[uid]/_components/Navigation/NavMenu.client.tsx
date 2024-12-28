@@ -8,6 +8,8 @@ import useNavSizeToggle from '@/app/_store/studio/useNavSizeToggle.client';
 import '@/app/_styles/studioPage.css';
 import SubMenus from './SubMenus';
 import { useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
+import { getMenuList } from '@/app/_utils/studio/getMenuList';
 
 interface Props {
   menuName: string;
@@ -22,11 +24,14 @@ const NavMenu = (props: Props) => {
   const router = useRouter();
 
   const { isFold, toggle } = useNavSizeToggle();
-  const [isOpen, setIsOpen] = useState<boolean>(false);
 
+  const [isOpen, setIsOpen] = useState<boolean>(false);
   useEffect(() => {
     if (isFold) setIsOpen(false);
   }, [isFold]);
+
+  const pathname = usePathname();
+  const menuListRouteArr = getMenuList(uid)[menuName].map((item) => item.route);
 
   return (
     <div className="flex flex-col relative group">
@@ -35,7 +40,9 @@ const NavMenu = (props: Props) => {
           icon={icon}
           text={menuName}
           menuRoute={menuRoute}
-          color="gray"
+          color={
+            menuListRouteArr.includes(pathname) && !isOpen ? 'blue' : 'black'
+          }
           px={15}
           py={10}
           gap={10}
