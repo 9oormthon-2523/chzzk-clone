@@ -46,6 +46,7 @@ const SubMenu = ({ menuName }: { menuName: string }) => {
           }
           text={item.text}
           menuRoute={item.route}
+          color="gray"
           px={48}
           py={13}
           gap={6}

@@ -13,10 +13,12 @@ interface Props {
   px?: number;
   py?: number;
   fontSize?: number;
+  color: 'black' | 'gray';
 }
 
 const MenuButtonBox = (props: Props) => {
-  const { icon, text, onClick, menuRoute, px, py, gap, fontSize } = props;
+  const { icon, text, onClick, menuRoute, px, py, gap, fontSize, color } =
+    props;
 
   const { isFold } = useNavSizeToggle();
   const [isMatchDomain, setIsMatchDomain] = useState(false);
@@ -27,14 +29,17 @@ const MenuButtonBox = (props: Props) => {
     else setIsMatchDomain(false);
   }, [menuRoute, pathname]);
 
+  const fontColor = {
+    black: 'text-[#222222]',
+    gray: 'text-[#525662]',
+  };
+
   return (
     <button
-      className={`w-full flex p-[10px] hover:bg-[#f5f6f8] rounded-[5px] items-center`}
+      className={`w-full flex p-[10px] hover:bg-[#f5f6f8] rounded-[5px] items-center ${fontColor[color]}`}
       style={{
         padding: `${py}px ${px}px`,
-        color: `${
-          isMatchDomain ? '#4e41db' : menuRoute ? '#222222' : '#525662'
-        }`,
+        color: `${isMatchDomain && '#4e41db'}`,
         fontSize: `${fontSize}px`,
       }}
       onClick={onClick}

@@ -23,12 +23,21 @@ const ProfileMenuList = () => {
       <div className="flex flex-col border border-solid border-[#ebedf3] text-[13px] px-[6px] py-[7px]">
         {/* 유저의 고유 uuid를 동적 라우트로 넣어야함 */}
         <Link href={'/channel'}>
-          <MenuButtonBox icon={<MyChannel />} text="내 채널" />
+          <MenuButtonBox icon={<MyChannel />} text="내 채널" color="gray" />
         </Link>
         <Link href={'/'}>
-          <MenuButtonBox icon={<MiniChzzk />} text="치지직 돌아가기" />
+          <MenuButtonBox
+            icon={<MiniChzzk />}
+            text="치지직 돌아가기"
+            color="gray"
+          />
         </Link>
-        <MenuButtonBox icon={<Logout />} text="로그아웃" onClick={() => {}} />
+        <MenuButtonBox
+          icon={<Logout />}
+          text="로그아웃"
+          color="gray"
+          onClick={() => {}}
+        />
       </div>
     </div>
   );

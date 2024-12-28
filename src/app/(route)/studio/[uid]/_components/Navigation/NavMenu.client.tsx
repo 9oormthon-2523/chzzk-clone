@@ -34,6 +34,7 @@ const NavMenu = (props: Props) => {
           icon={icon}
           text={menuName}
           menuRoute={menuRoute}
+          color="black"
           px={15}
           py={10}
           gap={10}
