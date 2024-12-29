@@ -13,10 +13,12 @@ interface Props {
   px?: number;
   py?: number;
   fontSize?: number;
+  color: 'black' | 'gray' | 'blue';
 }
 
 const MenuButtonBox = (props: Props) => {
-  const { icon, text, onClick, menuRoute, px, py, gap, fontSize } = props;
+  const { icon, text, onClick, menuRoute, px, py, gap, fontSize, color } =
+    props;
 
   const { isFold } = useNavSizeToggle();
   const [isMatchDomain, setIsMatchDomain] = useState(false);
@@ -24,16 +26,20 @@ const MenuButtonBox = (props: Props) => {
 
   useEffect(() => {
     if (menuRoute && menuRoute === pathname) setIsMatchDomain(true);
+    else setIsMatchDomain(false);
   }, [menuRoute, pathname]);
+
+  const fontColor = {
+    black: 'text-[#222222]',
+    gray: 'text-[#525662]',
+    blue: 'text-[#4e41db]',
+  };
 
   return (
     <button
-      className={`w-full flex p-[10px] hover:bg-[#f5f6f8] rounded-[5px] items-center`}
+      className={`w-full flex p-[10px] hover:bg-[#f5f6f8] rounded-[5px] items-center ${fontColor[color]}`}
       style={{
         padding: `${py}px ${px}px`,
-        color: `${
-          isMatchDomain ? '#4e41db' : menuRoute ? '#222222' : '#525662'
-        }`,
         fontSize: `${fontSize}px`,
       }}
       onClick={onClick}
@@ -45,6 +51,7 @@ const MenuButtonBox = (props: Props) => {
           opacity: isFold ? '0' : '1',
           marginLeft: isFold ? '0px' : `${gap}px`,
           width: isFold ? '0px' : `137px`,
+          color: isMatchDomain ? '#4e41db' : 'inherit',
         }}
       >
         {text}
