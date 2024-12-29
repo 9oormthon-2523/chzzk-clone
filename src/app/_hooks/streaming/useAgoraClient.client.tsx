@@ -1,6 +1,8 @@
-import type * as AgoraRTCType from "agora-rtc-sdk-ng";
-import AgoraRTC from 'agora-rtc-sdk-ng';
+
 import { useRef } from "react"
+import AgoraRTC from "agora-rtc-sdk-ng";
+import type * as AgoraRTCType from "agora-rtc-sdk-ng";
+
 
 interface joinChannelPayload {
     CHANNEL:string
@@ -12,6 +14,8 @@ interface getHostMediaResourcePayload {
     videoTrack: AgoraRTCType.IRemoteVideoTrack | undefined
     audioTrack: AgoraRTCType.IRemoteAudioTrack | undefined
 }
+
+type mediaType = "audio" | "video" | "datachannel";
 
 const useAgoraClient = () => {
     const APP_ID = process.env.NEXT_PUBLIC_AGORA_APP_ID! || "";
@@ -48,6 +52,11 @@ const useAgoraClient = () => {
 
     //채널 참가
     const joinChannel = async (payload: joinChannelPayload) => {
+        if(clientState() === "CONNECTED") {
+            console.log('클라이언트가 이미 존재합니다.')
+            return;
+        }
+
         if (!clientRef.current) {
             console.log("클라이언트가 존재하지 않습니다.");
             return;
@@ -99,30 +108,44 @@ const useAgoraClient = () => {
         return new Promise((resolve, reject) => {
             if(!clientRef.current) return failValue;
             clientRef.current.on("user-published", async (user, mediaType) => {
+                console.log("User published:", user, mediaType); // 로그 추가
                 if (clientRef.current) {
                     try {
-                        // 미디어 구독
                         await clientRef.current.subscribe(user, mediaType);
-    
+            
                         let videoTrack: AgoraRTCType.IRemoteVideoTrack | undefined;
                         let audioTrack: AgoraRTCType.IRemoteAudioTrack | undefined;
-    
-                        // 미디어 타입에 따른 트랙 할당
+            
                         if (mediaType === 'video') {
                             videoTrack  = user.videoTrack;
                         }
                         if (mediaType === 'audio') {
                             audioTrack = user.audioTrack;
                         }
-                        
-                        // 트랙 정보를 resolve하여 반환
+            
+                        console.log("Video Track:", videoTrack); // 비디오 트랙 로그
                         resolve({ videoTrack, audioTrack });
                     } catch (error) {
                         console.error("Error subscribing to media:", error);
-                        reject(failValue);  // 에러 발생 시 null 반환
+                        reject(failValue);
                     }
                 }
             });
+            
+        });
+    };
+
+    
+    const deleteHostMediaResource = async (fn: (media: mediaType) => void) => {
+        if (clientState() !== "CONNECTED" || !clientRef.current) return;
+    
+        clientRef.current.on("user-unpublished", (user, mediaType) => {
+            try {
+                fn(mediaType);     
+            } catch (error: unknown) {
+                throw new Error("삭제한 비디오를 받아올 수 없습니다.");
+            }
+            
         });
     };
 
@@ -133,6 +156,7 @@ const useAgoraClient = () => {
         publishMediaTracks,
         clientState,
         getHostMediaResource,
+        deleteHostMediaResource,
     }
 }
 
