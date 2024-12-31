@@ -1,11 +1,12 @@
 "use client"
+const VideoPlayer = dynamic(() => import('./widget/VideoPlayer.client'), { ssr: false });
 import useScreenControl from "@/app/_store/live/useScreenControl";
 import LiveStreamWrapper from "./widget/LiveStreamWrapper.client";
 import LiveWrapper from "./widget/Wrapper.clinet";
 import LiveDetails from "./widget/LiveDetails.client";
-import VideoPlayer from "./widget/VideoPlayer.client";
 import ChatLayout from "./widget/Chat.client";
 import { useEffect } from "react";
+import dynamic from "next/dynamic";
 
 export default function Page(){
     const { isFullscreen, offFullScreen} = useScreenControl();

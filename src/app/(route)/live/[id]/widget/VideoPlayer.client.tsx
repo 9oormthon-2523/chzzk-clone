@@ -7,18 +7,24 @@ import { useHoverState, useVideoPlayerResize } from '../utils/VideoPlayerHook'
 import useScreenControl from '@/app/_store/live/useScreenControl'
 import useVideoControl from '@/app/_store/live/useVideoControl' 
 import OpacityAnimation from '../utils/OpacityAnimation.client'
-import React, { CSSProperties, ReactNode } from 'react'
+import React, { CSSProperties, ReactNode, useRef } from 'react'
 import { getVideoRatio } from '../utils/getVideoRatio' 
+import useLiveManager from '@/app/_hooks/live/useLiveManager'
 
 /**
  * 라이브 스트리밍 플레이어 컴포넌트
  */
 
 const VideoPlayer = () => {
+  const dto = {
+
+  }
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const { ratio } = useLiveManager({channel:"demo", videoRef, streaming_is_active:true});
   //추후 비디오 비율 대비 
-  const RATIO:[number, number] = [1378, 775];
-  const RATE = getVideoRatio(1980, 1080,'total');
-  const resizeRATE = getVideoRatio(...RATIO, 'empty'); 
+  // const RATIO:[number, number] = [1378, 775];
+  const RATE = ratio[0];
+  const resizeRATE = ratio[1];
 
   //스크린 컨트롤 훅
   const screenControl = useScreenControl();
@@ -77,7 +83,7 @@ const VideoPlayer = () => {
           className="absolute bg-black flex items-center justify-center box-border"
           >   
           <div style={frameVideoPlayer_style}>
-            <canvas aria-label='비디오 대체 박스' className='w-full h-full bg-gray-700'/>
+            <video ref={videoRef} aria-label='비디오 대체 박스' className='w-full h-full bg-gray-700'/>
           </div>
         </div>
         
