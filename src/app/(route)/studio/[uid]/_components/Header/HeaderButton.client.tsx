@@ -4,6 +4,7 @@ import '@/app/_styles/studioPage.css';
 import Image from 'next/image';
 
 interface ButtonProps {
+  id?: string;
   imageSrc: string;
   desc: string;
   width: number;
@@ -13,6 +14,7 @@ interface ButtonProps {
 }
 
 const HeaderButton = ({
+  id,
   imageSrc,
   desc,
   width,
@@ -22,6 +24,7 @@ const HeaderButton = ({
 }: ButtonProps) => {
   return (
     <button
+      id={id}
       className="transition-button relative group hover:bg-neutral-700"
       style={{
         padding: `${padding}px`,

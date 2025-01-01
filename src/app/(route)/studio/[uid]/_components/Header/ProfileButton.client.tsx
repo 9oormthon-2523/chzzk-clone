@@ -18,6 +18,7 @@ const ProfileButton = (props: ProfileProps) => {
   return (
     <div className="relative">
       <HeaderButton
+        id="ignored-header"
         imageSrc={user.user_metadata.avatar_url}
         desc={'내 프로필'}
         width={30}
@@ -27,7 +28,10 @@ const ProfileButton = (props: ProfileProps) => {
       />
 
       {isOpenMenu && (
-        <OutsideClickDetector action={() => setIsOpenMenu(false)}>
+        <OutsideClickDetector
+          ignoreIds={['ignored-header']}
+          action={() => setIsOpenMenu(false)}
+        >
           <ProfileMenuList uid={uid} user={user} />
         </OutsideClickDetector>
       )}
