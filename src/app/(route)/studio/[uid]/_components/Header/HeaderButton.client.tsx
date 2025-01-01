@@ -28,7 +28,13 @@ const HeaderButton = ({
       }}
       onClick={onClick}
     >
-      <Image src={imageSrc} width={width} height={height} alt={desc} />
+      <Image
+        src={imageSrc}
+        width={width}
+        height={height}
+        alt={desc}
+        className="rounded-full aspect-square"
+      />
       <span
         className="absolute-center group-button-desc transition-button hover-opacity"
         style={{
