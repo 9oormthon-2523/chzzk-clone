@@ -5,9 +5,12 @@ import MiniChzzk from '@public/studioPage/MiniChzzk.svg';
 import MyChannel from '@public/studioPage/MyChannel.svg';
 import Logout from '@public/studioPage/Logout.svg';
 import { ProfileProps } from './ProfileButton.client';
+import { createClient } from '@/app/_utils/supabase/client';
+import { useRouter } from 'next/navigation';
 
 const ProfileMenuList = (props: ProfileProps) => {
   const { uid, user } = props;
+  const router = useRouter();
 
   return (
     <div className="absolute flex flex-col font-blackHanSans w-[240px] bg-white shadow-base rounded-[5px] border border-solid border-[#dddddd] -translate-x-[198px] font-thin">
@@ -38,7 +41,11 @@ const ProfileMenuList = (props: ProfileProps) => {
           icon={<Logout />}
           text="로그아웃"
           color="gray"
-          onClick={() => {}}
+          onClick={async () => {
+            const supabase = createClient();
+            const { error } = await supabase.auth.signOut();
+            if (!error) router.push('/studio');
+          }}
         />
       </div>
     </div>
