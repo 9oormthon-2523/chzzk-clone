@@ -4,20 +4,23 @@ import Link from 'next/link';
 import MiniChzzk from '@public/studioPage/MiniChzzk.svg';
 import MyChannel from '@public/studioPage/MyChannel.svg';
 import Logout from '@public/studioPage/Logout.svg';
+import { ProfileProps } from './ProfileButton.client';
 
-const ProfileMenuList = ({ uid }: { uid: string }) => {
+const ProfileMenuList = (props: ProfileProps) => {
+  const { uid, user } = props;
+
   return (
     <div className="absolute flex flex-col font-blackHanSans w-[240px] bg-white shadow-base rounded-[5px] border border-solid border-[#dddddd] -translate-x-[198px] font-thin">
       <div className="flex flex-col items-center px-[17px] py-[19px] gap-[11px]">
         <Image
-          src={'/studioPage/Profile.svg'}
+          src={user.user_metadata.avatar_url}
           width={62}
           height={62}
           alt="profile"
-          className="border border-solid border-[#dddddd] box-border rounded-full"
+          className="border border-solid border-[#dddddd] box-border rounded-full aspect-square"
         />
         <strong className="text-[#222] text-[16px] leading-[17px]">
-          밤새는 겜돌이
+          {user.user_metadata.full_name}
         </strong>
       </div>
       <div className="flex flex-col border border-solid border-[#ebedf3] text-[13px] px-[6px] py-[7px]">

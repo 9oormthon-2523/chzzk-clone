@@ -4,8 +4,13 @@ import React from 'react';
 import HeaderButton from './HeaderButton.client';
 import ExpandNavButton from './ExpandNavButton.client';
 import ProfileButton from './ProfileButton.client';
+import { headers } from 'next/headers';
+import { use } from 'react';
+import { User } from '@supabase/supabase-js';
 
 const Header = ({ uid }: { uid: string }) => {
+  const { user } = use(getUserProfile());
+
   return (
     <header className="bg-[#222] fixed top-0 right-0 flex justify-between items-center px-[20px] py-[10px] w-full z-50">
       <div className="flex items-center gap-2">
@@ -38,10 +43,21 @@ const Header = ({ uid }: { uid: string }) => {
             height={40}
           />
         </Link>
-        <ProfileButton uid={uid} />
+        <ProfileButton uid={uid} user={user} />
       </div>
     </header>
   );
 };
 
 export default Header;
+
+const getUserProfile = async (): Promise<{ user: User }> => {
+  const header = await headers();
+  const response = await fetch('http://localhost:3000/api/auth/user', {
+    headers: {
+      cookie: header.get('cookie') || '',
+    },
+  });
+
+  return response.json();
+};
