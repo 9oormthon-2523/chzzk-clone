@@ -16,6 +16,7 @@ const StudioLayout = async ({
   const { uid } = await params;
   const match = await isMatchUid(uid);
 
+<<<<<<< Updated upstream
   // if (match) {
   //   return (
   //     <div className="fixed w-full h-full">
@@ -42,6 +43,23 @@ const StudioLayout = async ({
     </div>
   );
   // return <Popup />;
+=======
+  if (match) {
+    return (
+      <div className="fixed w-full h-full">
+        <Header uid={uid} />
+        <ContentWrapper>
+          <Navigation uid={uid} />
+          <section className="flex overflow-auto flex-1 flex-col bg-[#f1f3f5] h-full">
+            {children}
+          </section>
+        </ContentWrapper>
+      </div>
+    );
+  }
+
+  return <Popup />;
+>>>>>>> Stashed changes
 };
 
 export default StudioLayout;

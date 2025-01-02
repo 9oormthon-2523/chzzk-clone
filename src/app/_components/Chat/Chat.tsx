@@ -4,8 +4,9 @@ import MessageList from "./MessageList";
 import MessageInput from "./MessageInput";
 import { useChat } from "../../_hooks/useChat";
 
-export default function Chat() {
-  const { messages, sendMessage } = useChat();
+export default function Chat({ roomId }: { roomId: string }) {
+  const { messages, sendMessage } = useChat(roomId);
+
   const [newMessage, setNewMessage] = useState("");
 
   const handleSendMessage = async () => {
