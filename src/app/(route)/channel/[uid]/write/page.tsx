@@ -63,6 +63,7 @@ export default function Page() {
 
   return (
     <div className="mx-12">
+      <div className="h-32" />
       <ChannelProfile nickname="엄청난 물고기" follower={2.4} context="매일 물고기 썰 풀어드립니다." />
       <form onSubmit={handleSubmit} className="m-auto mt-12 p-8 w-full bg-gray-50 rounded-lg">
         <p className="text-xl font-black mb-4">글쓰기</p>
@@ -115,6 +116,7 @@ export default function Page() {
           </button>
         </div>
       </form>
+      <div className="h-32" />
     </div>
   );
 }
