@@ -13,3 +13,11 @@
 .group-button-desc {
   @apply bg-[#2e3033] text-white text-[12px] leading-[14px] px-[9px] py-[5px] pointer-events-none whitespace-nowrap z-50;
 }
+
+td {
+  @apply px-[5px] py-[12px];
+}
+
+th {
+  @apply p-[5px];
+}
