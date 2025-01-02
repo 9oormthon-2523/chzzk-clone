@@ -38,9 +38,9 @@ const useAudioUnlock = (props:useAudioUnlockProps) => {
         })
     },[audioLimit]);
 
-    // window.addEventListener("click", () => {
-    //     audioUnlock();
-    // });
+    window.addEventListener("click", () => {
+        audioUnlock();
+    });
 
     return {
         audioLimit,

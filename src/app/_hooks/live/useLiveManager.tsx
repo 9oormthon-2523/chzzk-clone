@@ -8,15 +8,23 @@ import useAudioUnlock from "./useAudioUnlock";
  */
 
 interface useStreamforStudioPayload {
-    uid?:string
+    host_id?:string
     channel:string
     streaming_is_active:boolean //스트리밍이 true인지 false인지
     videoRef:RefObject<HTMLVideoElement | null> //실제 비디오 연결된 ref
 }
 
+type mediaType = "audio" | "video" | "datachannel"
+
+interface publishPayload {
+    user:AgoraRTCType.IAgoraRTCRemoteUser
+    mediaType:mediaType
+}
+
 const useLiveManager = (payload: useStreamforStudioPayload) => {
     
     const {
+        host_id,
         channel,
         videoRef,
     } = payload;
@@ -28,16 +36,19 @@ const useLiveManager = (payload: useStreamforStudioPayload) => {
     const audioElRefs = useRef<Array<HTMLAudioElement>>([]); // 오디오 요소
     const [ratio, setRatio] = useState<[number, number]>([1.83, 0.55]); //리사이즈 너비
     const { audioLimit } = useAudioUnlock({audioElRefs}); // 오디오 정책 해제 훅
+    const hostUIDRef = useRef<string | null>(null);
 
     /** 소켓 **/
     //#region 
 
     // 미디어 퍼블리싱
+
     const clinetPublish = () => {
         if (!clientRef.current) return;
         const client = clientRef.current;
 
         client.on("user-published", async (user, mediaType) => {
+            hostUIDRef.current = user.uid.toString();
             try {
                 if (await client.connectionState === "CONNECTED") {
                     await client.subscribe(user, mediaType);
@@ -54,14 +65,9 @@ const useLiveManager = (payload: useStreamforStudioPayload) => {
                                 const stats = remoteScreenTrack.getStats();
                                 const w = stats.receiveResolutionWidth;
                                 const h = stats.receiveResolutionHeight;
-                                console.clear();
-                                console.log(w,h);
                                 setRatio([w/h, h/w]);
                             })
-
-        
                         }
-                        
                     }
 
                     if (mediaType === 'audio') {
@@ -79,26 +85,60 @@ const useLiveManager = (payload: useStreamforStudioPayload) => {
 
 
     // 미디어 언퍼블리싱
-    const clinetUnpublish = () => {
-        if (!clientRef.current) return;
+    const clientUnpublish = () => {
         const client = clientRef.current;
+    
+        if (!client) return;
+    
+        const handleUserUnpublished = async (payload: publishPayload) => {
+            const { user, mediaType } = payload;
 
-        client.on("user-published", async (user, mediaType) => {
+            const hasMediaTracks =
+                screenTrackRef.current || audioElRefs.current.length > 0
+    
+            //미디어 트랙이 전혀 없으면 초기화 안함
+            if (!hasMediaTracks) return;
+    
             try {
-                await client.on("user-unpublished", async (user, mediaType) => {
-                    try {
-                        await delAllTrack();
-                        console.log('미디어 리소스 초기화');
-                    } catch (error) {
-                        console.log("미디어 리소스 초기화를 하지 못했습니다.");
-                    }
-                });
-            } catch (error) {
                 await delAllTrack();
+                if(hostUIDRef.current)
+                await clientRef.current?.unsubscribe(hostUIDRef.current);
+                console.log("미디어 리소스 초기화");
+        
+            } catch (error) {
                 console.error("미디어 구독 오류", error);
+                // 재시도 또는 보완적인 리소스 정리
+                await delAllTrack();
             }
-        });
-    }
+        };
+    
+        client.on("user-unpublished", handleUserUnpublished);
+    };
+    
+    // 호스트가 채널을 나갔을 때 클라이언트 해제
+    const leaveHost = async () => {
+        const handleUserLeft = async (user: AgoraRTCType.IAgoraRTCRemoteUser) => {
+            const hostUID = hostUIDRef.current;
+    
+            // 클라이언트가 존재하지 않거나 host_uid가 없을 때 작동 안함
+            
+            if (user.uid.toString() !== hostUID) return;
+            
+            try {
+                await clientUnpublish();
+                await clientRef.current?.removeAllListeners();
+                await clientRef.current?.leave();
+                alert('방송종료');
+                clientRef.current = null;
+                
+            } catch (error) {
+                console.error("Failed to leave the channel:", error);
+            }
+        };
+
+        if(clientRef.current && clientRef.current.connectionState === "CONNECTED") clientRef.current.on("user-left", handleUserLeft);
+
+    };
 
 
     //#endregion
@@ -129,29 +169,46 @@ const useLiveManager = (payload: useStreamforStudioPayload) => {
     };
 
     // 리소스 정리
-    const delAllTrack = () => {
+    const delAllTrack = async () => {
         // 비디오 리소스 정리
         if (screenTrackRef.current) {
-            screenTrackRef.current.stop(); 
-            screenTrackRef.current = null; 
-            if (videoRef.current) videoRef.current.srcObject = null; 
+            await screenTrackRef.current.stop();
+            await screenTrackRef.current.removeAllListeners();
+            
+            if (videoRef.current) {
+                videoRef.current.pause();
+                videoRef.current.srcObject = null;
+                videoRef.current.src = "";
+                videoRef.current.load();
+            }
+            screenTrackRef.current = null;
         }
-
+    
         // 오디오 리소스 정리
-        audioTrackRefs.current.forEach((audioTrack, idx) => {
+        for (let idx = 0; idx < audioTrackRefs.current.length; idx++) {
+            const audioTrack = audioTrackRefs.current[idx];
+            const audioEl = audioElRefs.current[idx];
+    
             if (audioTrack) {
-                audioTrack.stop(); 
-                audioTrackRefs.current[idx] = null;
+                audioTrack.stop();
             }
-
-            if (audioElRefs.current[idx]) {
-                const audioEl = audioElRefs.current[idx];
-                const mediaStream = audioEl.srcObject as MediaStream;
-                mediaStream.getTracks().forEach((track) => track.stop());
+    
+            if (audioEl) {
+                const mediaStream = audioEl.srcObject as MediaStream | null;
+                if (mediaStream) {
+                    mediaStream.getTracks().forEach((track) => track.stop());
+                }
                 audioEl.srcObject = null;
+                document.body.removeChild(audioEl);
             }
-        });
-    }
+        }
+    
+        // 참조 배열 초기화
+        audioTrackRefs.current = [];
+        audioElRefs.current = [];
+        
+        console.log("모든 트랙과 리소스를 정리했습니다.");
+    };
 
     //#endregion 
 
@@ -164,7 +221,7 @@ const useLiveManager = (payload: useStreamforStudioPayload) => {
     
             try {
                 //클라 생성
-                const client = await AgoraRTC.createClient({ mode: "rtc", codec: "vp8", role:"audience" });
+                const client = await AgoraRTC.createClient({ mode: "rtc", codec: "vp8", role:"audience", });
                 clientRef.current = client;
                 console.log("클라이언트 생성 완료.");
 
@@ -172,8 +229,9 @@ const useLiveManager = (payload: useStreamforStudioPayload) => {
                 console.log("호스트 채널 참가 완료.");
     
                 await clinetPublish();
-                await clinetUnpublish();
-
+                await clientUnpublish();
+                await leaveHost();
+              
             } catch (error) {
                 console.error("클라 생성 오류", error);
             }
@@ -182,12 +240,33 @@ const useLiveManager = (payload: useStreamforStudioPayload) => {
         initClient();
     
         return () => {
-            if (!clientRef.current) return;
-            clientRef.current.leave().then(() => {
-                clientRef.current = null;
-            });
-        };
+            
+            const cleanup = async () => {
+                if (!clientRef.current) return;
+                await clientUnpublish();
+                await clientRef.current.removeAllListeners(); 
+                await clientRef.current.leave().then(() => {
+                    clientRef.current = null;
+                });
+                cleanup(); 
+            }
+  
+        }
     }, []);    
+
+    useEffect(()=>{
+        setTimeout(()=>{
+            const cleanup = async () => {
+                if (!clientRef.current) return;
+                await clientUnpublish();
+                await clientRef.current.removeAllListeners(); 
+                await clientRef.current.leave().then(() => {
+                    clientRef.current = null;
+                });
+                cleanup(); 
+            }
+        },10000)
+    },[])
 
     return {
         ratio,
