@@ -196,7 +196,7 @@ const useLiveManager = (payload: useStreamforStudioPayload) => {
     
             try {
                 //클라 생성
-                const client = await AgoraRTC.createClient({ mode: "rtc", codec: "vp8", role:"audience", });
+                const client = await AgoraRTC.createClient({ mode: "live", codec: "vp8", role:"audience" });
                 clientRef.current = client;
                 console.log("클라이언트 생성 완료.");
                 if(!clientRef.current) return;
@@ -206,7 +206,6 @@ const useLiveManager = (payload: useStreamforStudioPayload) => {
                 await clinetPublish();
                 await clientUnpublish();
 
-                // 클라이언트를 함수에 넣거나 AgoraRTCType.IAgoraRTCClient에 넣으면 제대로 leave가 안되는 오류 있음 ㅋㅋㅋㅋ 엌ㅋㅋㅋㅋㅋㅋㅋㅋㅋ
                 await client.on('user-left', async (user) => {
                     if(!hostUIDRef.current) return;
                     if(hostUIDRef.current === user.uid.toString()){
