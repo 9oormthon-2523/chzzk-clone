@@ -102,7 +102,6 @@ const useLiveManager = (payload: useStreamforStudioPayload) => {
             try {
                 await delAllTrack();
                 if(hostUIDRef.current)
-                await clientRef.current?.unsubscribe(hostUIDRef.current);
                 console.log("미디어 리소스 초기화");
         
             } catch (error) {
@@ -115,31 +114,6 @@ const useLiveManager = (payload: useStreamforStudioPayload) => {
         client.on("user-unpublished", handleUserUnpublished);
     };
     
-    // 호스트가 채널을 나갔을 때 클라이언트 해제
-    const leaveHost = async () => {
-        const handleUserLeft = async (user: AgoraRTCType.IAgoraRTCRemoteUser) => {
-            const hostUID = hostUIDRef.current;
-    
-            // 클라이언트가 존재하지 않거나 host_uid가 없을 때 작동 안함
-            
-            if (user.uid.toString() !== hostUID) return;
-            
-            try {
-                await clientUnpublish();
-                await clientRef.current?.removeAllListeners();
-                await clientRef.current?.leave();
-                alert('방송종료');
-                clientRef.current = null;
-                
-            } catch (error) {
-                console.error("Failed to leave the channel:", error);
-            }
-        };
-
-        if(clientRef.current && clientRef.current.connectionState === "CONNECTED") clientRef.current.on("user-left", handleUserLeft);
-
-    };
-
 
     //#endregion
 
@@ -210,6 +184,7 @@ const useLiveManager = (payload: useStreamforStudioPayload) => {
         console.log("모든 트랙과 리소스를 정리했습니다.");
     };
 
+
     //#endregion 
 
     useEffect(() => {
@@ -224,13 +199,22 @@ const useLiveManager = (payload: useStreamforStudioPayload) => {
                 const client = await AgoraRTC.createClient({ mode: "rtc", codec: "vp8", role:"audience", });
                 clientRef.current = client;
                 console.log("클라이언트 생성 완료.");
-
+                if(!clientRef.current) return;
                 await client.join(APP_ID, channel, null);
                 console.log("호스트 채널 참가 완료.");
-    
+
                 await clinetPublish();
                 await clientUnpublish();
-                await leaveHost();
+
+                // 클라이언트를 함수에 넣거나 AgoraRTCType.IAgoraRTCClient에 넣으면 제대로 leave가 안되는 오류 있음 ㅋㅋㅋㅋ 엌ㅋㅋㅋㅋㅋㅋㅋㅋㅋ
+                await client.on('user-left', async (user) => {
+                    if(!hostUIDRef.current) return;
+                    if(hostUIDRef.current === user.uid.toString()){
+                        await client.removeAllListeners();
+                        await client.leave();
+                        clientRef.current = null;
+                    }    
+                });
               
             } catch (error) {
                 console.error("클라 생성 오류", error);
@@ -238,35 +222,7 @@ const useLiveManager = (payload: useStreamforStudioPayload) => {
         };
     
         initClient();
-    
-        return () => {
-            
-            const cleanup = async () => {
-                if (!clientRef.current) return;
-                await clientUnpublish();
-                await clientRef.current.removeAllListeners(); 
-                await clientRef.current.leave().then(() => {
-                    clientRef.current = null;
-                });
-                cleanup(); 
-            }
-  
-        }
     }, []);    
-
-    useEffect(()=>{
-        setTimeout(()=>{
-            const cleanup = async () => {
-                if (!clientRef.current) return;
-                await clientUnpublish();
-                await clientRef.current.removeAllListeners(); 
-                await clientRef.current.leave().then(() => {
-                    clientRef.current = null;
-                });
-                cleanup(); 
-            }
-        },10000)
-    },[])
 
     return {
         ratio,
