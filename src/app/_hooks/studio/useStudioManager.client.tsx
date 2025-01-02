@@ -1,6 +1,6 @@
 import type * as AgoraRTCType from "agora-rtc-sdk-ng";
 import AgoraRTC from "agora-rtc-sdk-ng";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 
 
 /**
@@ -14,19 +14,26 @@ interface ScreenTrackPayload {
     bitrateMin?: number, 
 }
 
+interface AudioState {
+    isActive: boolean;
+    isMuted: boolean;
+    volumeLevel: number;
+}
+
 type cleanUpTrackType = React.MutableRefObject<AgoraRTCType.ILocalVideoTrack | AgoraRTCType.ILocalAudioTrack | AgoraRTCType.ILocalVideoTrack | null>
 
 //함수 밖에서 사용할 때 필요한 인자 헷갈려서 나중에 사용 예정
-type exceptionResorce = "screen" | "mic" ;
-type mediaResource = "all" | exceptionResorce;
+type micResource = "screen" | "mic" ;
+type mediaResource = "all" | micResource;
 
 const useStudioManager = (uid: string) => {
-    const channel_ = "demo"
+    const channel_ = uid;
     const APP_ID = process.env.NEXT_PUBLIC_AGORA_APP_ID! || "";
     const clientRef = useRef<AgoraRTCType.IAgoraRTCClient | null>(null);
     const screenTrackRef = useRef<null | AgoraRTCType.ILocalVideoTrack>(null);
     const screenAudioRef = useRef<null | AgoraRTCType.ILocalAudioTrack>(null);
     const micTrackRef = useRef<null | AgoraRTCType.IMicrophoneAudioTrack>(null);
+    const [ viewAudio, setViewAudio ] = useState<{screen:number,mic:number}>({screen:0, mic:0}); 
 
     /** 미디어 **/
     //#region 
@@ -79,7 +86,7 @@ const useStudioManager = (uid: string) => {
         try {
             if (type === "mic" || type === "all") {
                 try {
-                  const micTrack = await AgoraRTC.createMicrophoneAudioTrack();
+                  const micTrack = await AgoraRTC.createMicrophoneAudioTrack({AGC:true, ANS:true});
                   clientRef.current?.publish(micTrack);
                   micTrackRef.current = micTrack;
                   console.log("마이크 트랙 생성 및 퍼블리시 성공");
@@ -92,7 +99,7 @@ const useStudioManager = (uid: string) => {
             if (type === "screen" || type === "all") {
                 try {
                 const [screenTrack, screenAudioTrack] = await AgoraRTC.createScreenVideoTrack(
-                    { encoderConfig },
+                    { encoderConfig:{...encoderConfig}},
                     "enable"
                 );
                 if (screenTrack && screenAudioTrack) {
@@ -113,6 +120,49 @@ const useStudioManager = (uid: string) => {
         }
       };
 
+      const volumeControl = () => {
+        const getAudioTrack = (type: micResource) =>
+            type === "mic" ? micTrackRef.current : screenAudioRef.current;
+    
+        const activeAudio = (type: micResource) => audioState(type).isActive;
+    
+        const controlAudio = (type: micResource, volume: number) => {
+            const audioTrack = getAudioTrack(type);
+            if (!audioTrack) return;
+    
+            if (audioTrack.muted) audioTrack.setMuted(false);
+            audioTrack.setVolume(volume);
+            setViewAudio((prevState) => ({...prevState,[type]: volume,}));
+        };
+    
+        const muteAudio = (type: micResource) => {
+            const audioTrack = getAudioTrack(type);
+            if (!audioTrack) return;
+    
+            audioTrack.setMuted(true);
+        };
+    
+        const audioState = (type: micResource): AudioState => {
+            const audioTrack = getAudioTrack(type);
+    
+            if (!audioTrack) return { isActive: false, isMuted: false, volumeLevel: 0 };
+    
+            return {
+                isActive: true,
+                isMuted: audioTrack.muted,
+                volumeLevel: audioTrack.getVolumeLevel?.() || 0,
+            };
+        };
+    
+        return {
+            activeAudio,
+            controlAudio,
+            muteAudio,
+            audioState,
+            viewAudio
+        };
+    };
+
     //#endregion
 
 
@@ -122,10 +172,11 @@ const useStudioManager = (uid: string) => {
     // 클라이언트 생성 및 채널 참가
     const initializeClient = async () => {
         if (!clientRef.current) {
-            const client = AgoraRTC.createClient({ mode: "rtc", codec: "vp8", role: "host" });
+            const client = AgoraRTC.createClient({ mode: "live", codec: "vp8", role: "host" });
             clientRef.current = client;
             await client.join(APP_ID, channel_, null, uid);
             console.log("클라이언트 초기화 및 채널 참가 완료");
+            client.enableDualStream(); // 네트워크 상태에 따라 적응형 스트림 관리
         }
     };
 
@@ -140,6 +191,7 @@ const useStudioManager = (uid: string) => {
     const delClient = async () => {
         try {
             if (clientRef.current) {
+                await clientRef.current.removeAllListeners();
                 await clientRef.current.leave();
                 console.log("채널 종료 완료.");
 
@@ -223,6 +275,7 @@ const useStudioManager = (uid: string) => {
         streamOff,
         addTrackShare,
         stopTrackShare,    
+        volumeControl,
     }
 }
 

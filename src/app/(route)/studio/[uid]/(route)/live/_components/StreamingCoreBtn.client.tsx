@@ -1,6 +1,6 @@
 'use client';
-import useStudioManager from '@/app/_hooks/studio/useStudioManager';
-import { useState } from 'react';
+import useStudioManager from '@/app/_hooks/studio/useStudioManager.client';
+import React, { useState } from 'react';
 
 interface StreamingCoreBtnProps {
   uid:string
@@ -10,7 +10,9 @@ const StreamingCoreBtn = (props: StreamingCoreBtnProps) => {
   const { uid } = props;
   const [loading, setLoading] = useState(false);
   const [isStreaming, setIsStreaming] = useState(false);
-  const { streamOn, streamOff, addTrackShare, stopTrackShare} = useStudioManager(uid);
+  const { streamOn, streamOff, addTrackShare, stopTrackShare, volumeControl } = useStudioManager(uid);
+  const { audioState, controlAudio, muteAudio, viewAudio } = volumeControl();
+  
 
   const handleStreamToggle = async () => {
       setLoading(true);
@@ -41,7 +43,7 @@ const StreamingCoreBtn = (props: StreamingCoreBtnProps) => {
     setLoading(true);
     await addTrackShare();
     setLoading(false);
-  }
+  }  
 
   return (
     <>
@@ -66,6 +68,33 @@ const StreamingCoreBtn = (props: StreamingCoreBtnProps) => {
     >
       화면 공유 변경
     </button>}
+
+  
+    {
+      audioState('mic').isActive && (
+        <input
+          type="range"
+          step={1}
+          min={0}
+          max={1000}
+          value={viewAudio.mic}
+          onChange={(e) => controlAudio('mic', Number(e.currentTarget.value))}
+        />
+      )
+    }
+
+  {
+      audioState('screen').isActive && (
+        <input
+          type="range"
+          step={1}
+          min={0}
+          max={1000}
+          value={viewAudio.screen}
+          onChange={(e) => controlAudio('screen', Number(e.currentTarget.value))}
+        />
+      )
+    }
     </>
   );
 };
