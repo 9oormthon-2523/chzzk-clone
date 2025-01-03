@@ -6,17 +6,17 @@ import UserTable from './_components/UserTable';
 import { headers } from 'next/headers';
 
 const StudioFollowerPage = () => {
-  const { data } = use(getFollower());
-  console.log(data);
+  const { followers } = use(getFollower());
+
   return (
     <StudioWrapper>
       <div className="flex flex-col w-full">
         <span className="font-blackHanSans text-[23px]">팔로워</span>
         <div className="w-full mt-[16px] p-[29px] shadow-base bg-white rounded-[10px]">
           <div className="py-[21px] px-[29px] rounded-[10px] shadow-base border border-solid border-[#ddd]">
-            <CountAreaBox totalFollower={data.length} />
+            <CountAreaBox totalFollower={followers.length} />
             <SearchArea />
-            <UserTable />
+            <UserTable followers={followers} />
           </div>
         </div>
       </div>

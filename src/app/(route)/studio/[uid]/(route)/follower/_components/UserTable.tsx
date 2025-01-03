@@ -1,7 +1,12 @@
 import React from 'react';
 import UserColumn from './UserColumn';
+import { FollowInfo } from '@/app/_types/follow.type';
 
-const UserTable = () => {
+interface Props {
+  followers: FollowInfo[];
+}
+
+const UserTable = ({ followers }: Props) => {
   return (
     <table className="text-[#697183] border-t border-t-[#ddd] border-b border-b-[#ddd] text-[15px] mt-[16px] table-fixed">
       <colgroup className="font-blackHanSans">
@@ -19,10 +24,9 @@ const UserTable = () => {
         </tr>
       </thead>
       <tbody>
-        <UserColumn />
-        <UserColumn />
-        <UserColumn />
-        <UserColumn />
+        {followers.map((follower) => (
+          <UserColumn key={follower.id} {...follower} />
+        ))}
       </tbody>
     </table>
   );
