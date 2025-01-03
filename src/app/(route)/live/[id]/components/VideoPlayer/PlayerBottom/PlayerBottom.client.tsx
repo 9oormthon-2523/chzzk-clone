@@ -4,7 +4,7 @@ import useScreenControl from "@/app/_store/live/useScreenControl";
 import useVideoControl from "@/app/_store/live/useVideoControl";
 import PlayerBottomButton from "./PlayerBottomButton.client";
 import PlayerBottomBolumeControl from "./PlayerBottomVolume";
-import React from "react";
+import React, { useCallback, useEffect } from "react";
 
 /**
  * 비디오 플레이어 바텀
@@ -13,12 +13,15 @@ import React from "react";
 
 const PlayerBottom  = () => {
     
-    const { videoToggle, volumeControl, videoTrack, audioTrack } = useVideoControl();
+    const { videoToggle, volumeControl, audioMute, videoTrack, audioTrack } = useVideoControl();
     const { toggleFullscreen, toggleWideScreen, isFullscreen } = useScreenControl();
+    const { volumeLevel, isMuted } = audioTrack;
 
     //svg 추출
     const getVolumeIcon = ():SvgComponentNames => {
-        const volume = audioTrack.volumeLevel;
+        const volume = volumeLevel;
+
+        if (isMuted === true) return "VideoVolume0";
 
         if (50 < volume) return "VideoVolume100";
 
@@ -27,14 +30,26 @@ const PlayerBottom  = () => {
         return "VideoVolume0";
     }
 
-    const volumeMute = () => volumeControl(0);
+    const getVolumeIcon_ = useCallback(() => {
+        const volume = volumeLevel;
+      
+        if (isMuted === true) return "VideoVolume0"; // 조건 확인
+        if (50 < volume) return "VideoVolume100";
+        if (1 < volume) return "VideoVolume50";
+      
+        return "VideoVolume0";
+      }, [isMuted, volumeLevel]);
+
+    const volumeMute = () => {
+        audioMute(!isMuted);
+    }
 
     return (
         <div className="absolute right-[23px] left-[18px] bottom-[7px]">
             <div className="flex relative h-[36px] justify-between w-full">
                 <div className="min-w-0 items-center flex left-0 relative">
                     <PlayerBottomButton info="정지" svgName={`${videoTrack.isEnabled ? "VideoPause" : "VideoPlay"}`} style="" onClick={videoToggle}/>
-                    <PlayerBottomButton info="볼륨 조절" svgName={getVolumeIcon()} style="mb-4 scale-[90%]" onClick={volumeMute}/>
+                    <PlayerBottomButton info="볼륨 조절" svgName={getVolumeIcon_()} style="mb-4 scale-[90%]" onClick={volumeMute}/>
                     <PlayerBottomBolumeControl/>
                 </div>
 

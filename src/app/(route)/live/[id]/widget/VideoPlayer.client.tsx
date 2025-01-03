@@ -19,13 +19,15 @@ import { usePathname } from "next/navigation"
 const VideoPlayer = () => {
   const path = usePathname();
   const host_id = path.split('/')[2];
-
+  const audioElRef = useRef<HTMLAudioElement>(null);
+  const screenElRef = useRef<HTMLVideoElement | null>(null);
 
   const dto = {
 
   }
-  const videoRef = useRef<HTMLVideoElement | null>(null);
-  const { ratio } = useLiveManager({channel:host_id, host_id ,videoRef, streaming_is_active:true});
+  
+  
+  const { ratio } = useLiveManager({channel:host_id, host_id ,screenElRef , streaming_is_active:true, audioElRef:audioElRef });
   //추후 비디오 비율 대비 
   // const RATIO:[number, number] = [1378, 775];
   const RATE = ratio[0];
@@ -88,8 +90,9 @@ const VideoPlayer = () => {
           className="absolute bg-black flex items-center justify-center box-border"
           >   
           <div style={frameVideoPlayer_style} id="video-container">
-            <video ref={videoRef} aria-label='비디오 대체 박스' id='streaming-video' className='w-full h-full bg-gray-700'/>
-            
+            <audio ref={audioElRef}/>
+            <video ref={screenElRef} muted aria-label='비디오 대체 박스' id='streaming-video' className='w-full h-full black'/>
+            {/* <video ref={screenElRef} className='w-full h-full bg-white'/> */}
           </div>
         </div>
         

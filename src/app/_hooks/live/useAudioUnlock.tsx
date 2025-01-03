@@ -1,51 +1,43 @@
-/**
- * 오디오 정책 해제 훅
- */
-
 import { RefObject, useEffect, useState } from "react";
 
-interface useAudioUnlockProps {
-    audioElRefs:RefObject<HTMLAudioElement[]>
-}
-
-const useAudioUnlock = (props:useAudioUnlockProps) => {
-    const { audioElRefs } = props;
-    const [audioLimit, setAudioLimit] = useState<boolean>(false); 
+// 오디오 정책 해제 훅
+const useAudioUnlock = (
+  audioElRef: React.RefObject<HTMLAudioElement | null> ,
+  limitRef: RefObject<boolean>,
+  isMuted: boolean,
+) => {
     const AudioContext = window.AudioContext || (window as any).webkitAudioContext;
     const audioContext = new AudioContext();
 
-    
-    // 사용자 상호작용으로 AudioContext 활성화
     const audioUnlock = () => {
-        if (audioContext.state === "suspended") {
-            audioContext.resume()
-                .then(() => {
-                    setAudioLimit(true);
-                    console.log("AudioContext 활성화 완료")
-                })
-                .catch((error) => console.error("AudioContext 활성화 실패:", error));
+        console.log(audioContext.state);
+        if (audioContext.state === "suspended" && !limitRef.current) {
+            audioContext.resume().then(() => {
+                limitRef.current = true;
+                console.log("AudioContext 활성화 완료");
+                const track = audioElRef.current;
+                if (!track) return;
+                if(!isMuted) track.muted = false;
+                track.play().catch((error) => console.error("오디오 재생 오류:", error)); 
+                console.log("오디오 트랙 재생 시작:", track);
+            }).catch((error) => {
+                console.error("AudioContext 활성화 실패:", error)
+                limitRef.current = false;
+                const track = audioElRef.current;
+                if (!track) return;
+                track.muted = true;
+            });
         }
     };
-
-    useEffect(()=>{
-        audioElRefs.current.forEach(track => {
-            if (!track) return;
-            console.log(track)
-            track.muted = false;
-            track.volume = 1;
-            track.play();
-            console.log(track.volume, track.muted);
-        })
-    },[audioLimit]);
-
-    window.addEventListener("click", () => {
-        audioUnlock();
-    });
-
+  
+    
+    useEffect(() => {
+        window.addEventListener("click", audioUnlock);
+        return () => window.removeEventListener("click", audioUnlock);
+    }, []);
     return {
-        audioLimit,
-        audioUnlock,
+      limitState:audioContext.state === "running"
     }
-}
+};
 
 export default useAudioUnlock;
