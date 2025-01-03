@@ -1,7 +1,7 @@
 import React from 'react';
 import MyChannelFollowerIcon from '@public/studioPage/MyChannelFollower.svg';
 
-const CountAreaBox = () => {
+const CountAreaBox = ({ totalFollower }: { totalFollower: number }) => {
   return (
     <div className="flex gap-[5px] items-center w-full">
       <MyChannelFollowerIcon />
@@ -11,7 +11,7 @@ const CountAreaBox = () => {
         </div>
         <span className="text-[15px] text-[#9da5b6] leading-none">/</span>
         <strong className="text-[#4e41db] text-[32px] font-extrabold leading-none">
-          0
+          {totalFollower}
         </strong>
       </div>
     </div>
