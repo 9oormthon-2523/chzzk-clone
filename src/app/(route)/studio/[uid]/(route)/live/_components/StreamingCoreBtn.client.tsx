@@ -11,7 +11,7 @@ const StreamingCoreBtn = (props: StreamingCoreBtnProps) => {
   const [loading, setLoading] = useState(false);
   const [isStreaming, setIsStreaming] = useState(false);
   const { streamOn, streamOff, addTrackShare, stopTrackShare, volumeControl } = useStudioManager(uid);
-  const { audioState, controlAudio, muteAudio, viewAudio } = volumeControl();
+  const { audioState, controlAudio, viewAudio } = volumeControl();
   
 
   const handleStreamToggle = async () => {
@@ -30,10 +30,15 @@ const StreamingCoreBtn = (props: StreamingCoreBtnProps) => {
       setLoading(false);
   };
 
-  //스크린 정지 후 마이크 연결
+  //스크린 정지
   const screenSTOP = async() => {
     setLoading(true);
     await stopTrackShare();
+    setLoading(false);
+  }
+
+  const micOn = async() => {
+    setLoading(true);
     await addTrackShare("mic");
     setLoading(false);
   }
@@ -41,6 +46,7 @@ const StreamingCoreBtn = (props: StreamingCoreBtnProps) => {
   //공유 선택
   const screenChange = async() => {
     setLoading(true);
+    // await stopTrackShare();
     await addTrackShare();
     setLoading(false);
   }  
@@ -59,6 +65,13 @@ const StreamingCoreBtn = (props: StreamingCoreBtnProps) => {
       onClick={screenSTOP}
     >
       화면 공유 정지
+    </button>}
+
+    { (!loading && isStreaming) && <button
+      className="rounded-2xl bg-white text-[#697183] text-[15px] font-blackHanSans py-[5px] px-[15px]"
+      onClick={micOn}
+    >
+      마이크만키기
     </button>}
 
     
