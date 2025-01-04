@@ -26,7 +26,8 @@ export async function GET() {
   const { data, error } = await supabase
     .from('follower_details')
     .select('*')
-    .eq('following_uid', user.id);
+    .eq('following_uid', user.id)
+    .order('created_at', { ascending: false });
 
   if (error)
     return NextResponse.json({ error: 'DB Fetch Error' }, { status: 500 });
