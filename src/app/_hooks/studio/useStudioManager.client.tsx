@@ -1,6 +1,6 @@
 import type * as AgoraRTCType from "agora-rtc-sdk-ng";
 import AgoraRTC from "agora-rtc-sdk-ng";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 
 /**
@@ -22,7 +22,6 @@ interface AudioState {
 
 type cleanUpTrackType = React.MutableRefObject<AgoraRTCType.ILocalVideoTrack | AgoraRTCType.ILocalAudioTrack | AgoraRTCType.ILocalVideoTrack | null>
 
-//함수 밖에서 사용할 때 필요한 인자 헷갈려서 나중에 사용 예정
 type micResource = "screen" | "mic" ;
 type mediaResource = "all" | micResource;
 
@@ -34,7 +33,7 @@ const useStudioManager = (uid: string) => {
     const screenAudioRef = useRef<null | AgoraRTCType.ILocalAudioTrack>(null);
     const micTrackRef = useRef<null | AgoraRTCType.IMicrophoneAudioTrack>(null);
     const [ viewAudio, setViewAudio ] = useState<{screen:number,mic:number}>({screen:0, mic:0}); 
-
+    
     /** 미디어 **/
     //#region 
 
@@ -45,7 +44,7 @@ const useStudioManager = (uid: string) => {
         track.stop();
         track.close();
         trackRef.current = null;
-        console.log(`${track} 리소스 초기화 완료`);
+        console.log(`${track} ${trackRef.current} 리소스 초기화 완료`);
     };
         
     // 미디어 공유 해제
@@ -59,11 +58,10 @@ const useStudioManager = (uid: string) => {
             // 트랙 언퍼블리시 및 정리
             for (const trackRef of tracks) {
                 if (trackRef.current) {
-                await clientRef.current.unpublish(trackRef.current);
-                cleanUpTrack(trackRef);
+                    await clientRef.current.unpublish(trackRef.current);
+                    cleanUpTrack(trackRef);
                 }
             }
-        
             console.log("모든 미디어 트랙 언퍼블리시 및 초기화 완료");
 
         } catch (err: unknown) {
@@ -86,16 +84,16 @@ const useStudioManager = (uid: string) => {
         try {
             if (type === "mic" || type === "all") {
                 try {
-                  const micTrack = await AgoraRTC.createMicrophoneAudioTrack({AGC:true, ANS:true});
-                  clientRef.current?.publish(micTrack);
-                  micTrackRef.current = micTrack;
-                  console.log("마이크 트랙 생성 및 퍼블리시 성공");
+                    micTrackRef.current = await AgoraRTC.createMicrophoneAudioTrack({AGC:true, ANS:true});
+                    await clientRef.current?.publish(micTrackRef.current);
+                    
+                    console.log("마이크 트랙 생성 및 퍼블리시 성공");
                 } catch (error) {
                   console.warn("마이크 트랙 생성 실패: 마이크 없이 진행합니다.", error);
                 }
             }
       
-          // 화면 공유 트랙 생성 및 퍼블리시
+            // 화면 공유 트랙 생성 및 퍼블리시
             if (type === "screen" || type === "all") {
                 try {
                 const [screenTrack, screenAudioTrack] = await AgoraRTC.createScreenVideoTrack(
@@ -103,7 +101,7 @@ const useStudioManager = (uid: string) => {
                     "enable"
                 );
                 if (screenTrack && screenAudioTrack) {
-                    await clientRef.current?.publish([screenTrack, screenAudioTrack]);
+                    await clientRef.current?.publish([screenTrack,screenAudioTrack]);
                     screenTrackRef.current = screenTrack;
                     screenAudioRef.current = screenAudioTrack;
                     console.log("화면 공유 트랙 퍼블리시 성공");
@@ -113,6 +111,8 @@ const useStudioManager = (uid: string) => {
                     throw new Error("화면 공유 트랙 생성 실패: 진행 중단");
                 }
              }
+
+            
         } catch (err: unknown) {
             console.error("미디어 퍼블리싱 실패:", err);
             await unpublishMediaTracks(); // 이미 퍼블리시된 트랙 정리
@@ -255,9 +255,18 @@ const useStudioManager = (uid: string) => {
     //미디어 트랙 추가 및 변경(변경하고 싶은 트랙 선택)
     const addTrackShare = async (type: mediaResource = "all") => {
         try {
-            await unpublishMediaTracks();
-            await extractMediaTrack(type);
-
+            if (type === "mic") {
+                if(micTrackRef.current) {
+                    await clientRef.current?.unpublish(micTrackRef.current); // 이전 마이크 트랙 언퍼블리시
+                    micTrackRef.current.stop();
+                    micTrackRef.current.close();
+                    micTrackRef.current = null;
+                    console.log("기존 마이크 트랙 정리 완료");
+                }
+      
+            }
+    
+            await extractMediaTrack(type); // 새로운 트랙 생성
         } catch (err: unknown) {
             console.error("트랙 추가 중 오류 발생:", err);
             alert("오류로 인해 모든 미디어 공유가 중단되었습니다.");
