@@ -8,23 +8,22 @@ const UserColumn = (props: FollowInfo) => {
   const { follower, created_at } = props;
 
   return (
-    <tr>
+    <tr className="hover:bg-[#f5f6f880]">
       <td className="p-[12px_20px]">
-        <div className="flex gap-[12px] items-center">
-          <Image
-            src={follower.profile_img}
-            alt=""
-            width={36}
-            height={36}
-            className="rounded-full"
-          />
-          <Link
-            href={`/channel/${follower.uid}`}
-            className="text-[#222] text-[15px] relative -top-[2px]"
-          >
-            {follower.nickname}
-          </Link>
-        </div>
+        <Link href={`/channel/${follower.uid}`}>
+          <div className="flex gap-[12px] items-center hover:underline">
+            <Image
+              src={follower.profile_img}
+              alt=""
+              width={36}
+              height={36}
+              className="rounded-full"
+            />
+            <span className="text-[#222] text-[14px] relative -top-[2px] font-semibold">
+              {follower.nickname}
+            </span>
+          </div>
+        </Link>
       </td>
       <td className="text-center text-[13px]">{formatDate(created_at)}</td>
       <td className="text-center text-[13px]">18분</td>

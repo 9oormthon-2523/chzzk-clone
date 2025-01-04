@@ -11,11 +11,11 @@ const UserTable = ({ followers }: Props) => {
     <table className="text-[#697183] border-t border-t-[#ddd] border-b border-b-[#ddd] text-[15px] mt-[16px] table-fixed">
       <colgroup className="font-blackHanSans">
         <col />
-        <col className="w-[14.423%] min-w-[82px]" />
-        <col className="w-[14.423%]" />
-        <col className="w-[16.3461%]" />
+        <col className="w-[14.5%] min-w-[82px]" />
+        <col className="w-[14.5%]" />
+        <col className="w-[16.5%]" />
       </colgroup>
-      <thead className="bg-[#f5f6f880] border-b-[#ddd] h-[40px]">
+      <thead className="bg-[#f5f6f880] border-b border-b-[#ddd] h-[40px]">
         <tr>
           <th scope="col">닉네임</th>
           <th scope="col">팔로우 등록일</th>
