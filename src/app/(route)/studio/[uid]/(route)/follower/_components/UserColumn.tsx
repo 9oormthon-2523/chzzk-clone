@@ -1,4 +1,5 @@
 import { FollowInfo } from '@/app/_types/follow.type';
+import { elapsedTime } from '@/app/_utils/common/elapsedTime';
 import { formatDate } from '@/app/_utils/common/formatDate';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -26,7 +27,7 @@ const UserColumn = (props: FollowInfo) => {
         </Link>
       </td>
       <td className="text-center text-[13px]">{formatDate(created_at)}</td>
-      <td className="text-center text-[13px]">18분</td>
+      <td className="text-center text-[13px]">{elapsedTime(created_at)}</td>
       <td className="text-center">
         <button className="font-blackHanSans bg-[#4e41db26] text-[#4e41db] text-[15px] rounded-[5px] py-[4px] px-[15px]">
           팔로우
