@@ -7,8 +7,7 @@ import { useHoverState, useVideoPlayerResize } from '../utils/VideoPlayerHook'
 import useScreenControl from '@/app/_store/live/useScreenControl'
 import useVideoControl from '@/app/_store/live/useVideoControl' 
 import OpacityAnimation from '../utils/OpacityAnimation.client'
-import React, { CSSProperties, ReactNode, useRef } from 'react'
-import { getVideoRatio } from '../utils/getVideoRatio' 
+import React, { CSSProperties, ReactNode, useRef, useState } from 'react'
 import useLiveManager from '@/app/_hooks/live/useLiveManager'
 import { usePathname } from "next/navigation"
 
@@ -26,8 +25,9 @@ const VideoPlayer = () => {
 
   }
   
+  const [streaming_is_active, setStreaming_is_active] = useState<boolean>(false);
   
-  const { ratio } = useLiveManager({channel:host_id, host_id ,screenElRef , streaming_is_active:true, audioElRef:audioElRef });
+  const { ratio } = useLiveManager({channel:host_id, host_id ,screenElRef , streaming_is_active, audioElRef:audioElRef });
   //추후 비디오 비율 대비 
   // const RATIO:[number, number] = [1378, 775];
   const RATE = ratio[0];
@@ -72,6 +72,9 @@ const VideoPlayer = () => {
 
   return (
     <div style={{ position: !isFullOrWide ? "relative" : undefined }}>
+      <button className='w-4 p-9 top-0 left-[10px] bg-red-600 text-[white] fixed' onClick={()=>{
+        setStreaming_is_active(state => !state);
+      }}>버튼</button>
       <div 
         aria-label='비디오 컨테이너'
         ref={videoTotalRef} 

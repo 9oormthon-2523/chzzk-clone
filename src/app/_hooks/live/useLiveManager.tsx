@@ -2,7 +2,6 @@ import AgoraRTC, { IRemoteVideoTrack, IRemoteAudioTrack } from "agora-rtc-sdk-ng
 import { RefObject, useEffect, useRef, useState } from "react";
 import useVideoControl from "@/app/_store/live/useVideoControl"
 import type * as AgoraRTCType from "agora-rtc-sdk-ng";
-import useAudioUnlock from "./useAudioUnlock";
 
 /**
  * 시청자들이 보는 live 페이지 훅
@@ -32,19 +31,24 @@ const useLiveManager = (payload: useStreamforStudioPayload) => {
         streaming_is_active, // 스트리밍_룸_상태
     } = payload;
 
-    const limitRef = useRef<boolean>(false); // 오디오 정책 우회 
     const hostUIDRef = useRef<string | null>(null); // 호스트 미들웨어 uid
     const APP_ID = process.env.NEXT_PUBLIC_AGORA_APP_ID! || ""; //키
     const audioTrackRef = useRef<null | IRemoteAudioTrack>(null); // 오디오 트랙
     const screenTrackRef = useRef<null | IRemoteVideoTrack>(null); // 스크린 트랙
     const clientRef = useRef<AgoraRTCType.IAgoraRTCClient | null>(null); // 클라이언트
     const [ratio, setRatio] = useState<[number, number]>([1.83, 0.55]); 
-    const { audioTrack, videoTrack, audioMute } = useVideoControl(); // 오디오 조절
-    const { limitState } = useAudioUnlock(audioElRef, limitRef, audioTrack.isMuted); // 오디오 정책 해제 훅
-    const { isMuted, volumeLevel } = audioTrack;
+
+    // 볼륨 조절
+    const audiolimit = useRef<boolean>(false);
+    const audioMute = useVideoControl(state => state.audioMute);
+    const isMuted = useVideoControl(state => state.audioTrack.isMuted);
+    const videoState = useVideoControl(state => state.videoTrack.isEnabled);
+    const volumeLevel = useVideoControl(state => state.audioTrack.volumeLevel);
+    
 
     /** 미디어 공유 **/
     //#region 
+
     const mediaPublished = async (payload:publishPayload, client: AgoraRTCType.IAgoraRTCClient) => {
         const { user, mediaType } = payload;
 
@@ -59,8 +63,8 @@ const useLiveManager = (payload: useStreamforStudioPayload) => {
             if (remoteScreenTrack && screenElRef.current) {
                 screenTrackRef.current = remoteScreenTrack;
                 screenElRef.current.muted = true;
-                
                 remoteScreenTrack.play(screenElRef.current);     
+                screenElRef.current.play();
 
                 //비율
                 await remoteScreenTrack.on('video-state-changed', () => {
@@ -75,20 +79,18 @@ const useLiveManager = (payload: useStreamforStudioPayload) => {
 
         if (mediaType === 'audio') {
             const remoteAudioTrack = user.audioTrack;
-        
             if (remoteAudioTrack) {
                 if(!audioElRef.current) return;
-                    remoteAudioTrack.setVolume(audioTrack.volumeLevel);
+                    remoteAudioTrack.setVolume(volumeLevel);
                     audioElRef.current.srcObject = new MediaStream([remoteAudioTrack.getMediaStreamTrack()]);
                     audioTrackRef.current = remoteAudioTrack;
-
-                    if (limitRef.current) {
-                        audioElRef.current.volume = 0.01 * audioTrack.volumeLevel;
-                        audioElRef.current.muted = false;
-                        audioElRef.current.play();
+                    audioElRef.current.volume = 0.01 * volumeLevel;
+                    audioElRef.current.muted = true;
+                    if(audiolimit.current) {
+                        audioTrackRef.current.play();
                     } else {
-                        audioElRef.current.muted = true;
-                    }                     
+                        audioMute(true);
+                    }                   
             } 
         }  
     }
@@ -113,53 +115,87 @@ const useLiveManager = (payload: useStreamforStudioPayload) => {
     //#region 
 
     const cleanVideoTrack = async () => {
-        const screenEl = screenElRef.current;
-        const screenTrack = screenTrackRef.current;
 
-        if (screenTrack) {
-            await screenTrack.stop();
-            await screenTrack.removeAllListeners();
+        if (screenTrackRef.current && screenElRef.current) {
+            const mediaStream = screenElRef.current.srcObject as MediaStream;
+            if(mediaStream) {
+                const tracks = mediaStream.getTracks();
+                tracks.forEach((track) => {
+                    track.stop();
+                });
+            }
+
+            screenTrackRef.current.stop();
+            screenElRef.current.pause();   
+
+            screenElRef.current.srcObject = null;
+            screenTrackRef.current = null;
+            console.log("비디오 트랙 정리 완료");
         }
-
-        if (screenEl) {
-            screenEl.pause();
-            screenEl.srcObject = null;
-            screenEl.src = "";
-        }
-
-        screenTrackRef.current = null;
-        console.log("비디오 트랙 정리 완료");
     };
     
     const cleanAudioTrack = async () => {
-        const audioEl = audioElRef.current;
-        const audioTrack = audioTrackRef.current;
 
-        if (audioTrack) {
-            await audioTrack.stop();
-            await audioTrack.removeAllListeners();
-            audioTrackRef.current = null;
-        }
-
-        if (audioEl) {
-            const mediaStream = audioEl.srcObject as MediaStream | null;
-            if (mediaStream) {
-                mediaStream.getTracks().forEach(track => track.stop());
+        if (audioTrackRef.current && audioElRef.current) {
+            const mediaStream = audioElRef.current.srcObject as MediaStream;
+            if(mediaStream) {
+                const tracks = mediaStream.getTracks();
+                tracks.forEach((track) => {
+                    track.stop();
+                });
             }
-            audioEl.srcObject = null;
+            
+            await audioElRef.current.pause();
+            await audioTrackRef.current.stop();
+            audioTrackRef.current = null;
+            audioElRef.current.srcObject = null; 
+
+            console.log("오디오 트랙 정리 완료");
         }
-        console.log("오디오 트랙 정리 완료");
     };
     
     // 클라이언트 초기화
     const clearAll = async () => {
-        const client = clientRef.current;
-        if (!client) return;
-        await cleanAudioTrack();
-        await cleanVideoTrack();
-        await client.removeAllListeners();
-        await client.leave();
-        clientRef.current = null;
+        if(clientRef.current && clientRef.current.connectionState === "CONNECTED") {
+            clientRef.current.leave().then(async() => {
+                console.log("Left channel");
+                if(!clientRef.current) return;
+                await clientRef.current.removeAllListeners(); 
+                await alert(clientRef.current.connectionState);
+                
+                if (screenTrackRef.current && screenElRef.current) {
+                    const mediaStream = screenElRef.current.srcObject as MediaStream;
+                    if(mediaStream) {
+                        const tracks = mediaStream.getTracks();
+                        tracks.forEach((track) => {
+                            track.stop();
+                        });
+                    }
+
+                    screenTrackRef.current.stop();
+                    screenElRef.current.pause();   
+
+                    screenElRef.current.srcObject = null;
+                    screenTrackRef.current = null;
+                }
+          
+                if (audioTrackRef.current && audioElRef.current) {
+                    const mediaStream = audioElRef.current.srcObject as MediaStream;
+                    if(mediaStream) {
+                        const tracks = mediaStream.getTracks();
+                        tracks.forEach((track) => {
+                            track.stop();
+                        });
+                    }
+                    
+                    await audioElRef.current.pause();
+                    await audioTrackRef.current.stop();
+                    audioTrackRef.current = null;
+                    audioElRef.current.srcObject = null; 
+                }
+                clientRef.current = null;
+            });
+        } 
     }
     //#endregion 
 
@@ -172,22 +208,18 @@ const useLiveManager = (payload: useStreamforStudioPayload) => {
         audioMute(true);
     },[]);
 
-    // 브라우저 정책 우회
-    useEffect(()=>{
-        limitRef.current = limitState;
-    },[limitState]);
-
     // 스트리밍
     useEffect(() => {
         const initClient = async () => {
-            const client = AgoraRTC.createClient({ mode: "live", codec: "vp8", role:"audience" });
-
             if (clientRef.current) {
                 console.log("이미 클라이언트가 존재합니다.");
                 return;
             }
-    
-            try {                     
+
+            clientRef.current = await AgoraRTC.createClient({ mode: "live", codec: "vp8", role:"audience" });
+            const client = await clientRef.current;
+            
+            try {       
                 await client.join(APP_ID, channel, null);
                 clientRef.current = client;
                 console.log("호스트 채널 참가 완료.");
@@ -205,6 +237,7 @@ const useLiveManager = (payload: useStreamforStudioPayload) => {
                     }
                 });
 
+
                 // 미디어 공유 종료
                 await client.on('user-unpublished', async(user, mediaType) =>{
                     if(client.connectionState !== "CONNECTED") return;
@@ -220,6 +253,7 @@ const useLiveManager = (payload: useStreamforStudioPayload) => {
                     }
                 });
 
+
                 // 호스트가 채널 나감
                 await client.on('user-left', async (user) => {
                     if(!hostUIDRef.current) return;
@@ -227,6 +261,7 @@ const useLiveManager = (payload: useStreamforStudioPayload) => {
                         clearAll();
                     }    
                 });
+
             } catch (error) {
                 console.error("클라이언트 생성 오류", error);
                 clearAll();    
@@ -237,49 +272,53 @@ const useLiveManager = (payload: useStreamforStudioPayload) => {
         if (streaming_is_active) {
             initClient();
         } else {
-            clearAll();
+            clearAll();     
         }
         
-        return () => {clearAll();}
+        return () => {
+            if(!clientRef.current) return;
+            clientRef.current.leave().then(async () => {
+                clearAll(); 
+            });
+        };
     }, [streaming_is_active]);   
-    
-    // 볼륨
-    useEffect(()=>{
-        if (!audioElRef.current) return;
 
-        if (isMuted) {
-            audioElRef.current.muted = true;
-            return;
-
-        } else {
-            if (!limitRef.current) return;
-
-            if (audioElRef.current.muted) 
-                audioTrackRef.current?.play();
-
-            audioElRef.current.volume = volumeLevel * 0.01;
-
-        }
-    },[audioTrack.volumeLevel, isMuted]);
-
-    // 비디오
+    // 볼륨 비디오 조절
     useEffect(() => {
-        const screen = screenElRef.current;
-        const screenTrack = screenTrackRef.current;
+        if (!clientRef.current) return;
+        if (!audioElRef.current || !audioTrackRef.current) return;
+        if (!screenElRef.current || !screenTrackRef.current) return;
 
-        if (!screen || !screenTrack) return; 
-    
-        if (videoTrack.isEnabled) {
-            screenTrackRef.current?.play(screen);
-            if (limitRef.current) 
-                audioTrackRef.current?.play();
+        // 비디오 정지
+        if (!videoState) {
+            audioTrackRef.current.stop();
+            screenTrackRef.current.stop();
+        } 
 
-        } else {
-            screenTrackRef.current?.stop();
-            audioElRef.current?.pause();
-            audioTrackRef.current?.stop();
-        }
-    }, [videoTrack.isEnabled]); 
+        // 비디오 플레이
+        else {
+            screenTrackRef.current.play(screenElRef.current);
+            
+            // Mute = true
+            if (isMuted) {
+                audioTrackRef.current?.stop();
+            }
+
+            // Mute = false
+            else {
+                if(!audiolimit.current) {
+                    audiolimit.current = true;
+                    audioTrackRef.current.play();
+                }
+                else {
+                    if (audioTrackRef.current.isPlaying === false) {
+                        audioTrackRef.current.play();
+                    }
+                    audioTrackRef.current.setVolume(volumeLevel);
+                }         
+            }
+        } 
+    }, [isMuted, videoState, volumeLevel]);
 
     //#endregion
 
