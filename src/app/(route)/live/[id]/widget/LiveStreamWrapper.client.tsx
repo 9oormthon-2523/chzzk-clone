@@ -22,6 +22,10 @@ const LiveStreamWrapper = (props:LiveStreamWrapperProps) => {
         justifyContent: isFullOrWide ? "center" : undefined,
     };
 
+    const container_style: CSSProperties = {
+        maxHeight: !isFullOrWide ? "100%" : undefined
+    }
+
     return (
         <main 
             id="view-steaming" 
@@ -29,7 +33,7 @@ const LiveStreamWrapper = (props:LiveStreamWrapperProps) => {
             style={main_style}  
             className="flex flex-col min-w-[0] overflow-y-auto"
         >
-            <div id="live-information-container" className="flex flex-col max-h-[100%]">
+            <div style={container_style} id="live-information-container" className="flex flex-col">
                 { children }
             </div>
 

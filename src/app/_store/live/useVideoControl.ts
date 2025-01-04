@@ -13,7 +13,6 @@ export type VideoTrack = {
 };
 
 export type AudioTrack = {
-  trackId: string; 
   isMuted: boolean; 
   volumeLevel: number; 
 };
@@ -23,6 +22,7 @@ export interface VideoControlState {
     audioTrack: AudioTrack
     volumeControl: (vol: number) => void
     videoToggle:() => void
+    audioMute: (mute:boolean) => void
 }
 
 const useVideoControl = create<VideoControlState>()((set) => ({
@@ -31,8 +31,7 @@ const useVideoControl = create<VideoControlState>()((set) => ({
   },
 
   audioTrack: {
-    trackId: "aaabbbccc",
-    isMuted: false, 
+    isMuted: true, 
     volumeLevel: 50,
   },
 
@@ -51,6 +50,15 @@ const useVideoControl = create<VideoControlState>()((set) => ({
           ...state.videoTrack,
           isEnabled: !state.videoTrack.isEnabled
         },
+      }));
+    },
+
+    audioMute: (mute:boolean) => {
+      set(state => ({
+        audioTrack: {
+          ...state.audioTrack,
+          isMuted:mute,
+        }
       }));
     }
 }));

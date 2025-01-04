@@ -7,18 +7,31 @@ import { useHoverState, useVideoPlayerResize } from '../utils/VideoPlayerHook'
 import useScreenControl from '@/app/_store/live/useScreenControl'
 import useVideoControl from '@/app/_store/live/useVideoControl' 
 import OpacityAnimation from '../utils/OpacityAnimation.client'
-import React, { CSSProperties, ReactNode } from 'react'
-import { getVideoRatio } from '../utils/getVideoRatio' 
+import React, { CSSProperties, ReactNode, useRef, useState } from 'react'
+import useLiveManager from '@/app/_hooks/live/useLiveManager'
+import { usePathname } from "next/navigation"
 
 /**
  * 라이브 스트리밍 플레이어 컴포넌트
  */
 
 const VideoPlayer = () => {
+  const path = usePathname();
+  const host_id = path.split('/')[2];
+  const audioElRef = useRef<HTMLAudioElement>(null);
+  const screenElRef = useRef<HTMLVideoElement | null>(null);
+
+  const dto = {
+
+  }
+  
+  const [streaming_is_active, setStreaming_is_active] = useState<boolean>(false);
+  
+  const { ratio } = useLiveManager({channel:host_id, host_id ,screenElRef , streaming_is_active, audioElRef:audioElRef });
   //추후 비디오 비율 대비 
-  const RATIO:[number, number] = [1378, 775];
-  const RATE = getVideoRatio(1980, 1080,'total');
-  const resizeRATE = getVideoRatio(...RATIO, 'empty'); 
+  // const RATIO:[number, number] = [1378, 775];
+  const RATE = ratio[0];
+  const resizeRATE = ratio[1];
 
   //스크린 컨트롤 훅
   const screenControl = useScreenControl();
@@ -59,6 +72,9 @@ const VideoPlayer = () => {
 
   return (
     <div style={{ position: !isFullOrWide ? "relative" : undefined }}>
+      <button className='w-4 p-9 top-0 left-[10px] bg-red-600 text-[white] fixed' onClick={()=>{
+        setStreaming_is_active(state => !state);
+      }}>버튼</button>
       <div 
         aria-label='비디오 컨테이너'
         ref={videoTotalRef} 
@@ -76,8 +92,10 @@ const VideoPlayer = () => {
           style={containerVideoPlayer_style}
           className="absolute bg-black flex items-center justify-center box-border"
           >   
-          <div style={frameVideoPlayer_style}>
-            <canvas aria-label='비디오 대체 박스' className='w-full h-full bg-gray-700'/>
+          <div style={frameVideoPlayer_style} id="video-container">
+            <audio ref={audioElRef}/>
+            <video ref={screenElRef} muted aria-label='비디오 대체 박스' id='streaming-video' className='w-full h-full black'/>
+            {/* <video ref={screenElRef} className='w-full h-full bg-white'/> */}
           </div>
         </div>
         
