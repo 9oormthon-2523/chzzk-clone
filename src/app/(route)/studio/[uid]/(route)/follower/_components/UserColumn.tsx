@@ -30,7 +30,7 @@ const UserColumn = (props: FollowInfo) => {
       <td className="text-center text-[13px]">{formatDate(created_at)}</td>
       <td className="text-center text-[13px]">{elapsedTime(created_at)}</td>
       <td className="text-center">
-        <UserFollowBtn isFollowingUser={follower.is_following_user} />
+        <UserFollowBtn follower={follower} />
       </td>
     </tr>
   );
