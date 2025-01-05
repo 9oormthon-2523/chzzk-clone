@@ -5,9 +5,11 @@ import MenuButtonBox from '../common/MenuButtonBox.client';
 import NavDeptIcon from '@public/studioPage/NavDept.svg';
 import { useRouter } from 'next/navigation';
 import { getMenuList } from '@/app/_utils/studio/getMenuList';
+import { useUID } from '@/app/_store/context/useUid';
 
-const SubMenu = ({ menuName, uid }: { menuName: string; uid: string }) => {
+const SubMenu = ({ menuName }: { menuName: string }) => {
   const router = useRouter();
+  const uid = useUID();
   const menuList = getMenuList(uid);
 
   return (
