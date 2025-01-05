@@ -7,11 +7,11 @@ import PlayerBottomBolumeControl from "./PlayerBottomVolume";
 
 export const WideBtn = () => {
     const toggleWideScreen = useScreenControl(state => state.toggleWideScreen);
-    const isWidescreen = useScreenControl(state => state.isWideScreen);
+    const isFullscreen = useScreenControl(state => state.isFullscreen);
 
     return (
         <>
-            {!isWidescreen &&
+            {!isFullscreen &&
                 <PlayerBottomButton info="와이드 모드" onClick={toggleWideScreen} svgName="VideoWidescreen" style=""/>
             }
         </>

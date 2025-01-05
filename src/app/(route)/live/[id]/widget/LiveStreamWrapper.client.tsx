@@ -1,4 +1,5 @@
 "use client"
+import Footer from "@/app/_components/Footer/footer";
 import useScreenControl from "@/app/_store/live/useScreenControl";
 import { CSSProperties, ReactNode, useRef } from "react";
 
@@ -41,9 +42,9 @@ const LiveStreamWrapper = (props:LiveStreamWrapperProps) => {
             {!isFullOrWide &&<div id="live-banner-container" className=""></div>}
 
             {/* footer 정보란... */}
-            {!isFullOrWide && (<footer className="border-t-[1px] border-solid border-[#0000001f] flex flex-wrap justify-center m-[0_30px] p-[25px_0_85px] items-center">
-
-            </footer>)}
+            {!isFullOrWide && (
+                <Footer/>
+            )}
 
         </main>
 )}

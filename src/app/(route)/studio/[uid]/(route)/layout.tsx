@@ -1,10 +1,10 @@
-import React, { ReactNode } from "react";
-import Header from "../_components/Header/Header.server";
-import Navigation from "../_components/Navigation/Navigation.client";
-import ContentWrapper from "../_components/common/ContentWrapper.client";
-import { createClient } from "@/app/_utils/supabase/server";
-import { redirect } from "next/navigation";
-import Popup from "../_components/Popup/Popup.server";
+import React, { ReactNode } from 'react';
+import Header from '../_components/Header/Header.server';
+import Navigation from '../_components/Navigation/Navigation.client';
+import ContentWrapper from '../_components/common/ContentWrapper.client';
+import { createClient } from '@/app/_utils/supabase/server';
+import { redirect } from 'next/navigation';
+import Popup from '../_components/Popup/Popup.server';
 
 const StudioLayout = async ({
   children,
@@ -16,34 +16,6 @@ const StudioLayout = async ({
   const { uid } = await params;
   const match = await isMatchUid(uid);
 
-<<<<<<< Updated upstream
-  // if (match) {
-  //   return (
-  //     <div className="fixed w-full h-full">
-  //       <Header uid={uid} />
-  //       <ContentWrapper>
-  //         <Navigation uid={uid} />
-  //         <section className="flex overflow-auto flex-1 flex-col bg-[#f1f3f5] h-full">
-  //           {children}
-  //         </section>
-  //       </ContentWrapper>
-  //     </div>
-  //   );
-
-  // }
-  return (
-    <div className="fixed w-full h-full">
-      <Header uid={uid} />
-      <ContentWrapper>
-        <Navigation uid={uid} />
-        <section className="flex overflow-auto flex-1 flex-col bg-[#f1f3f5] h-full">
-          {children}
-        </section>
-      </ContentWrapper>
-    </div>
-  );
-  // return <Popup />;
-=======
   if (match) {
     return (
       <div className="fixed w-full h-full">
@@ -59,7 +31,6 @@ const StudioLayout = async ({
   }
 
   return <Popup />;
->>>>>>> Stashed changes
 };
 
 export default StudioLayout;

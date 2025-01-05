@@ -1,3 +1,4 @@
+import Header from "@/app/_components/Header/Header.server";
 import "./style.css"
 
 export default function RootLayout({
@@ -6,7 +7,7 @@ export default function RootLayout({
     children: React.ReactNode;
   }>) {
     return (
-        <div id="container" className="pt-[60px]">
+        <div id="container" className="">
             {children}
         </div>
     );

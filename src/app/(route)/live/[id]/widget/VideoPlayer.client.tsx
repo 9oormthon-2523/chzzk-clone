@@ -40,7 +40,7 @@ const VideoPlayer = () => {
   //마우스 호버 훅
   const { isHover, HoverHandler } = useHoverState({delay:3000, dependencies:[volumeLevel]});
   //리사이즈 훅
-  const {videoFrameRef, videoTotalRef, wh} = useVideoPlayerResize({resizeRATE,screenControl});
+  const {videoFrameRef, videoTotalRef, wh} = useVideoPlayerResize({resizeRATE, screenControl});
   
   const { isChatOpen, isFullOrWide } = screenControl;
   
@@ -68,13 +68,17 @@ const VideoPlayer = () => {
     height: !isFullOrWide ? wh.h+"px" : !isChatOpen ? "100vh" : wh.h+"px",
     top: !isChatOpen || !isFullOrWide ? "0":"" 
   }
+
   //#endregion
 
   return (
     <div style={{ position: !isFullOrWide ? "relative" : undefined }}>
-      <button className='w-4 p-9 top-0 left-[10px] bg-red-600 text-[white] fixed' onClick={()=>{
+      <button aria-label="리얼 타임으로 streaming-on-off 대체 버튼" className=' p-2 top-[15px] rounded-full z-[10000] left-[160px] bg-red-600 text-[white] fixed' onClick={()=>{
         setStreaming_is_active(state => !state);
-      }}>버튼</button>
+      }}>임시 스트리밍 버튼</button>
+
+      <div aria-label='리사이즈 중 body-bg가 보이는 것을 방지' style={{height:wh.h}} className='absolute z-[0] w-screen bg-black'/>
+
       <div 
         aria-label='비디오 컨테이너'
         ref={videoTotalRef} 
@@ -92,9 +96,9 @@ const VideoPlayer = () => {
           style={containerVideoPlayer_style}
           className="absolute bg-black flex items-center justify-center box-border"
           >   
-          <div style={frameVideoPlayer_style} id="video-container">
+          <div style={frameVideoPlayer_style} id="video-container" className='max-w-[100vw]'>
             <audio ref={audioElRef}/>
-            <video ref={screenElRef} muted aria-label='비디오 대체 박스' id='streaming-video' className='w-full h-full black'/>
+            <video ref={screenElRef} style={{objectFit:"contain"}} muted aria-label='비디오 대체 박스' id='streaming-video' className='w-full h-full'/>
             {/* <video ref={screenElRef} className='w-full h-full bg-white'/> */}
           </div>
         </div>

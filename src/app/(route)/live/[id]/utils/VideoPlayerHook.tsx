@@ -1,4 +1,5 @@
 import { screenControlState } from "@/app/_store/live/useScreenControl";
+import useNavToggle from "@/app/_store/main/useNavToggle.client";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 interface useVideoPlayerResizeProps {
@@ -15,7 +16,8 @@ export const useVideoPlayerResize = (props: useVideoPlayerResizeProps) => {
     const [wh, setWH] = useState({ w: 0, h: 0 });
     const videoFrameRef = useRef<HTMLDivElement|null>(null); // 비디오 재생 프레임
     const videoTotalRef = useRef<HTMLDivElement|null>(null); // 비디오 재생 컨트롤 프레임
-    const { isChatOpen, isFullscreen, chatPosition , isWideScreen, isFullOrWide ,updateChatPosition } = screenControl;
+    const { isChatOpen, isFullscreen, chatPosition , isWideScreen, updateChatPosition } = screenControl;
+    const isNavOpen = useNavToggle(state => state.isOpen);
 
     //비디오 플레이어 창 핸들러
     const resizeHandler = () => {
@@ -37,7 +39,7 @@ export const useVideoPlayerResize = (props: useVideoPlayerResizeProps) => {
         window.addEventListener("resize", resizeHandler);
         resizeHandler();
         return () => window.removeEventListener("resize", resizeHandler);
-      }, [isChatOpen, isWideScreen, isFullscreen, chatPosition]);
+      }, [isChatOpen, isWideScreen, isFullscreen, chatPosition, isNavOpen]);
 
       return { videoFrameRef, videoTotalRef, wh };
 }

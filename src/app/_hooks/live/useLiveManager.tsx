@@ -65,7 +65,7 @@ const useLiveManager = (payload: useStreamforStudioPayload) => {
                 screenElRef.current.muted = true;
                 remoteScreenTrack.play(screenElRef.current);     
                 screenElRef.current.play();
-
+                screenElRef.current.style.objectFit = "contain"
                 //비율
                 await remoteScreenTrack.on('video-state-changed', () => {
                     const stats = remoteScreenTrack.getStats();
@@ -127,7 +127,6 @@ const useLiveManager = (payload: useStreamforStudioPayload) => {
 
             screenTrackRef.current.stop();
             screenElRef.current.pause();   
-
             screenElRef.current.srcObject = null;
             screenTrackRef.current = null;
             console.log("비디오 트랙 정리 완료");
@@ -161,7 +160,7 @@ const useLiveManager = (payload: useStreamforStudioPayload) => {
                 console.log("Left channel");
                 if(!clientRef.current) return;
                 await clientRef.current.removeAllListeners(); 
-                await alert(clientRef.current.connectionState);
+                // await alert(clientRef.current.connectionState);
                 
                 if (screenTrackRef.current && screenElRef.current) {
                     const mediaStream = screenElRef.current.srcObject as MediaStream;

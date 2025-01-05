@@ -1,6 +1,7 @@
 "use client";
 
 import useScreenControl from "@/app/_store/live/useScreenControl";
+import useNavToggle from "@/app/_store/main/useNavToggle.client";
 import { CSSProperties, ReactNode } from "react";
 
 interface LiveWrapperProps {
@@ -9,8 +10,8 @@ interface LiveWrapperProps {
 
 const LiveWrapper = ({ children }: LiveWrapperProps) => {
   const { isFullOrWide, chatPosition, isChatOpen } = useScreenControl();
-
-  const navPadding = 78; // 좌측 패딩
+  const isNavOpen = useNavToggle(state => state.isOpen);
+  const navPadding = isNavOpen ? 16 : 0; // 좌측 패딩
 
   // 컨테이너 스타일
   const containerStyle: CSSProperties = {
@@ -32,7 +33,7 @@ const LiveWrapper = ({ children }: LiveWrapperProps) => {
   };
 
   return (
-    <div className="overflow-hidden relative" style={{ paddingLeft: `${navPadding}px` }}>
+    <div className="overflow-hidden relative pt-[60px]" style={{ paddingLeft: `${navPadding}rem` }}>
       <section
         id="vod-container"
         style={containerStyle}
