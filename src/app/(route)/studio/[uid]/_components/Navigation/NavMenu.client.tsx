@@ -10,28 +10,26 @@ import SubMenus from './SubMenus';
 import { useRouter } from 'next/navigation';
 import { usePathname } from 'next/navigation';
 import { getMenuList } from '@/app/_utils/studio/getMenuList';
+import { useUID } from '@/app/_store/context/useUid';
 
 interface Props {
   menuName: string;
   icon: ReactNode;
   menuRoute?: string;
-  uid: string;
 }
 
 const NavMenu = (props: Props) => {
-  const { menuName, icon, menuRoute, uid } = props;
+  const { menuName, icon, menuRoute } = props;
 
+  const uid = useUID();
   const router = useRouter();
-
+  const pathname = usePathname();
   const { isFold, toggle } = useNavSizeToggle();
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
   useEffect(() => {
     if (isFold) setIsOpen(false);
   }, [isFold]);
-
-  const pathname = usePathname();
-  const menuListRouteArr = getMenuList(uid)[menuName].map((item) => item.route);
 
   return (
     <div className="flex flex-col relative group">
@@ -41,7 +39,11 @@ const NavMenu = (props: Props) => {
           text={menuName}
           menuRoute={menuRoute}
           color={
-            menuListRouteArr.includes(pathname) && !isOpen ? 'blue' : 'black'
+            getMenuList(uid)
+              [menuName].map((item) => item.route)
+              .includes(pathname) && !isOpen
+              ? 'blue'
+              : 'black'
           }
           px={15}
           py={10}
@@ -67,7 +69,7 @@ const NavMenu = (props: Props) => {
       </li>
 
       {/* 서브 메뉴들이 존재하면서 열려있을때 서브메뉴 렌더링 */}
-      {!menuRoute && isOpen && <SubMenus menuName={menuName} uid={uid} />}
+      {!menuRoute && isOpen && <SubMenus menuName={menuName} />}
 
       {/* 네비게이션이 접혔을때, hover시 description 띄우기 */}
       {isFold && (

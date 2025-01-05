@@ -6,8 +6,10 @@ import DashboardIcon from '@public/studioPage/Dashboard.svg';
 import StudioIcon from '@public/studioPage/Studio.svg';
 import ViewerIcon from '@public/studioPage/Viewer.svg';
 import useNavSizeToggle from '@/app/_store/studio/useNavSizeToggle.client';
+import { useUID } from '@/app/_store/context/useUid';
 
-const Navigation = ({ uid }: { uid: string }) => {
+const Navigation = () => {
+  const uid = useUID();
   const { isFold } = useNavSizeToggle();
 
   return (
@@ -24,10 +26,9 @@ const Navigation = ({ uid }: { uid: string }) => {
           menuName="대시보드"
           icon={<DashboardIcon />}
           menuRoute={`/studio/${uid}`}
-          uid={uid}
         />
-        <NavMenu menuName="방송 관리" icon={<StudioIcon />} uid={uid} />
-        <NavMenu menuName="시청자 관리" icon={<ViewerIcon />} uid={uid} />
+        <NavMenu menuName="방송 관리" icon={<StudioIcon />} />
+        <NavMenu menuName="시청자 관리" icon={<ViewerIcon />} />
       </ul>
     </nav>
   );
