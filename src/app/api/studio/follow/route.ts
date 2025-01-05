@@ -8,6 +8,7 @@ interface Follower {
   following_uid: string;
   follower_nickname: string;
   follower_profile_img: null | string;
+  is_following_user: boolean;
   status: 'active' | 'block';
 }
 
@@ -41,6 +42,7 @@ export async function GET() {
       uid: item.follower_uid,
       nickname: item.follower_nickname,
       profile_img: item.follower_profile_img || '/userImage.webp',
+      is_following_user: item.is_following_user,
     },
   }));
 
