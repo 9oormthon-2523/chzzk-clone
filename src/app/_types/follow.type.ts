@@ -8,5 +8,6 @@ export interface FollowInfo {
     uid: string;
     nickname: string;
     profile_img: string;
+    is_following_user: boolean;
   };
 }
