@@ -7,7 +7,7 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
-  --font-noto-sans-kr:'Noto Sans KR';
+  --font-noto-sans-kr: 'Noto Sans KR';
 }
 
 @media (prefers-color-scheme: white) {
@@ -21,4 +21,11 @@ body {
   @apply font-sans;
   color: var(--foreground);
   background: var(--background);
+}
+
+@layer utilities {
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: #ccc;
+  }
 }
