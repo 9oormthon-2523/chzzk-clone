@@ -11,7 +11,7 @@ const StreamingCoreBtn = (props: StreamingCoreBtnProps) => {
   const [loading, setLoading] = useState(false);
   const [isStreaming, setIsStreaming] = useState(false);
   const { streamOn, streamOff, addTrackShare, stopTrackShare, volumeControl } = useStudioManager(uid);
-  const { audioState, controlAudio, viewAudio } = volumeControl();
+  const { audioState, controlAudio, audioVolume } = volumeControl;
   
 
   const handleStreamToggle = async () => {
@@ -90,7 +90,7 @@ const StreamingCoreBtn = (props: StreamingCoreBtnProps) => {
           step={1}
           min={0}
           max={1000}
-          value={viewAudio.mic}
+          value={audioVolume.mic}
           onChange={(e) => controlAudio('mic', Number(e.currentTarget.value))}
         />
       )
@@ -103,7 +103,7 @@ const StreamingCoreBtn = (props: StreamingCoreBtnProps) => {
           step={1}
           min={0}
           max={1000}
-          value={viewAudio.screen}
+          value={audioVolume.screen}
           onChange={(e) => controlAudio('screen', Number(e.currentTarget.value))}
         />
       )
