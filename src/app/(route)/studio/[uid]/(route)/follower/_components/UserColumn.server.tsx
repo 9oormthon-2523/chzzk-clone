@@ -27,7 +27,9 @@ const UserColumn = (props: FollowInfo) => {
           </div>
         </Link>
       </td>
-      <td className="text-center text-[13px]">{formatDate(created_at)}</td>
+      <td className="text-center text-[13px] break-all whitespace-normal">
+        {formatDate(created_at)}
+      </td>
       <td className="text-center text-[13px]">{elapsedTime(created_at)}</td>
       <td className="text-center">
         <UserFollowBtn follower={follower} />
