@@ -1,18 +1,31 @@
-'use client';
+"use client";
 
-import React from 'react';
+import { createClient } from '@/app/_utils/supabase/client';
+import { useEffect, useState } from 'react';
+import dynamic from 'next/dynamic';
+
+const StreamingCoreBtn = dynamic(() => import('./StreamingCoreBtn.client'), { ssr: false });
 
 const StreamingBtn = () => {
-  return (
-    <button
-      className="rounded-2xl bg-white text-[#697183] text-[15px] font-blackHanSans py-[5px] px-[15px]"
-      onClick={() => {
-        // 여기에 로직 추가하면 될듯합니다!
-      }}
-    >
-      스트리밍 시작하기
-    </button>
-  );
+  const supabase = createClient();
+  const [userId, setUserId] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const { data: user, error } = await supabase.auth.getUser();
+      if (!error && user) {
+        setUserId(user.user.id);
+      }
+      setLoading(false);
+    };
+    fetchUser();
+  }, []);
+
+  if (loading) return null;
+  
+
+  return <>{userId ? <StreamingCoreBtn uid={userId} /> : <p>사용자 정보를 불러올 수 없습니다.</p>}</>;
 };
 
 export default StreamingBtn;

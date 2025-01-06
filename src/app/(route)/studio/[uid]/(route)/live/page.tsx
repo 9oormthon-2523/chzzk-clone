@@ -2,6 +2,7 @@ import React from 'react';
 import StreamingBtn from './_components/StreamingBtn.client';
 
 const StudioLivePage = () => {
+
   return (
     <div className="flex w-full h-full">
       {/* 스트리밍 세팅 영역 */}
