@@ -4,7 +4,7 @@ import { formatDate } from '@/app/_utils/common/formatDate';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
-import UserFollowBtn from './UserFollowBtn';
+import UserFollowBtn from './UserFollowBtn.client';
 
 const UserColumn = (props: FollowInfo) => {
   const { follower, created_at } = props;
