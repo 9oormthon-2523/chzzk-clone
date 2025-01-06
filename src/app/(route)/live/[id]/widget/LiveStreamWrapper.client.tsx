@@ -1,4 +1,5 @@
 "use client"
+import Footer from "@/app/_components/Footer/footer";
 import useScreenControl from "@/app/_store/live/useScreenControl";
 import { CSSProperties, ReactNode, useRef } from "react";
 
@@ -22,6 +23,10 @@ const LiveStreamWrapper = (props:LiveStreamWrapperProps) => {
         justifyContent: isFullOrWide ? "center" : undefined,
     };
 
+    const container_style: CSSProperties = {
+        maxHeight: !isFullOrWide ? "100%" : undefined
+    }
+
     return (
         <main 
             id="view-steaming" 
@@ -29,7 +34,7 @@ const LiveStreamWrapper = (props:LiveStreamWrapperProps) => {
             style={main_style}  
             className="flex flex-col min-w-[0] overflow-y-auto"
         >
-            <div id="live-information-container" className="flex flex-col max-h-[100%]">
+            <div style={container_style} id="live-information-container" className="flex flex-col">
                 { children }
             </div>
 
@@ -37,9 +42,9 @@ const LiveStreamWrapper = (props:LiveStreamWrapperProps) => {
             {!isFullOrWide &&<div id="live-banner-container" className=""></div>}
 
             {/* footer 정보란... */}
-            {!isFullOrWide && (<footer className="border-t-[1px] border-solid border-[#0000001f] flex flex-wrap justify-center m-[0_30px] p-[25px_0_85px] items-center">
-
-            </footer>)}
+            {!isFullOrWide && (
+                <Footer/>
+            )}
 
         </main>
 )}
