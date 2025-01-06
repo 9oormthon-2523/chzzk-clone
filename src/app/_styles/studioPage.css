@@ -19,5 +19,5 @@ td {
 }
 
 th {
-  @apply p-[5px];
+  @apply p-[5px] border-b border-b-[#ddd];
 }
