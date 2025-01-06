@@ -8,6 +8,7 @@ interface UserType {
   id: string;
   name: string;
   img: string;
+  channel_intro?: string;
 }
 
 export default function Settings() {
@@ -16,10 +17,10 @@ export default function Settings() {
   const [user, setUser] = useState<UserType | null>(null);
   const [newImage, setNewImage] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string>('');
-  const [nickname, setNickname] = useState<string>(user?.name || '');
+  const [nickname, setNickname] = useState<string>('');
   const [channelIntro, setChannelIntro] = useState<string>('');
-  const [nicknameLength, setNicknameLength] = useState<number>(nickname.length);
-  const [channelIntroLength, setChannelIntroLength] = useState<number>(channelIntro.length);
+  const [nicknameLength, setNicknameLength] = useState<number>(0);
+  const [channelIntroLength, setChannelIntroLength] = useState<number>(0);
 
   const fetchUser = async () => {
     try {
@@ -41,11 +42,27 @@ export default function Settings() {
         id: supabaseUser.id,
         name: supabaseUser.user_metadata?.full_name ?? '',
         img: supabaseUser.user_metadata?.avatar_url ?? '',
+        channel_intro: '', 
       });
 
       if (supabaseUser.user_metadata?.avatar_url) {
         setPreviewUrl(supabaseUser.user_metadata.avatar_url);
       }
+
+      setNickname(supabaseUser.user_metadata?.full_name ?? '');
+      
+      const { data: userDetails, error: fetchUserDetailsError } = await supabase
+        .from('users')
+        .select('channel_intro')
+        .eq('id', supabaseUser.id)
+        .single();
+
+      if (fetchUserDetailsError) {
+        throw new Error(fetchUserDetailsError.message);
+      }
+
+      setChannelIntro(userDetails?.channel_intro ?? '');
+
     } catch (error) {
       console.error('사용자 정보 불러오기 오류', error);
     }
@@ -104,6 +121,21 @@ export default function Settings() {
         throw new Error(`사용자 업데이트 실패: ${updateError.message}`);
       }
 
+      const { error: upsertError } = await supabase
+        .from('users')
+        .upsert([
+          {
+            id: user.id,
+            nickname: nickname,
+            profile_img: finalImageUrl,
+            channel_intro: channelIntro,
+          },
+        ]);
+
+      if (upsertError) {
+        throw new Error(`users 테이블 업데이트 실패: ${upsertError.message}`);
+      }
+
       setUser((prevUser) => {
         if (!prevUser) return null;
         return {
@@ -113,7 +145,7 @@ export default function Settings() {
         };
       });
 
-      setNewImage(null); 
+      setNewImage(null);
       console.log('사용자 업데이트 성공', updatedUser);
       alert('프로필이 업데이트되었습니다!');
     } catch (error) {
@@ -176,7 +208,7 @@ export default function Settings() {
 
             <div className="flex flex-row gap-2 mt-4">
               <p className="w-24 mr-8 shrink-0 font-bold text-gray-700">이메일</p>
-              <div className='text-sm'>{user.email}</div>
+              <div className="text-sm">{user.email}</div>
             </div>
 
             <div className="flex flex-row gap-2 mt-4">
