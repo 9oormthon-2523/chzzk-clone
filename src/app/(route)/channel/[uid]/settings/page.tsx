@@ -16,6 +16,10 @@ export default function Settings() {
   const [user, setUser] = useState<UserType | null>(null);
   const [newImage, setNewImage] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string>('');
+  const [nickname, setNickname] = useState<string>(user?.name || '');
+  const [channelIntro, setChannelIntro] = useState<string>('');
+  const [nicknameLength, setNicknameLength] = useState<number>(nickname.length);
+  const [channelIntroLength, setChannelIntroLength] = useState<number>(channelIntro.length);
 
   const fetchUser = async () => {
     try {
@@ -91,7 +95,7 @@ export default function Settings() {
 
       const { data: updatedUser, error: updateError } = await supabase.auth.updateUser({
         data: {
-          full_name: user.name,
+          full_name: nickname,
           avatar_url: finalImageUrl,
         },
       });
@@ -104,7 +108,7 @@ export default function Settings() {
         if (!prevUser) return null;
         return {
           ...prevUser,
-          name: user.name, 
+          name: nickname,
           img: finalImageUrl,
         };
       });
@@ -117,56 +121,84 @@ export default function Settings() {
     }
   };
 
+  const handleNicknameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setNickname(e.target.value);
+    setNicknameLength(e.target.value.length);
+  };
+
+  const handleChannelIntroChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setChannelIntro(e.target.value);
+    setChannelIntroLength(e.target.value.length);
+  };
+
   return (
     <div className="mx-12">
       <div className="h-32" />
-      <button
-        className="inline-flex justify-center mr-2 py-2 px-4 w-16 border border-transparent shadow-sm text-sm rounded-md mt-4 font-black bg-gray-200 text-gray-500"
-        onClick={() => {
-          window.history.back();
-        }}
-      >
-        취소
-      </button>
-      <button
-        className="inline-flex justify-center py-2 px-4 w-16 border border-transparent shadow-sm text-sm rounded-md mt-4 font-black bg-[#1bb373] text-white"
-        onClick={updateUser}
-      >
-        저장
-      </button>
-
-      <div className="h-96 bg-gray-100 rounded-xl mt-4 p-4">
+      <div className="flex items-center justify-end">
+        <button
+          className="inline-flex justify-center mr-2 py-2 px-4 w-16 border border-transparent shadow-sm text-sm rounded-md mt-4 font-black bg-gray-200 text-gray-500"
+          onClick={() => {
+            window.history.back();
+          }}
+        >
+          취소
+        </button>
+        <button
+          className="inline-flex justify-center py-2 px-4 w-16 border border-transparent shadow-sm text-sm rounded-md mt-4 font-black bg-[#1bb373] text-white"
+          onClick={updateUser}
+        >
+          저장
+        </button>
+      </div>
+      <div className="bg-gray-50 rounded-xl mt-4 p-6">
         {user ? (
           <div className="flex flex-col gap-4">
-            <div>
-              <p className="font-bold text-gray-700">이메일</p>
-              <div>{user.email}</div>
+            <div className="flex gap-2">
+              <p className="w-24 mt-4 shrink-0 font-bold text-gray-700 mr-6 mb-24">프로필 이미지</p>
+              <div className="flex flex-row items-center gap-2">
+                {previewUrl ? (
+                  <div className="rounded-full w-[140px] h-[140px] overflow-hidden">
+                    <img
+                      src={previewUrl}
+                      alt="새 프로필 미리 보기"
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                ) : (
+                  <div className="w-[100px] h-[100px] bg-gray-300 rounded-full mb-2" />
+                )}
+                <label className="ml-2 inline-flex items-center h-9 px-4 py-2 bg-gray-50 text-sm font-semibold rounded-md cursor-pointer border border-gray-200 hover:bg-gray-200">
+                  이미지 수정
+                  <input type="file" onChange={handleImageChange} className="hidden" />
+                </label>
+              </div>
             </div>
 
-            <div>
-              <p className="font-bold text-gray-700">이름</p>
+            <div className="flex flex-row gap-2 mt-4">
+              <p className="w-24 mr-8 shrink-0 font-bold text-gray-700">이메일</p>
+              <div className='text-sm'>{user.email}</div>
+            </div>
+
+            <div className="flex flex-row gap-2 mt-4">
+              <p className="w-24 mr-8 shrink-0 font-bold text-gray-700">닉네임</p>
               <input
-                className="border rounded p-1 w-64"
-                value={user.name}
-                onChange={(e) => setUser({ ...user, name: e.target.value })}
+                className="w-full border rounded p-2 w-64 text-sm bg-gray-100 focus:border-[#8dd9b9] focus:bg-white focus:outline-none"
+                value={nickname}
+                onChange={handleNicknameChange}
+                maxLength={10}
               />
+              <div className="w-16 text-sm text-gray-500">{nicknameLength} / 10</div> 
             </div>
 
-            <div className="flex flex-col items-center">
-              <p className="font-bold text-gray-700">프로필 사진</p>
-              {previewUrl ? (
-                <img
-                  src={previewUrl}
-                  alt="새 프로필 미리 보기"
-                  width={100}
-                  height={100}
-                  className="rounded-full object-cover mb-2"
-                />
-              ) : (
-                <div className="w-[100px] h-[100px] bg-gray-300 rounded-full mb-2" />
-              )}
-
-              <input type="file" onChange={handleImageChange} />
+            <div className="flex flex-row gap-2 mt-4">
+              <p className="w-24 mr-8 shrink-0 font-bold text-gray-700">채널 소개</p>
+              <textarea
+                className="w-full h-20 border rounded outline-none resize-none p-2 w-64 text-sm bg-gray-100 focus:border-[#8dd9b9] focus:bg-white"
+                value={channelIntro}
+                onChange={handleChannelIntroChange}
+                maxLength={100}
+              />
+              <div className="w-16 text-sm text-gray-500">{channelIntroLength} / 100</div>
             </div>
           </div>
         ) : (
