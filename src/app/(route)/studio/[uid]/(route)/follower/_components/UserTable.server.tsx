@@ -1,5 +1,5 @@
 import React from 'react';
-import UserColumn from './UserColumn';
+import UserColumn from './UserColumn.server';
 import { FollowInfo } from '@/app/_types/follow.type';
 
 interface Props {

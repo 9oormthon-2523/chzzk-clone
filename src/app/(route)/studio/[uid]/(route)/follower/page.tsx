@@ -1,8 +1,8 @@
 import React, { use } from 'react';
 import StudioWrapper from '../../_components/common/StudioWrapper.server';
-import CountAreaBox from './_components/CountArea';
-import SearchArea from './_components/SearchArea';
-import UserTable from './_components/UserTable';
+import CountAreaBox from './_components/CountArea.server';
+import SearchArea from './_components/SearchArea.client';
+import UserTable from './_components/UserTable.server';
 import { headers } from 'next/headers';
 
 const StudioFollowerPage = () => {
