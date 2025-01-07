@@ -3,12 +3,12 @@ import React from "react";
 interface StreamCardProps {
   title: string;
   nickName: string;
-  viewers: number;
-  tags: string[];
+  aduience_cnt: number;
+  // tags: string[];
 }
-
+const dummyTags = ["발로란트", "픽셀네트워크"];
 const StreamCard = (card: StreamCardProps) => {
-  const { title, nickName, viewers, tags } = card;
+  const { title, nickName, aduience_cnt } = card;
   return (
     <div className="hover:cursor-pointer bg-white rounded-lg shadow-md p-2 w-80">
       {/* 이미지 */}
@@ -18,7 +18,7 @@ const StreamCard = (card: StreamCardProps) => {
         </div>
 
         <div className="absolute top-2 right-2 bg-black text-white text-xs font-semibold px-2 py-1 rounded">
-          {viewers.toLocaleString()}명
+          {aduience_cnt.toLocaleString()}명
         </div>
       </div>
 
@@ -31,7 +31,7 @@ const StreamCard = (card: StreamCardProps) => {
         </div>
 
         <div className="flex flex-wrap gap-1 mt-2">
-          {tags.map((tag, index) => (
+          {dummyTags.map((tag, index) => (
             <span
               key={index}
               className="bg-gray-200 text-xs text-gray-600 px-2 py-1 rounded-md"
