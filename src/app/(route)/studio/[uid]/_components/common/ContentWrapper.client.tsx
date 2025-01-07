@@ -1,7 +1,7 @@
 'use client';
 
 import React, { ReactNode } from 'react';
-import useNavSizeToggle from '@/app/_store/studio/useNavSizeToggle.client';
+import useNavSizeToggle from '@/app/_store/stores/studio/useNavSizeToggle.client';
 
 const ContentWrapper = ({ children }: { children: ReactNode }) => {
   const { isFold } = useNavSizeToggle();

@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import '@/app/_styles/globals.css';
 import { Black_Han_Sans } from 'next/font/google';
-
+import TanstackQueryProvider from '../_utils/query/TanstackQueryProvider';
 
 const blackHansSans = Black_Han_Sans({
   variable: '--font-black-han-sans',
@@ -22,7 +22,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${blackHansSans.variable} antialiased`}>
-        {children}
+        <TanstackQueryProvider>{children}</TanstackQueryProvider>
       </body>
     </html>
   );
