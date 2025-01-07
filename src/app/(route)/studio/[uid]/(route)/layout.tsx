@@ -5,6 +5,7 @@ import ContentWrapper from '../_components/common/ContentWrapper.client';
 import { createClient } from '@/app/_utils/supabase/server';
 import Popup from '../_components/Popup/Popup.server';
 import Block from '../_components/Block/Block.server';
+import { UIDProvider } from '@/app/_store/context/useUid';
 
 const StudioLayout = async ({
   children,
@@ -20,15 +21,17 @@ const StudioLayout = async ({
   if (match === 'notMatch') return <Block uid={uid} />;
 
   return (
-    <div className="fixed w-full h-full">
-      <Header uid={uid} />
-      <ContentWrapper>
-        <Navigation uid={uid} />
-        <section className="flex overflow-auto flex-1 flex-col bg-[#f1f3f5] h-full">
-          {children}
-        </section>
-      </ContentWrapper>
-    </div>
+    <UIDProvider uid={uid}>
+      <div className="fixed w-full h-full">
+        <Header uid={uid} />
+        <ContentWrapper>
+          <Navigation />
+          <section className="flex overflow-auto flex-1 flex-col bg-[#f1f3f5] h-full">
+            {children}
+          </section>
+        </ContentWrapper>
+      </div>
+    </UIDProvider>
   );
 };
 
