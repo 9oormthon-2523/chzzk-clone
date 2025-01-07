@@ -286,18 +286,18 @@ const useLiveManager = (payload: useStreamforStudioPayload) => {
     useEffect(() => {
         if (!clientRef.current) return;
         if (!audioElRef.current || !audioTrackRef.current) return;
-        if (!screenElRef.current || !screenTrackRef.current) return;
+        if (!screenElRef.current) return;
 
         // 비디오 정지
         if (!videoState) {
             audioTrackRef.current.stop();
-            screenTrackRef.current.stop();
+            if(screenTrackRef.current) screenTrackRef.current.stop();
         } 
 
         // 비디오 플레이
         else {
-            screenTrackRef.current.play(screenElRef.current);
-            
+            if(screenTrackRef.current) screenTrackRef.current.play(screenElRef.current);
+
             // Mute = true
             if (isMuted) {
                 audioTrackRef.current?.stop();
@@ -314,10 +314,11 @@ const useLiveManager = (payload: useStreamforStudioPayload) => {
                         audioTrackRef.current.play();
                     }
                     audioTrackRef.current.setVolume(volumeLevel);
-                }         
+                }
             }
         } 
     }, [isMuted, videoState, volumeLevel]);
+
 
     //#endregion
 
