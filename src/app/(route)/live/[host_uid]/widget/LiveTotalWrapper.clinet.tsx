@@ -8,7 +8,7 @@ interface LiveWrapperProps {
   children: ReactNode;
 }
 
-const LiveWrapper = ({ children }: LiveWrapperProps) => {
+const LiveTotalWrapper = ({ children }: LiveWrapperProps) => {
   const { isFullOrWide, chatPosition, isChatOpen } = useScreenControl();
   const isNavOpen = useNavToggle(state => state.isOpen);
   const navPadding = isNavOpen ? 16 : 0; // 좌측 패딩
@@ -47,4 +47,4 @@ const LiveWrapper = ({ children }: LiveWrapperProps) => {
   );
 };
 
-export default LiveWrapper;
+export default LiveTotalWrapper;

@@ -3,10 +3,10 @@ import PlayerBottom from '../components/VideoPlayer/PlayerBottom/PlayerBottom.cl
 import PlayerHeader from '../components/VideoPlayer/PlayerHeader/PlayerHeader.client' 
 import PlayerStateSign from '../components/VideoPlayer/ETC/PlayerStateSign.client'
 import PlayerOverlay from '../components/VideoPlayer/ETC/PlayerOverlay.client' 
-import { useHoverState, useVideoPlayerResize } from '../utils/VideoPlayerHook'
+import { useHoverState, useVideoPlayerResize } from '../utils/local/VideoPlayerHook'
 import useScreenControl from '@/app/_store/live/useScreenControl'
 import useVideoControl from '@/app/_store/live/useVideoControl' 
-import OpacityAnimation from '../utils/OpacityAnimation.client'
+import OpacityAnimation from '../utils/local/OpacityAnimation.client'
 import React, { CSSProperties, ReactNode, useRef, useState } from 'react'
 import useLiveManager from '@/app/_hooks/live/useLiveManager'
 import { usePathname } from "next/navigation"

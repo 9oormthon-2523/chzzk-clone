@@ -1,64 +1,73 @@
-"use client"
+"use client";
 
-const VideoPlayer = dynamic(() => import('./VideoPlayer.client'), { ssr: false });
+import dynamic from "next/dynamic";
+import NavBar from "@/app/(route)/(main)/_components/NavBar/NavBar.client";
+import useNavToggle from "@/app/_store/main/useNavToggle.client";
 import useScreenControl from "@/app/_store/live/useScreenControl";
 import LiveStreamWrapper from "./LiveStreamWrapper.client";
-import LiveWrapper from "./Wrapper.clinet";
+import LiveWrapper from "./LiveTotalWrapper.clinet";
 import LiveDetails from "./LiveDetails.client";
 import ChatLayout from "./Chat.client";
+import useLiveInfo from "../utils/db/useLiveInfo.client";
 import { useEffect } from "react";
-import dynamic from "next/dynamic";
-import useNavToggle from "@/app/_store/main/useNavToggle.client";
-import NavBar from "@/app/(route)/(main)/_components/NavBar/NavBar.client";
+import { getHostInfoPayload } from "../liveType";
 
+const VideoPlayer = dynamic(() => import("./VideoPlayer.client"), { ssr: false });
 
-interface StreamingPageProps {
-    params : string
-}
+interface StreamingPageProps extends getHostInfoPayload {}
 
 export default function StreamingPage(props: StreamingPageProps) {
-    const { params } = props;
-    const { isFullscreen, offFullScreen } = useScreenControl();
-    const isOpen = useNavToggle(state => state.isOpen);
+    const { hostInfo, roomInit } = props;
 
-    //esc로 전체화면을 강제 해제 했을 때 풀 스크린 관련 state off
+    const { isFullscreen, offFullScreen } = useScreenControl();
+    const isOpen = useNavToggle((state) => state.isOpen);
+    const { title, is_active, audience_cnt } = useLiveInfo({
+        title: roomInit.title,
+        host_uid: roomInit.uid,
+        is_active: roomInit.is_active,
+        audience_cnt: roomInit.audience_cnt,
+    });
+
     const clearFullScreenDetect = () => {
         if (!document.fullscreenElement) offFullScreen();
     };
 
-    useEffect(() => {
-        (async () => {
+    const handleFullscreenToggle = async () => {
         try {
-            // 풀 스크린 false 풀 스크린 중인 요소가 있을 때 해제 요청
-            if (!isFullscreen && document.fullscreenElement)
-            await document.exitFullscreen();
-            // 풀 스크린 요청
-            else if (isFullscreen) await document.body.requestFullscreen();
+            if (!isFullscreen && document.fullscreenElement) {
+                await document.exitFullscreen();
+            } else if (isFullscreen) {
+                await document.body.requestFullscreen();
+            }
         } catch (err) {
             console.error("Error fullscreen:", err);
         }
-        })();
+    };
+
+    useEffect(() => {
+        handleFullscreenToggle();
     }, [isFullscreen]);
 
-    //풀 스크린 이벤트 핸들러
     useEffect(() => {
         document.addEventListener("fullscreenchange", clearFullScreenDetect);
-        return () =>
-        document.removeEventListener("fullscreenchange", clearFullScreenDetect);
+        return () => {
+            document.removeEventListener("fullscreenchange", clearFullScreenDetect);
+        };
     }, []);
 
+    // Rendering
     return (
         <>
             {isOpen && <NavBar />}
             <LiveWrapper>
-            {/* 라이브 스트리밍 */}
-            <LiveStreamWrapper>
-                <VideoPlayer />
-                <LiveDetails />
-            </LiveStreamWrapper>
+                {/* Live Streaming */}
+                <LiveStreamWrapper>
+                    <VideoPlayer />
+                    <LiveDetails />
+                </LiveStreamWrapper>
 
-            {/* 채팅창 */}
-            <ChatLayout roomId={params} />
+                {/* Chat Layout */}
+                <ChatLayout roomId={roomInit.room_id} />
             </LiveWrapper>
         </>
     );
