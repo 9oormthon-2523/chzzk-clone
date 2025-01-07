@@ -12,22 +12,18 @@ interface Follower {
   status: 'active' | 'block';
 }
 
-export async function GET() {
+export async function GET(
+  request: Request,
+  { params }: { params: Promise<{ uid: string }> }
+) {
   const supabase = await createClient();
-
-  // 1. 로그인된 유저 확인
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  if (!user)
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  const { uid } = await params;
 
   // 2. 로그인된 유저의 uid를 이용하여 나의 팔로워들의 정보를 가져옴
   const { data, error } = await supabase
     .from('follower_details')
     .select('*')
-    .eq('following_uid', user.id)
+    .eq('following_uid', uid)
     .order('created_at', { ascending: false });
 
   if (error)
@@ -46,5 +42,5 @@ export async function GET() {
     },
   }));
 
-  return NextResponse.json({ followers }, { status: 200 });
+  return NextResponse.json(followers, { status: 200 });
 }

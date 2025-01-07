@@ -1,12 +1,14 @@
+'use client';
+
 import React from 'react';
+import { useFollowerQuery } from '@/app/_store/queries/follow/query';
+import { useUID } from '@/app/_store/context/useUid';
 import UserColumn from './UserColumn.server';
-import { FollowInfo } from '@/app/_types/follow.type';
 
-interface Props {
-  followers: FollowInfo[];
-}
+const UserTable = () => {
+  const uid = useUID();
+  const { data } = useFollowerQuery(uid);
 
-const UserTable = ({ followers }: Props) => {
   return (
     <table className="block text-[#697183] border-t border-t-[#ddd] border-b border-b-[#ddd] text-[15px] mt-[16px] table-fixed overflow-y-auto h-[495px] w-full border-separate border-spacing-0 scrollbar-thin">
       <colgroup className="font-blackHanSans">
@@ -24,22 +26,7 @@ const UserTable = ({ followers }: Props) => {
         </tr>
       </thead>
       <tbody>
-        {followers.map((follower) => (
-          <UserColumn key={follower.id} {...follower} />
-        ))}
-        {followers.map((follower) => (
-          <UserColumn key={follower.id} {...follower} />
-        ))}
-        {followers.map((follower) => (
-          <UserColumn key={follower.id} {...follower} />
-        ))}
-        {followers.map((follower) => (
-          <UserColumn key={follower.id} {...follower} />
-        ))}
-        {followers.map((follower) => (
-          <UserColumn key={follower.id} {...follower} />
-        ))}
-        {followers.map((follower) => (
+        {data?.map((follower) => (
           <UserColumn key={follower.id} {...follower} />
         ))}
       </tbody>

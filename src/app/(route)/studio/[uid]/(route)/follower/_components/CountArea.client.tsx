@@ -1,7 +1,14 @@
+'use client';
+
 import React from 'react';
 import MyChannelFollowerIcon from '@public/studioPage/MyChannelFollower.svg';
+import { useFollowerQuery } from '@/app/_store/queries/follow/query';
+import { useUID } from '@/app/_store/context/useUid';
 
-const CountAreaBox = ({ totalFollower }: { totalFollower: number }) => {
+const CountAreaBox = () => {
+  const uid = useUID();
+  const { data } = useFollowerQuery(uid);
+
   return (
     <div className="flex gap-[5px] items-center w-full">
       <MyChannelFollowerIcon />
@@ -11,7 +18,7 @@ const CountAreaBox = ({ totalFollower }: { totalFollower: number }) => {
         </div>
         <span className="text-[15px] text-[#9da5b6] leading-none">/</span>
         <strong className="text-[#4e41db] text-[32px] font-extrabold leading-none">
-          {totalFollower}
+          {data?.length}
         </strong>
       </div>
     </div>

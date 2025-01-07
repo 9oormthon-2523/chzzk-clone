@@ -1,6 +1,6 @@
 'use client';
 
-import { useFollowAction } from '@/app/_hooks/follow';
+import { useFollowAction } from '@/app/_store/queries/follow/mutation';
 import { Follower } from '@/app/_types/follow.type';
 import React from 'react';
 
@@ -10,14 +10,14 @@ interface Props {
 
 const UserFollowBtn = (props: Props) => {
   const { follower } = props;
-  const { follow, unfollow } = useFollowAction();
+  const { followMutate, unfollowMutate } = useFollowAction();
 
   if (follower.is_following_user) {
     return (
       <button
         className="font-blackHanSans bg-[#fff] text-[#697183] text-[15px] rounded-[5px] py-[4px] px-[15px] border border-[#ddd] box-border w-[70px]"
         onClick={() =>
-          unfollow({ uid: follower.uid, nickname: follower.nickname })
+          unfollowMutate({ uid: follower.uid, nickname: follower.nickname })
         }
       >
         팔로잉
@@ -28,7 +28,9 @@ const UserFollowBtn = (props: Props) => {
   return (
     <button
       className="font-blackHanSans bg-[#4e41db26] text-[#4e41db] text-[15px] rounded-[5px] py-[4px] px-[15px] w-[70px]"
-      onClick={() => follow({ uid: follower.uid, nickname: follower.nickname })}
+      onClick={() =>
+        followMutate({ uid: follower.uid, nickname: follower.nickname })
+      }
     >
       팔로우
     </button>
