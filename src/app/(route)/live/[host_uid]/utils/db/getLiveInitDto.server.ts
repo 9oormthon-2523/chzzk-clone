@@ -1,12 +1,18 @@
 import { createClient } from "@/app/_utils/supabase/client";
 import { getHostInfoPayload } from "../../liveType";
 
+/**
+ * 라이브 페이지 초기 데이터 가져오기 (호스트)
+ */
+
+
 export const getLiveInitDto = async (id: string): Promise<null | getHostInfoPayload> => {
     const supabase = createClient(); 
+    
     try {
         const { data: roomData, error: roomError } = await supabase
             .from('streaming_rooms')
-            .select('*')
+            .select('uid, title, start_time, is_active, audience_cnt, nickname, tags, category') // thumbnail 제외
             .eq('uid', id);
 
         if (roomError) {

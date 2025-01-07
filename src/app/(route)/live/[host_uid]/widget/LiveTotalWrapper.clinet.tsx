@@ -4,6 +4,10 @@ import useScreenControl from "@/app/_store/live/useScreenControl";
 import useNavToggle from "@/app/_store/main/useNavToggle.client";
 import { CSSProperties, ReactNode } from "react";
 
+/**
+ * streaming 페이지 전체 래퍼 컴포넌트
+ */
+
 interface LiveWrapperProps {
   children: ReactNode;
 }

@@ -1,10 +1,11 @@
 export type getRoomDtoType = {
-    room_id: string
     uid:string
     title:string | null
     start_time: string | null
     is_active:boolean
     audience_cnt:number
+    category:string
+    tags:string[]
 }
 
 export type getHostInfoType = {

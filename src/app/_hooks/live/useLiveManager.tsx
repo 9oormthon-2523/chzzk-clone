@@ -3,6 +3,7 @@ import { RefObject, useEffect, useRef, useState } from "react";
 import useVideoControl from "@/app/_store/live/useVideoControl"
 import type * as AgoraRTCType from "agora-rtc-sdk-ng";
 
+
 /**
  * 시청자들이 보는 live 페이지 훅
  */
@@ -42,7 +43,6 @@ const useLiveManager = (payload: useStreamforStudioPayload) => {
     const isMuted = useVideoControl(state => state.audioTrack.isMuted);
     const videoState = useVideoControl(state => state.videoTrack.isEnabled);
     const volumeLevel = useVideoControl(state => state.audioTrack.volumeLevel);
-    
 
     /** 미디어 공유 **/
     //#region 
@@ -155,11 +155,10 @@ const useLiveManager = (payload: useStreamforStudioPayload) => {
     const clearAll = async () => {
         if(clientRef.current && clientRef.current.connectionState === "CONNECTED") {
             clientRef.current.leave().then(async() => {
+
                 console.log("Left channel");
                 if(!clientRef.current) return;
                 await clientRef.current.removeAllListeners(); 
-                // await alert(clientRef.current.connectionState);
-                
                 if (screenTrackRef.current && screenElRef.current) {
                     const mediaStream = screenElRef.current.srcObject as MediaStream;
                     if(mediaStream) {
@@ -200,9 +199,11 @@ const useLiveManager = (payload: useStreamforStudioPayload) => {
     /** useffect **/
     //#region 
 
-    // 오디오 초기값 세팅 mute;
+    // 오디오 초기값 세팅 mute + 화면이 꺼질때 실행할 함수;
     useEffect(()=>{
         audioMute(true);
+
+    
     },[]);
 
     // 스트리밍
@@ -215,7 +216,7 @@ const useLiveManager = (payload: useStreamforStudioPayload) => {
 
             clientRef.current = await AgoraRTC.createClient({ mode: "live", codec: "vp8", role:"audience" });
             const client = await clientRef.current;
-            
+
             try {       
                 await client.join(APP_ID, channel, null);
                 clientRef.current = client;
@@ -276,6 +277,7 @@ const useLiveManager = (payload: useStreamforStudioPayload) => {
             if(!clientRef.current) return;
             clientRef.current.leave().then(async () => {
                 clearAll(); 
+                
             });
         };
     }, [streaming_is_active]);   

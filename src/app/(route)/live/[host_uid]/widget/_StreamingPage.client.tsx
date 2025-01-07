@@ -13,21 +13,36 @@ import dynamic from "next/dynamic";
 const VideoPlayer = dynamic(() => import("./VideoPlayer.client"), { ssr: false });
 
 import { getHostInfoPayload } from "../liveType";
-interface StreamingPageProps extends getHostInfoPayload {}
+import usePing from "../utils/db/usePing.client";
+import useScreenControl from "@/app/_store/live/useScreenControl";
+interface StreamingPageProps extends getHostInfoPayload {
+  client_uid: string | undefined
+}
+
+/**
+ * 스트리밍 페이지 메인
+ */
 
 export default function StreamingPage(props: StreamingPageProps) {
-  const { hostInfo, roomInit } = props;
+  const { hostInfo, roomInit, client_uid } = props;
+  const isOpen = useNavToggle((state) => state.isOpen);
+  const isFullOrWide = useScreenControl(state => state.isFullOrWide);
 
+  // 풀 스크린 핸들러
   useFullscreenHandler();
 
-  const isOpen = useNavToggle((state) => state.isOpen);
-
+  // 실시간 데이터 구독
   const liveInfo = useLiveInfo({
+    tags: roomInit.tags,
     title: roomInit.title,
     host_uid: roomInit.uid,
+    category: roomInit.category,
     is_active: roomInit.is_active,
     audience_cnt: roomInit.audience_cnt,
   });
+
+  // 호스트 핑(시청자 수)
+  usePing({ client_uid, host_uid:roomInit.uid, is_active:liveInfo.is_active });
 
   return (
     <>
@@ -35,21 +50,26 @@ export default function StreamingPage(props: StreamingPageProps) {
             <LiveWrapper>
                 <LiveStreamWrapper>
 
+                    {/* 비디오 플레이어 */}
                     <VideoPlayer 
                         uid={roomInit.uid} 
                         is_active={liveInfo.is_active}
                     />
 
-                    <LiveDetails
-                        {...hostInfo}
-                        {...liveInfo}
-                        uid={roomInit.uid}
-                        start_time={roomInit.start_time}
-                    />
+                    {/* 방송 정보 */}
+                    {!isFullOrWide &&
+                        <LiveDetails
+                          {...hostInfo}
+                          {...liveInfo}
+                          uid={roomInit.uid}
+                          start_time={roomInit.start_time} 
+                        />
+                    }
 
-                    </LiveStreamWrapper>
+                  </LiveStreamWrapper>
 
-            <ChatLayout roomId={roomInit.room_id} />
+            {/* 채팅창 */}
+            <ChatLayout roomId={roomInit.uid} />
       </LiveWrapper>
     </>
   );

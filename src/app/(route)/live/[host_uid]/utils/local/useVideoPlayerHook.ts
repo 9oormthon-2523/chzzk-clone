@@ -1,4 +1,5 @@
-import useScreenControl, { screenControlState } from "@/app/_store/live/useScreenControl";
+import useScreenControl from "@/app/_store/live/useScreenControl";
+import useVideoControl from "@/app/_store/live/useVideoControl";
 import useNavToggle from "@/app/_store/main/useNavToggle.client";
 import { useCallback, useEffect, useRef, useState } from "react";
 
@@ -6,6 +7,7 @@ interface useVideoPlayerResizeProps {
     w_rate: number, //리사이즈 비율
 }
 
+// 리사이즈 이벤트 감지하여 비디오 비율 적용
 export const useVideoPlayerResize = (props: useVideoPlayerResizeProps) => {
     const { 
       w_rate,
@@ -33,7 +35,7 @@ export const useVideoPlayerResize = (props: useVideoPlayerResizeProps) => {
         });
         updateChatPosition(w_rate);
       };
-    
+      
       useEffect(() => {
         window.addEventListener("resize", resizeHandler);
         resizeHandler();
@@ -50,11 +52,12 @@ interface useHoverStateProps<T> {
     dependencies?: T[]
 }
 
+// 마우스 움직임 감지시 3초 동안 비디오 컨트롤러 visible
 export const useHoverState = <T extends unknown>(props: useHoverStateProps<T>) => {
-    const { delay = 3000, dependencies = [] } = props;
-
+    const { delay = 3000 } = props;
     const [isHover, setIsHover] = useState(false);
     const timerRef = useRef<NodeJS.Timeout | null>(null);
+    const volumeLevel = useVideoControl((state) => state.audioTrack.volumeLevel);
   
     //3초 동안 Hover가 안꺼짐
     const HoverHandler = useCallback(() => {
@@ -70,7 +73,7 @@ export const useHoverState = <T extends unknown>(props: useHoverStateProps<T>) =
     useEffect(()=>{
         HoverHandler();
         return () => {if (timerRef.current) clearTimeout(timerRef.current);}
-    },[...dependencies]);
+    },[volumeLevel]);
 
     return { isHover, HoverHandler };
 };

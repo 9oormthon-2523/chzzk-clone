@@ -14,7 +14,7 @@ interface LiveDetailsTimeProps {
 }
 
 interface LiveCategoryProps {
-  category: string 
+  category: string | null
 }
 
 interface LiveNickName {
@@ -22,12 +22,11 @@ interface LiveNickName {
 }
 
 interface HashTagProps {
-  tags:HashTagLiProps[]
+  tags:string[] | null
 }
 
 interface HashTagLiProps {
   tagname:string
-  path:string
 }
 
 export const LiveDetailsViewer = (props:LiveDetailsViwerProps) => {
@@ -85,7 +84,7 @@ export const LiveCategory = (props: LiveCategoryProps) => {
   return (
     <div id="카테고리" className="p-0 inline-block">
         <span className="text-[#32bb81] font-blackHanSans text-[14px] gap-[2px_7px] tracking-[-0.3px] leading-[18px] min-w-0">          
-            <Link href={"/"}>{category}</Link>
+            <span>{category}</span>
         </span>
     </div>
   )
@@ -115,8 +114,8 @@ export const LiveHashTag = (props: HashTagProps) => {
 
   return (
       <ul id="관련태그" className="text-[#898989] font-blackHanSans overflow-hidden flex flex-wrap items-center justify-center text-[9px] gap-[4px] ">
-          {tags.map((tag, idx) => (
-          <HashTagLi key={`${tag.tagname}-${idx}`} {...tag} />
+          {tags && tags.map((tag, idx) => (
+          <HashTagLi key={`${tag}-${idx}`} tagname={tag} />
           ))}
       </ul>
   )
@@ -124,15 +123,15 @@ export const LiveHashTag = (props: HashTagProps) => {
 
 
 const HashTagLi = (props : HashTagLiProps) => {
-  const { path, tagname } = props;
+  const { tagname } = props;
 
   return (
       <li className="m-0 p-0">
-          <Link href={path} className="inline-block align-top rounded-[5px] relative text-[inherit] border-[#00000026] border-solid border-[1px]">
+          <div className="inline-block align-top rounded-[5px] relative text-[inherit] border-[#00000026] border-solid border-[1px]">
               <span className="mt-[1px] break-words p-[0_6px] rounded-[5px] inline-block align-top">
                   { tagname }
               </span>
-          </Link>
+          </div>
       </li>
   )
 }

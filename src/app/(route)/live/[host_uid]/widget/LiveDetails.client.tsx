@@ -1,9 +1,7 @@
 "use client"
-import React, { CSSProperties, useEffect } from 'react'
 import Link from 'next/link';
-import Image from 'next/image';
+import React, { CSSProperties } from 'react'
 import { getHostInfoType } from '../liveType';
-import useScreenControl from '@/app/_store/live/useScreenControl';
 import LiveButton from '../components/LiveDetails/LiveDetailsButton.client'; 
 import LiveOptionButton from '../components/LiveDetails/LiveDetailsOptionButton.client';
 import { LiveDetailsTime, LiveDetailsViewer, LiveCategory, LiveNickName, LiveHashTag } from '../components/LiveDetails/LiveDetailComponents.client';
@@ -19,26 +17,26 @@ interface HostInfoProps extends getHostInfoType {
 
 interface StreamInfoProps {
     title:string|null
+    tags:string[]|null
     audience_cnt:number
+    category:string|null
     start_time:string|null
 }
 
 type LiveDetailsProps = HostInfoProps & StreamInfoProps;
 
 const LiveDetails = (props:LiveDetailsProps) => {
-    const isFullOrWide = useScreenControl(state => state.isFullOrWide);
-
-    //풀 스크린이나 와이드일 때는 렌더 안함
-    if(isFullOrWide) return null;
 
     const { 
         uid,
+        tags,
         title,
         nickname, 
+        category,
         is_active,
         start_time,
         profile_img, 
-        audience_cnt
+        audience_cnt,
     } = props;
 
     return (
@@ -46,15 +44,18 @@ const LiveDetails = (props:LiveDetailsProps) => {
             <div id="live-information-details-container" className="break-words break-all">
 
                 {
-                    // 방송이 꺼져 있으면 스트리밍 정보 렌더 안함
+                    // 스트리밍 정보 (방송 상태가 OFF시 렌더링 안함)
                     is_active &&
                     <StreamInfoCompo 
+                        tags={tags}
                         title={title} 
+                        category={category}
                         start_time={start_time}
                         audience_cnt={audience_cnt} 
                     />
                 }
 
+                {/* 호스트 정보 */}
                 <HostInfoCompo 
                     uid={uid}
                     is_active={is_active}
@@ -63,8 +64,6 @@ const LiveDetails = (props:LiveDetailsProps) => {
                 />
 
             </div>
-
-
         </div>
   )
 }
@@ -74,11 +73,7 @@ export default React.memo(LiveDetails);
 
 // 스트리밍 정보
 const StreamInfoCompo = (props:StreamInfoProps) => {
-    const { title, audience_cnt, start_time } = props;
-
-    const tags = [
-        { path: "/", tagname:"관련태그"},
-    ]
+    const { title, audience_cnt, start_time, tags, category } = props;
 
     return (
         <div id="live-informaiton-details-row" className="items-start flex flex-col w-full">
@@ -86,8 +81,8 @@ const StreamInfoCompo = (props:StreamInfoProps) => {
                 {title}
             </h2>
             <div className='flex gap-[7px] items-center'>
-                <LiveCategory category={"카테고리"}/>
-                <LiveHashTag tags={tags}/>
+                { category && <LiveCategory category={category}/>}
+                { Array.isArray(tags) && tags.length > 0 &&  <LiveHashTag tags={tags} /> }
                 <div>
                     <LiveDetailsViewer viewers={audience_cnt}/>
                     <LiveDetailsTime startTime={start_time}/>
@@ -111,10 +106,10 @@ const HostInfoCompo = (props:HostInfoProps) => {
                 href={`/channel/${uid}`} 
                 id="프로필 사진" 
                 style={circle_style}
-                className="select-none mr-[0.5rem] relative flex justify-center items-center w-[60px] h-[60px] rounded-full flex-none p-[0.2px] m-[1.8px_3px]"
+                className="select-none mr-[0.5rem] overflow-hidden relative flex justify-center items-center w-[60px] h-[60px] rounded-full flex-none p-[0.2px] m-[1.8px_3px]"
             >
-                <div className='w-[52px] h-[52px] border-[2px] border-solid border-[white] bg-[#ffffff] left-0 top-0 rounded-full flex justify-center items-center'>
-                    <Image alt="introduce-img" width={60} height={60} src={profile_img ||"/userImage.webp"} className="bg-[#0000000f] rounded-[inherit] object-cover relative align-top border-0"/>
+                <div className='w-[52px] h-[52px] border-[2px] overflow-hidden border-solid border-[white] bg-[#ffffff] left-0 top-0 rounded-full flex justify-center items-center'>
+                    <img alt="introduce-img" width={60} height={60} src={profile_img ||"/userImage.webp"} className="bg-[#0000000f] rounded-[inherit] object-cover relative align-top border-0"/>
                 </div>
             </Link>
 
