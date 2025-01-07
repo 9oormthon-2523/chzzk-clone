@@ -2,7 +2,7 @@
 
 import React from 'react';
 import HeaderButton from './HeaderButton.client';
-import useNavSizeToggle from '@/app/_store/studio/useNavSizeToggle.client';
+import useNavSizeToggle from '@/app/_store/stores/studio/useNavSizeToggle.client';
 
 const ExpandNavButton = () => {
   const { isFold, toggle } = useNavSizeToggle();

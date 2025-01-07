@@ -5,7 +5,7 @@ import NavMenu from './NavMenu.client';
 import DashboardIcon from '@public/studioPage/Dashboard.svg';
 import StudioIcon from '@public/studioPage/Studio.svg';
 import ViewerIcon from '@public/studioPage/Viewer.svg';
-import useNavSizeToggle from '@/app/_store/studio/useNavSizeToggle.client';
+import useNavSizeToggle from '@/app/_store/stores/studio/useNavSizeToggle.client';
 import { useUID } from '@/app/_store/context/useUid';
 
 const Navigation = () => {

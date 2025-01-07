@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
-import useNavSizeToggle from '@/app/_store/studio/useNavSizeToggle.client';
+import useNavSizeToggle from '@/app/_store/stores/studio/useNavSizeToggle.client';
 
 interface Props {
   icon: React.ReactNode;
