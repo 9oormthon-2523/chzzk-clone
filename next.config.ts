@@ -9,6 +9,9 @@ const nextConfig: NextConfig = {
     });
     return config;
   },
+  images: {
+    domains: ['img1.kakaocdn.net'],
+  },
 };
 
 export default nextConfig;
