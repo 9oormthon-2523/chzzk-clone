@@ -3,10 +3,10 @@ import PlayerBottom from '../components/VideoPlayer/PlayerBottom/PlayerBottom.cl
 import PlayerHeader from '../components/VideoPlayer/PlayerHeader/PlayerHeader.client' 
 import PlayerStateSign from '../components/VideoPlayer/ETC/PlayerStateSign.client'
 import PlayerOverlay from '../components/VideoPlayer/ETC/PlayerOverlay.client' 
-import { useHoverState, useVideoPlayerResize } from '../utils/local/VideoPlayerHook'
+import { useHoverState, useVideoPlayerResize } from '../utils/local/useVideoPlayerHook'
 import useScreenControl from '@/app/_store/live/useScreenControl'
 import useVideoControl from '@/app/_store/live/useVideoControl' 
-import OpacityAnimation from '../utils/local/OpacityAnimation.client'
+import OpacityAnimation from '../utils/local/useOpacityAnimation.client'
 import React, { CSSProperties, ReactNode, useRef, useState } from 'react'
 import useLiveManager from '@/app/_hooks/live/useLiveManager'
 import { usePathname } from "next/navigation"
@@ -21,15 +21,10 @@ const VideoPlayer = () => {
   const audioElRef = useRef<HTMLAudioElement>(null);
   const screenElRef = useRef<HTMLVideoElement | null>(null);
 
-  const dto = {
-
-  }
-  
   const [streaming_is_active, setStreaming_is_active] = useState<boolean>(false);
   
   const { ratio } = useLiveManager({channel:host_id, host_id ,screenElRef , streaming_is_active, audioElRef:audioElRef });
-  //추후 비디오 비율 대비 
-  // const RATIO:[number, number] = [1378, 775];
+
   const RATE = ratio[0];
   const resizeRATE = ratio[1];
 

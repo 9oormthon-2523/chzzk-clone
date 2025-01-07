@@ -1,74 +1,50 @@
 "use client";
 
-import dynamic from "next/dynamic";
 import NavBar from "@/app/(route)/(main)/_components/NavBar/NavBar.client";
+import useFullscreenHandler from "../utils/local/useFullScreenHandler.client";
 import useNavToggle from "@/app/_store/main/useNavToggle.client";
-import useScreenControl from "@/app/_store/live/useScreenControl";
+import useLiveInfo from "../utils/db/useLiveInfo.client";
 import LiveStreamWrapper from "./LiveStreamWrapper.client";
 import LiveWrapper from "./LiveTotalWrapper.clinet";
 import LiveDetails from "./LiveDetails.client";
 import ChatLayout from "./Chat.client";
-import useLiveInfo from "../utils/db/useLiveInfo.client";
-import { useEffect } from "react";
-import { getHostInfoPayload } from "../liveType";
+import dynamic from "next/dynamic";
 
 const VideoPlayer = dynamic(() => import("./VideoPlayer.client"), { ssr: false });
 
+import { getHostInfoPayload } from "../liveType";
 interface StreamingPageProps extends getHostInfoPayload {}
 
 export default function StreamingPage(props: StreamingPageProps) {
-    const { hostInfo, roomInit } = props;
+  const { hostInfo, roomInit } = props;
 
-    const { isFullscreen, offFullScreen } = useScreenControl();
-    const isOpen = useNavToggle((state) => state.isOpen);
-    const { title, is_active, audience_cnt } = useLiveInfo({
-        title: roomInit.title,
-        host_uid: roomInit.uid,
-        is_active: roomInit.is_active,
-        audience_cnt: roomInit.audience_cnt,
-    });
+  useFullscreenHandler();
 
-    const clearFullScreenDetect = () => {
-        if (!document.fullscreenElement) offFullScreen();
-    };
+  const isOpen = useNavToggle((state) => state.isOpen);
 
-    const handleFullscreenToggle = async () => {
-        try {
-            if (!isFullscreen && document.fullscreenElement) {
-                await document.exitFullscreen();
-            } else if (isFullscreen) {
-                await document.body.requestFullscreen();
-            }
-        } catch (err) {
-            console.error("Error fullscreen:", err);
-        }
-    };
+  const liveInfo = useLiveInfo({
+    title: roomInit.title,
+    host_uid: roomInit.uid,
+    is_active: roomInit.is_active,
+    audience_cnt: roomInit.audience_cnt,
+  });
 
-    useEffect(() => {
-        handleFullscreenToggle();
-    }, [isFullscreen]);
+  return (
+    <>
+      {isOpen && <NavBar />}
+      <LiveWrapper>
+        <LiveStreamWrapper>
+          <VideoPlayer />
+          <LiveDetails
+            {...hostInfo}
+            {...liveInfo}
+            uid={roomInit.uid}
+            start_time={roomInit.start_time}
+          />
+        </LiveStreamWrapper>
 
-    useEffect(() => {
-        document.addEventListener("fullscreenchange", clearFullScreenDetect);
-        return () => {
-            document.removeEventListener("fullscreenchange", clearFullScreenDetect);
-        };
-    }, []);
-
-    // Rendering
-    return (
-        <>
-            {isOpen && <NavBar />}
-            <LiveWrapper>
-                {/* Live Streaming */}
-                <LiveStreamWrapper>
-                    <VideoPlayer />
-                    <LiveDetails />
-                </LiveStreamWrapper>
-
-                {/* Chat Layout */}
-                <ChatLayout roomId={roomInit.room_id} />
-            </LiveWrapper>
-        </>
-    );
+        <ChatLayout roomId={roomInit.room_id} />
+      </LiveWrapper>
+    </>
+  );
 }

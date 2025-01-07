@@ -10,7 +10,7 @@ interface useLiveInfoPayload {
 
 /**
  * streaming_rooms데이터를 구독하는 기능 최대
- * 최대 3회 시도
+ * 최대 3회 재시도
  */
 
 const useLiveInfo = (init:useLiveInfoPayload) => {
@@ -33,15 +33,15 @@ const useLiveInfo = (init:useLiveInfoPayload) => {
                         try {
                             if (payload.new.title !== payload.old.title) {
                                 setTitle(payload.new.title);
-                                console.log("제목 변경", payload.new.title);
+                                // console.log("제목 변경", payload.new.title);
                             }
                             if (payload.new.is_active !== payload.old.is_active) {
                                 setIs_active(payload.new.is_active);
-                                console.log("방송 상태 변경", payload.new.is_active);
+                                // console.log("방송 상태 변경", payload.new.is_active);
                             }
                             if (payload.new.audience_cnt !== payload.old.audience_cnt) {
                                 setAudience_cnt(payload.new.audience_cnt);
-                                console.log("시청자 수 변경:", payload.new.audience_cnt);
+                                // console.log("시청자 수 변경:", payload.new.audience_cnt);
                             }
                         } catch (error) {
                             console.error("실시간 데이터 처리 중 오류 발생:", error);
