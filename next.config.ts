@@ -8,6 +8,9 @@ const nextConfig: NextConfig = {
       use: ['@svgr/webpack'],
     });
     return config;
+  },  
+  images: {
+    domains: ['img1.kakaocdn.net', 'yltgalkuhjkkvczgyano.supabase.co', ],
   },
 };
 
