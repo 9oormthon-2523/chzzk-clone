@@ -4,7 +4,7 @@ import React, { ReactNode, useEffect, useState } from 'react';
 import MenuButtonBox from '../common/MenuButtonBox.client';
 import ArrowDownIcon from '@public/studioPage/ArrowDown.svg';
 import ArrowUpIcon from '@public/studioPage/ArrowUp.svg';
-import useNavSizeToggle from '@/app/_store/studio/useNavSizeToggle.client';
+import useNavSizeToggle from '@/app/_store/stores/studio/useNavSizeToggle.client';
 import '@/app/_styles/studioPage.css';
 import SubMenus from './SubMenus';
 import { useRouter } from 'next/navigation';
