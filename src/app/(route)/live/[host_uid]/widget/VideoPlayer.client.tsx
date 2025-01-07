@@ -1,44 +1,41 @@
 "use client"
+import { useHoverState, useVideoPlayerResize } from '../utils/local/useVideoPlayerHook'
+import React, { CSSProperties, ReactNode, useRef } from 'react'
 import PlayerBottom from '../components/VideoPlayer/PlayerBottom/PlayerBottom.client' 
 import PlayerHeader from '../components/VideoPlayer/PlayerHeader/PlayerHeader.client' 
 import PlayerStateSign from '../components/VideoPlayer/ETC/PlayerStateSign.client'
 import PlayerOverlay from '../components/VideoPlayer/ETC/PlayerOverlay.client' 
-import { useHoverState, useVideoPlayerResize } from '../utils/local/useVideoPlayerHook'
+import OpacityAnimation from '../utils/local/useOpacityAnimation.client'
 import useScreenControl from '@/app/_store/live/useScreenControl'
 import useVideoControl from '@/app/_store/live/useVideoControl' 
-import OpacityAnimation from '../utils/local/useOpacityAnimation.client'
-import React, { CSSProperties, ReactNode, useRef, useState } from 'react'
 import useLiveManager from '@/app/_hooks/live/useLiveManager'
-import { usePathname } from "next/navigation"
+
 
 /**
  * 라이브 스트리밍 플레이어 컴포넌트
  */
 
-const VideoPlayer = () => {
-  const path = usePathname();
-  const host_id = path.split('/')[2];
+interface VideoPlayerProps {
+  uid:string
+  is_active:boolean
+}
+
+const VideoPlayer = (props:VideoPlayerProps) => {
+  const { uid, is_active } = props;
   const audioElRef = useRef<HTMLAudioElement>(null);
   const screenElRef = useRef<HTMLVideoElement | null>(null);
+  const isChatOpen = useScreenControl(state => state.isChatOpen);
+  const isFullOrWide = useScreenControl(state => state.isFullOrWide);
+  const { ratio:[ h_rate, w_rate ] } = useLiveManager({ channel:uid ,screenElRef , streaming_is_active:is_active, audioElRef:audioElRef });
 
-  const [streaming_is_active, setStreaming_is_active] = useState<boolean>(false);
-  
-  const { ratio } = useLiveManager({channel:host_id, host_id ,screenElRef , streaming_is_active, audioElRef:audioElRef });
-
-  const RATE = ratio[0];
-  const resizeRATE = ratio[1];
-
-  //스크린 컨트롤 훅
-  const screenControl = useScreenControl();
+  //리사이즈 훅
+  const {videoFrameRef, videoTotalRef, wh} = useVideoPlayerResize({ w_rate });
   //볼륨 의존성 get
   const volumeLevel = useVideoControl((state) => state.audioTrack.volumeLevel);
   //마우스 호버 훅
   const { isHover, HoverHandler } = useHoverState({delay:3000, dependencies:[volumeLevel]});
-  //리사이즈 훅
-  const {videoFrameRef, videoTotalRef, wh} = useVideoPlayerResize({resizeRATE, screenControl});
-  
-  const { isChatOpen, isFullOrWide } = screenControl;
-  
+
+
   /** 동적 스타일 **/
   //#region
   const container_style: CSSProperties = {
@@ -55,7 +52,7 @@ const VideoPlayer = () => {
   const frameVideoPlayer_style: CSSProperties = {
     width:"100%", 
     height:wh.h, 
-    maxWidth: isFullOrWide ? (window.innerHeight * RATE) + "px" : wh.h * RATE + "px" 
+    maxWidth: isFullOrWide ? (window.innerHeight * h_rate) + "px" : wh.h * h_rate + "px" 
   }
 
   const videoControler_style: CSSProperties = {
@@ -63,14 +60,10 @@ const VideoPlayer = () => {
     height: !isFullOrWide ? wh.h+"px" : !isChatOpen ? "100vh" : wh.h+"px",
     top: !isChatOpen || !isFullOrWide ? "0":"" 
   }
-
   //#endregion
 
   return (
     <div style={{ position: !isFullOrWide ? "relative" : undefined }}>
-      <button aria-label="리얼 타임으로 streaming-on-off 대체 버튼" className=' p-2 top-[15px] rounded-full z-[10000] left-[160px] bg-red-600 text-[white] fixed' onClick={()=>{
-        setStreaming_is_active(state => !state);
-      }}>임시 스트리밍 버튼</button>
 
       <div aria-label='리사이즈 중 body-bg가 보이는 것을 방지' style={{height:wh.h}} className='absolute z-[0] w-screen bg-black'/>
 
@@ -94,7 +87,6 @@ const VideoPlayer = () => {
           <div style={frameVideoPlayer_style} id="video-container" className='max-w-[100vw]'>
             <audio ref={audioElRef}/>
             <video ref={screenElRef} style={{objectFit:"contain"}} muted aria-label='비디오 대체 박스' id='streaming-video' className='w-full h-full'/>
-            {/* <video ref={screenElRef} className='w-full h-full bg-white'/> */}
           </div>
         </div>
         

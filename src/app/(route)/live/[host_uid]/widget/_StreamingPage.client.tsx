@@ -31,19 +31,25 @@ export default function StreamingPage(props: StreamingPageProps) {
 
   return (
     <>
-      {isOpen && <NavBar />}
-      <LiveWrapper>
-        <LiveStreamWrapper>
-          <VideoPlayer />
-          <LiveDetails
-            {...hostInfo}
-            {...liveInfo}
-            uid={roomInit.uid}
-            start_time={roomInit.start_time}
-          />
-        </LiveStreamWrapper>
+        {isOpen && <NavBar />}
+            <LiveWrapper>
+                <LiveStreamWrapper>
 
-        <ChatLayout roomId={roomInit.room_id} />
+                    <VideoPlayer 
+                        uid={roomInit.uid} 
+                        is_active={liveInfo.is_active}
+                    />
+
+                    <LiveDetails
+                        {...hostInfo}
+                        {...liveInfo}
+                        uid={roomInit.uid}
+                        start_time={roomInit.start_time}
+                    />
+
+                    </LiveStreamWrapper>
+
+            <ChatLayout roomId={roomInit.room_id} />
       </LiveWrapper>
     </>
   );

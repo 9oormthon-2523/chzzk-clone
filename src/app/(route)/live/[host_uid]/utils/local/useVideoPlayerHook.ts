@@ -1,28 +1,28 @@
-import { screenControlState } from "@/app/_store/live/useScreenControl";
+import useScreenControl, { screenControlState } from "@/app/_store/live/useScreenControl";
 import useNavToggle from "@/app/_store/main/useNavToggle.client";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 interface useVideoPlayerResizeProps {
-    resizeRATE: number, //리사이즈 비율
-    screenControl:screenControlState, //스크린 컨트롤 훅
+    w_rate: number, //리사이즈 비율
 }
 
 export const useVideoPlayerResize = (props: useVideoPlayerResizeProps) => {
     const { 
-        resizeRATE,
-        screenControl,
-     } = props;
+      w_rate,
+    } = props;
 
     const [wh, setWH] = useState({ w: 0, h: 0 });
     const videoFrameRef = useRef<HTMLDivElement|null>(null); // 비디오 재생 프레임
     const videoTotalRef = useRef<HTMLDivElement|null>(null); // 비디오 재생 컨트롤 프레임
-    const { isChatOpen, isFullscreen, chatPosition , isWideScreen, updateChatPosition } = screenControl;
+
     const isNavOpen = useNavToggle(state => state.isOpen);
+    const { isChatOpen, isFullscreen, chatPosition , isWideScreen, updateChatPosition } = useScreenControl();
+    
 
     //비디오 플레이어 창 핸들러
     const resizeHandler = () => {
         if (!videoFrameRef.current) return;
-        const height = videoFrameRef.current.clientWidth * resizeRATE;
+        const height = videoFrameRef.current.clientWidth * w_rate;
         videoFrameRef.current.style.height = `${height}px`;
     
         if (!videoTotalRef.current) return;
@@ -31,8 +31,7 @@ export const useVideoPlayerResize = (props: useVideoPlayerResizeProps) => {
           w: videoTotalRef.current.clientWidth,
           h: videoTotalRef.current.clientHeight,
         });
-        // if(!isChatOpen || !isFullOrWide) return;
-        updateChatPosition(resizeRATE);
+        updateChatPosition(w_rate);
       };
     
       useEffect(() => {
@@ -43,6 +42,8 @@ export const useVideoPlayerResize = (props: useVideoPlayerResizeProps) => {
 
       return { videoFrameRef, videoTotalRef, wh };
 }
+
+
 
 interface useHoverStateProps<T> {
     delay?:number

@@ -8,7 +8,6 @@ import type * as AgoraRTCType from "agora-rtc-sdk-ng";
  */
 
 interface useStreamforStudioPayload {
-    host_id?:string
     channel:string
     streaming_is_active:boolean //스트리밍이 true인지 false인지
     screenElRef:RefObject<HTMLVideoElement | null> //실제 비디오 연결된 ref
@@ -24,7 +23,6 @@ interface publishPayload {
 
 const useLiveManager = (payload: useStreamforStudioPayload) => {
     const {
-        host_id,
         channel,
         audioElRef,
         screenElRef,
