@@ -4,33 +4,44 @@ import React from 'react';
 import { useFollowerQuery } from '@/app/_store/queries/follow/query';
 import { useUID } from '@/app/_store/context/useUid';
 import UserColumn from './UserColumn.server';
+import useSearchInput from '@/app/_store/stores/studio/useSearchInput';
 
 const UserTable = () => {
   const uid = useUID();
   const { data } = useFollowerQuery(uid);
+  const { text, init } = useSearchInput();
+
+  const follower = data?.filter((item) =>
+    item.follower.nickname.includes(text)
+  );
 
   return (
-    <table className="block text-[#697183] border-t border-t-[#ddd] border-b border-b-[#ddd] text-[15px] mt-[16px] table-fixed overflow-y-auto h-[495px] w-full border-separate border-spacing-0 scrollbar-thin">
-      <colgroup className="font-blackHanSans">
-        <col />
-        <col className="w-[14.5%] min-w-[82px]" />
-        <col className="w-[14.5%]" />
-        <col className="w-[16.5%] min-w-[75px]" />
-      </colgroup>
-      <thead className="bg-[#f5f6f8] h-[40px] sticky top-0 z-10">
-        <tr>
-          <th scope="col">닉네임</th>
-          <th scope="col">팔로우 등록일</th>
-          <th scope="col">기간</th>
-          <th scope="col">액션</th>
-        </tr>
-      </thead>
-      <tbody>
-        {data?.map((follower) => (
+    <div className="mt-[16px] h-auto max-h-[495px] overflow-y-auto scrollbar-thin border-t border-b border-[#ddd] text-[#697183] text-[15px]">
+      {/* 헤더 */}
+      <div className="follwer-grid-ratio bg-[#f5f6f8] h-[40px] sticky top-0 z-10 border-t border-b border-[#ddd]">
+        <div className="th-div">닉네임</div>
+        <div className="th-div">팔로우 등록일</div>
+        <div className="th-div">기간</div>
+        <div className="th-div">액션</div>
+      </div>
+
+      {/* 데이터 또는 빈 상태 */}
+      {follower?.length ? (
+        follower.map((follower) => (
           <UserColumn key={follower.id} {...follower} />
-        ))}
-      </tbody>
-    </table>
+        ))
+      ) : (
+        <div className="flex flex-col gap-2 justify-center items-center h-[400px]">
+          <span>{`"${text}"`}에 해당하는 데이터가 없습니다.</span>
+          <button
+            className="bg-[#ddd] font-bold p-[5px_10px] rounded-xl hover:bg-[#bbb]"
+            onClick={init}
+          >
+            초기화
+          </button>
+        </div>
+      )}
+    </div>
   );
 };
 
