@@ -1,81 +1,78 @@
-import { useEffect } from "react";
-import { createClient } from "../_utils/supabase/client";
-import { useChatStore } from "../_store/chat/chatStore";
-import { Message } from "../_types/chat/Chat";
+"use client";
+
+import { useEffect, useState } from "react";
+import { createClient } from "@/app/_utils/supabase/client";
+import { Message } from "@/app/_types/chat/Chat";
 
 export const useChat = (roomId: string) => {
-  const { messages, addMessage, setMessages } = useChatStore();
-
   const supabase = createClient();
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [nickname, setNickname] = useState<string>("");
 
   useEffect(() => {
-    if (!roomId) return;
+    const fetchUserNickname = async () => {
+      const { data: userData, error: userError } =
+        await supabase.auth.getUser();
 
-    const fetchMessages = async () => {
-      const { data, error } = await supabase
-        .from("chat")
-        .select("*")
+      if (userError || !userData?.user) {
+        console.error("유저 정보를 가져오는 중 오류 발생:", userError);
+        return;
+      }
 
-        .eq("room_id", roomId)
-        .order("created_at", { ascending: true });
+      const userId = userData.user.id;
 
-      if (data) setMessages(data);
+      const { data: userProfile, error: profileError } = await supabase
+        .from("users")
+        .select("nickname")
+        .eq("id", userId)
+        .single();
+
+      if (profileError || !userProfile) {
+        console.error("프로필 정보를 가져오는 중 오류 발생:", profileError);
+        return;
+      }
+
+      setNickname(userProfile.nickname);
     };
 
-    fetchMessages();
+    fetchUserNickname();
+  }, [supabase]);
 
-    const subscription = supabase
-      .channel("public:chat")
-      .on(
-        "postgres_changes",
+  // 채널 구독
+  useEffect(() => {
+    const channel = supabase.channel(`room:${roomId}`);
 
-        {
-          event: "INSERT",
-          schema: "public",
-          table: "chat",
-          filter: `room_id=eq.${roomId}`,
-        },
-        (payload) => {
-          addMessage(payload.new as Message);
-        }
-      )
+    channel
+      .on("broadcast", { event: "message" }, (payload) => {
+        const newMessage = payload.payload as Message;
+        setMessages((prev) => [...prev, newMessage]);
+      })
       .subscribe();
 
     return () => {
-      supabase.removeChannel(subscription);
+      supabase.removeChannel(channel);
     };
-  }, [addMessage, setMessages, supabase, roomId]);
+  }, [roomId, supabase]);
 
   const sendMessage = async (message: string) => {
-    if (!roomId) {
-      console.error("유효하지 않은 roomId입니다.");
+    if (!nickname) {
+      console.error("닉네임이 설정되지 않았습니다.");
       return;
     }
 
-    const { data: userData, error: userError } = await supabase.auth.getUser();
-    if (!userData?.user) {
-      console.error("인증되지 않은 사용자입니다.");
-      return;
-    }
+    const newMessage: Message = {
+      id: Date.now().toString(),
+      room_id: roomId,
+      nickname,
+      message,
+      created_at: new Date().toISOString(),
+    };
 
-    const userId = userData.user.id;
-    const userNickname = userData.user.user_metadata.full_name;
-
-    const { data: insertData, error: insertError } = await supabase
-      .from("chat")
-      .insert([
-        { room_id: roomId, user_id: userId, message, nickname: userNickname },
-      ])
-      .select();
-
-    if (insertError) {
-      console.error("메시지 삽입 중 오류 발생:", insertError.message);
-      return;
-    }
-
-    if (insertData && insertData.length > 0) {
-      addMessage(insertData[0] as Message);
-    }
+    await supabase.channel(`room:${roomId}`).send({
+      type: "broadcast",
+      event: "message",
+      payload: newMessage,
+    });
   };
 
   return { messages, sendMessage };

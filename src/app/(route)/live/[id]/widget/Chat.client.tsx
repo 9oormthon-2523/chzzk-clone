@@ -1,9 +1,11 @@
 "use client";
+
 import useScreenControl from "@/app/_store/live/useScreenControl";
 import ChatWindow from "../components/Chat/ChatWindow.client";
 import ChatHeader from "../components/Chat/Header.client";
 import ChatInput from "../components/Chat/Input.client";
 import { useChat } from "@/app/_hooks/useChat";
+
 import { CSSProperties, useState } from "react";
 /**
  * 채팅 컨테이너 컴포넌트
@@ -16,15 +18,17 @@ const ChatLayout = ({ roomId }: { roomId: string }) => {
 
   if (!isChatOpen) return null;
 
-  const viewChat_style:CSSProperties = {
+  const viewChat_style: CSSProperties = {
     width: chatPosition === "side" ? "353px" : "auto",
     flex: chatPosition === "side" ? undefined : "1",
   };
+
   const handleSendMessage = async () => {
     if (!newMessage.trim()) return;
     await sendMessage(newMessage);
     setNewMessage("");
   };
+
   return (
     <aside
       id="view-chat"
