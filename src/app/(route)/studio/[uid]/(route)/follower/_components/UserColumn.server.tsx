@@ -36,7 +36,9 @@ const UserColumn = (props: FollowInfo) => {
       </div>
 
       {/* 기간 */}
-      <div className="text-center text-[13px]">{elapsedTime(created_at)}</div>
+      <div className="text-center text-[13px]" suppressHydrationWarning={true}>
+        {elapsedTime(created_at)}
+      </div>
 
       {/* 액션 버튼 */}
       <div className="text-center">
