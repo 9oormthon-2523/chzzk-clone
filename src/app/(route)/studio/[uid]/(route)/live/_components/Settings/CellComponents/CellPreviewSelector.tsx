@@ -6,7 +6,7 @@ import Image from 'next/image';
 import useStreamingSettings from '@/app/_store/stores/studio/useStreamingSettings';
 
 const CellPreviewSelector = ({ thumbnail }: { thumbnail: string | null }) => {
-  const { data, setThumbnail } = useStreamingSettings();
+  const { setThumbnail } = useStreamingSettings();
   const [previewUrl, setPreviewUrl] = useState('');
 
   useEffect(() => {
@@ -15,8 +15,6 @@ const CellPreviewSelector = ({ thumbnail }: { thumbnail: string | null }) => {
       setThumbnail(thumbnail);
     }
   }, [thumbnail]);
-
-  console.log(data);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
