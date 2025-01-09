@@ -2,10 +2,11 @@
 
 import React, { useState } from 'react';
 import SeacrhIcon from '@public/studioPage/Search.svg';
+import useStreamingSettings from '@/app/_store/stores/studio/useStreamingSettings';
 
 const CellCategory = () => {
   const [isFocus, setIsFocus] = useState(false);
-  console.log(isFocus);
+  const { data, setCategory } = useStreamingSettings();
 
   return (
     <div
@@ -22,6 +23,8 @@ const CellCategory = () => {
         className="text-[14px] focus:outline-none w-full"
         onFocus={() => setIsFocus(true)}
         onBlur={() => setIsFocus(false)}
+        onChange={(e) => setCategory(e.target.value)}
+        value={data.category}
       />
     </div>
   );

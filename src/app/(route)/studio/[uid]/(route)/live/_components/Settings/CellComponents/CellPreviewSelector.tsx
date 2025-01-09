@@ -3,21 +3,20 @@
 import React, { useState } from 'react';
 import PlusIcon from '@public/studioPage/Plus.svg';
 import Image from 'next/image';
+import useStreamingSettings from '@/app/_store/stores/studio/useStreamingSettings';
 
 const CellPreviewSelector = () => {
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const { setImage } = useStreamingSettings();
   const [previewUrl, setPreviewUrl] = useState('');
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    setSelectedFile(file);
+    setImage(file);
 
     const objectUrl = URL.createObjectURL(file);
     setPreviewUrl(objectUrl);
   };
-
-  console.log(selectedFile, previewUrl);
 
   return (
     <div className="">
@@ -29,7 +28,7 @@ const CellPreviewSelector = () => {
               alt="미리 보기"
               fill
               unoptimized
-              className="object-cover"
+              className="object-cover rounded-[5px]"
             />
           ) : (
             <>

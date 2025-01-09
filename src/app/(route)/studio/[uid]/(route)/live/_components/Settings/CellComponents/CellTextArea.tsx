@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 
 const CellTextArea = () => {
   const [isFocus, setIsFocus] = useState(false);
-  const { setTitle } = useStreamingSettings();
+  const { data, setTitle } = useStreamingSettings();
 
   return (
     <div
@@ -20,9 +20,10 @@ const CellTextArea = () => {
         onFocus={() => setIsFocus(true)}
         onBlur={() => setIsFocus(false)}
         onChange={(e) => setTitle(e.target.value)}
+        value={data.title}
       />
       <div className="text-[#9da5b6] text-[12px] mt-[3px] text-right">
-        0/100
+        {`${data.title.length}/100`}
       </div>
     </div>
   );
