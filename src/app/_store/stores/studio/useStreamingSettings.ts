@@ -1,19 +1,13 @@
+import { StreamingMutateType } from '@/app/_types/streaming.type';
 import { create } from 'zustand';
 
-type SettingData = {
-  title: string;
-  category: string;
-  tags: string[];
-  image: File | null;
-};
-
 interface Store {
-  data: SettingData;
+  data: StreamingMutateType;
   setTitle: (title: string) => void;
   setCategory: (category: string) => void;
   setPushTags: (tag: string) => void;
   setDeleteTags: (tag: string) => void;
-  setImage: (image: File | null) => void;
+  setThumbnail: (thumbnail: File | string | null) => void;
   init: () => void;
 }
 
@@ -21,7 +15,7 @@ const initData = {
   title: '',
   category: '',
   tags: [],
-  image: null,
+  thumbnail: null,
 };
 const useStreamingSettings = create<Store>()((set) => ({
   data: initData,
@@ -50,9 +44,9 @@ const useStreamingSettings = create<Store>()((set) => ({
         },
       };
     }),
-  setImage: (image) =>
+  setThumbnail: (thumbnail) =>
     set((state) => ({
-      data: { ...state.data, image },
+      data: { ...state.data, thumbnail },
     })),
   init: () => set(() => ({ data: initData })),
 }));
