@@ -5,7 +5,7 @@ interface MenuType {
 }
 
 export const getMenuList = (uid: string): Record<string, MenuType[]> => ({
-  대시보드: [],
+  대시보드: [{ text: '대시보드', route: `/studio/${uid}`, isImplement: true }],
   '방송 관리': [
     { text: '방송하기', route: `/studio/${uid}/live`, isImplement: true },
     { text: '설정', route: `/studio/${uid}/settings`, isImplement: false },
