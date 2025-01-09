@@ -1,12 +1,16 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import SeacrhIcon from '@public/studioPage/Search.svg';
 import useStreamingSettings from '@/app/_store/stores/studio/useStreamingSettings';
 
-const CellCategory = () => {
+const CellCategory = ({ category }: { category: string }) => {
   const [isFocus, setIsFocus] = useState(false);
   const { data, setCategory } = useStreamingSettings();
+
+  useEffect(() => {
+    if (category) setCategory(category);
+  }, [category]);
 
   return (
     <div

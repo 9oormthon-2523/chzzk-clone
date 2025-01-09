@@ -1,12 +1,15 @@
 'use client';
 
 import useStreamingSettings from '@/app/_store/stores/studio/useStreamingSettings';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
-const CellTextArea = () => {
+const CellTextArea = ({ title }: { title: string }) => {
   const [isFocus, setIsFocus] = useState(false);
   const { data, setTitle } = useStreamingSettings();
 
+  useEffect(() => {
+    if (title) setTitle(title);
+  }, [title]);
   return (
     <div
       className={`p-[10px_14px] rounded-[5px] border bg-white w-full ${

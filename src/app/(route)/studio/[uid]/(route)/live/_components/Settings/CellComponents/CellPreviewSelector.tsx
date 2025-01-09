@@ -1,18 +1,27 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PlusIcon from '@public/studioPage/Plus.svg';
 import Image from 'next/image';
 import useStreamingSettings from '@/app/_store/stores/studio/useStreamingSettings';
 
-const CellPreviewSelector = () => {
-  const { setImage } = useStreamingSettings();
+const CellPreviewSelector = ({ thumbnail }: { thumbnail: string | null }) => {
+  const { data, setThumbnail } = useStreamingSettings();
   const [previewUrl, setPreviewUrl] = useState('');
+
+  useEffect(() => {
+    if (thumbnail) {
+      setPreviewUrl(thumbnail);
+      setThumbnail(thumbnail);
+    }
+  }, [thumbnail]);
+
+  console.log(data);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    setImage(file);
+    setThumbnail(file);
 
     const objectUrl = URL.createObjectURL(file);
     setPreviewUrl(objectUrl);
@@ -45,6 +54,20 @@ const CellPreviewSelector = () => {
           className="hidden"
         />
       </label>
+
+      {previewUrl && (
+        <div className="mt-[5px]">
+          <button
+            className="text-[#697183] bg-white border border-[#ddd] text-[14px] font-extrabold h-[32px] px-[15px] rounded-[5px] hover:bg-gray-200"
+            onClick={() => {
+              setPreviewUrl('');
+              setThumbnail(null);
+            }}
+          >
+            삭제
+          </button>
+        </div>
+      )}
 
       <ul className="text-[#697183] text-[13px] list-disc	ml-[20px] mt-[10px]">
         <li>등록하지 않으면 기본 이미지로 썸네일이 노출됩니다.</li>

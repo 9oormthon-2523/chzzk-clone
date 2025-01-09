@@ -6,7 +6,7 @@ import useStreamingSettings from '@/app/_store/stores/studio/useStreamingSetting
 import DeleteIcon from '@public/studioPage/Delete.svg';
 import ErrorAlertIcon from '@public/studioPage/ErrorAlert.svg';
 
-const CellTags = () => {
+const CellTags = ({ tags }: { tags: string[] }) => {
   const [isFocus, setIsFocus] = useState(false);
   const [text, setText] = useState('');
   const [tagErrorType, setTagErrorType] = useState<{
@@ -23,6 +23,16 @@ const CellTags = () => {
       setTagErrorType((prev) => ({ ...prev, lengthError: false }));
     }
   }, [data]);
+
+  useEffect(() => {
+    if (tags.length > 0) {
+      tags.forEach((item) => {
+        if (!data.tags.includes(item)) {
+          setPushTags(item);
+        }
+      });
+    }
+  }, [tags, data.tags]);
 
   return (
     <div className="flex flex-col w-full">
