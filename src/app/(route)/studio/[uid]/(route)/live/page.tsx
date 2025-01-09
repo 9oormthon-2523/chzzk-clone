@@ -3,6 +3,7 @@ import Setting from './_components/Settings/Setting';
 import StreamingView from './_components/StreamingView';
 import { prefetchUserStreaming } from '@/app/_store/queries/streamingSettings/query';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
+import ChatLayout from '@/app/(route)/live/[host_uid]/widget/Chat.client';
 
 const StudioLivePage = async ({
   params,
@@ -27,9 +28,7 @@ const StudioLivePage = async ({
       </div>
 
       {/* 채팅 영역 */}
-      <div className="w-[40%] bg-slate-200 overflow-auto h-full m-[0_auto]">
-        chat layout
-      </div>
+      <ChatLayout roomId={uid} />
     </div>
   );
 };
