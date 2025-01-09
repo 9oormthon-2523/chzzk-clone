@@ -1,9 +1,8 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useParams, useRouter } from 'next/navigation';
+import { useRouter, useParams } from 'next/navigation';
 import { createClient } from '@/app/_utils/supabase/client';
-import ChannelProfile from '../../components/ChannelProfile';
 import Image from 'next/image';
 
 interface PostDetail {
@@ -15,10 +14,9 @@ interface PostDetail {
 }
 
 export default function Detail() {
-  const params = useParams();
-  const { postid } = params || {};
-  const [post, setPost] = useState<PostDetail | null>(null);
   const router = useRouter();
+  const { postid, uid } = useParams();
+  const [post, setPost] = useState<PostDetail | null>(null);
   const formattedDate = post ? new Date(post.created_at).toLocaleString() : '';
 
   useEffect(() => {
@@ -40,11 +38,6 @@ export default function Detail() {
           console.error('게시글 불러오기 오류:', error);
         } else {
           setPost(data);
-          if (data?.img_url) {
-            console.log('post.img_url:', data.img_url);
-          } else {
-            console.log('이미지 URL이 없음');
-          }
         }
       } catch (err) {
         console.error('불러오기 에러:', err);
@@ -52,7 +45,7 @@ export default function Detail() {
     };
 
     fetchPostById();
-  }, [postid, params]);
+  }, [postid]);
 
   const handleDelete = async () => {
     if (!postid) return;
@@ -68,7 +61,7 @@ export default function Detail() {
         console.error('게시글 삭제 오류:', error);
       } else {
         console.log('게시글 삭제 완료');
-        router.push('/channel/1');
+        router.push(`/channel/${uid}`);
       }
     } catch (err) {
       console.error('게시글 삭제 에러:', err);
@@ -81,17 +74,15 @@ export default function Detail() {
 
   return (
     <div className="p-4">
-      <div className="h-32" />
-      <ChannelProfile nickname="엄청난 물고기" follower={2.4} context="매일 물고기 썰 풀어드립니다." />
       <div className="mx-12">
         <button
           className="mt-4 mr-2 px-4 py-2 bg-gray-100 font-bold rounded-xl hover:bg-gray-200"
-          onClick={() => router.push('/channel/1')} >
+          onClick={() => router.push(`/channel/${uid}`)} >
             목록
         </button>
         <button
           className="mt-4 mr-2 px-4 py-2 bg-gray-100 font-bold rounded-xl hover:bg-gray-200"
-          onClick={() => router.push(`/channel/1/edit/${post.id}`)} >
+          onClick={() => router.push(`/channel/${uid}/edit/${post.id}`)} >
             수정
         </button>
         <button 
