@@ -1,4 +1,7 @@
+"use client";
 import { Message } from "@/app/_types/chat/Chat";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 /**
  * 채팅 창
  */
@@ -9,6 +12,9 @@ type MessageListProps = {
 };
 
 const ChatWindow = ({ messages }: MessageListProps) => {
+  useEffect(() => {
+    console.log("msg:", messages);
+  }, [messages]);
   return (
     <div
       id="chatting-list-container"
@@ -22,7 +28,12 @@ const ChatWindow = ({ messages }: MessageListProps) => {
         <div id="empty-box-forChat" aria-label="빈 박스" />
         <div className="text-[14px]">
           {messages.map((msg, idx) => (
-            <ChatBox key={idx} nickname={msg.nickname} message={msg.message} />
+            <ChatBox
+              key={idx}
+              nickname={msg.nickname}
+              message={msg.message}
+              id={msg.id}
+            />
           ))}
         </div>
       </div>
@@ -35,15 +46,23 @@ export default ChatWindow;
 type ChatProps = {
   nickname: string;
   message: string;
+  id: string;
 };
 //채팅 박스
-const ChatBox = ({ nickname, message }: ChatProps) => {
+const ChatBox = ({ nickname, message, id }: ChatProps) => {
+  const router = useRouter();
+  const handleNicknameClick = () => {
+    router.push(`/channel/${id}`);
+  };
   return (
     <div aria-label="chat w-full">
       <button className="px-[6px] py-[4px] text-left">
-        <span className="mr-[4px] leading-[18px] m-[-2px_0] p-[2px_4px_2px_2px] relative text-green-500">
+        <button
+          className="mr-[4px] leading-[18px] m-[-2px_0] p-[2px_4px_2px_2px] relative text-green-500"
+          onClick={handleNicknameClick}
+        >
           {nickname}
-        </span>
+        </button>
 
         <span className="text-[#2e3033] text-left break-words leading-[20px]">
           {message}
