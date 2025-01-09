@@ -1,17 +1,15 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { createClient } from '@/app/_utils/supabase/client';
 import { useRouter, useParams } from 'next/navigation';
+import { createClient } from '@/app/_utils/supabase/client';
 import Image from 'next/image';
-import ChannelProfile from '../../components/ChannelProfile';
 
 const supabase = createClient();
 
 export default function EditPage() {
   const router = useRouter();
-  const params = useParams();
-  const { postid } = params || {};
+  const { postid, uid } = useParams();
 
   const [text, setText] = useState('');
   const [oldImageUrl, setOldImageUrl] = useState<string | null>(null);
@@ -102,20 +100,14 @@ export default function EditPage() {
         return;
       }
 
-      router.push(`/channel/1/detail/${postid}`);
+      router.push(`/channel/${uid}/detail/${postid}`); 
     } catch (err) {
       console.error('에러 발생:', err);
     }
   };
 
   return (
-    <div className="mx-12">
-      <div className="h-32" />
-      <ChannelProfile
-        nickname="엄청난 물고기"
-        follower={2.4}
-        context="매일 물고기 썰 풀어드립니다."
-      />
+    <>
       <form onSubmit={handleSubmit} className="m-auto mt-12 p-8 w-full bg-gray-50 rounded-lg">
         <p className="text-xl font-black mb-4">글수정</p>
 
@@ -172,6 +164,6 @@ export default function EditPage() {
         </div>
       </form>
       <div className="h-32" />
-    </div>
+    </>
   );
 }
