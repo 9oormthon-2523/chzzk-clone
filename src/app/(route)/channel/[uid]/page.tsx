@@ -1,49 +1,79 @@
 'use client';
 import { useEffect, useState } from "react";
 import { createClient } from "../../../_utils/supabase/client";
-import Link from 'next/link';
-import ChannelProfile from "./components/ChannelProfile";
+import { useRouter, useParams } from 'next/navigation'; 
 import Post from "./components/Post";
 import BoardInput from "./components/BoardInput";
 
 const Channel = () => {
-  const [posts, setPosts] = useState<{ id: number; nickname: string; content: string; img_url: string | null }[]>([]);
+  const [isClient, setIsClient] = useState(false); 
+  const [posts, setPosts] = useState<{ id: number; nickname: string; content: string; img_url: string | null; profile_img: string | null }[]>([]);
+  const router = useRouter();
+  const { uid } = useParams();
 
-  const fetchPosts = async () => {
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  useEffect(() => {
+    if (isClient && typeof uid === 'string') {
+      fetchPosts(uid); 
+    }
+  }, [isClient, uid]);
+
+  const fetchPosts = async (uid: string) => {
     const supabase = createClient();
     const { data, error } = await supabase
       .from("posts")
-      .select("id, nickname, content, img_url");
+      .select("id, nickname, content, img_url, user_id") 
+      .eq("user_id", uid); 
 
     if (error) {
       console.error("글 불러오기 오류", error);
     } else {
-      setPosts(data || []);
+      const postsWithProfileImg = await Promise.all(data.map(async (post) => {
+        const { data: userData, error: userError } = await supabase
+          .from("users")
+          .select("profile_img")
+          .eq("id", post.user_id)
+          .single();
+
+        if (userError) {
+          console.error("사용자 정보 불러오기 오류", userError);
+        }
+
+        return {
+          ...post,
+          profile_img: userData?.profile_img || null, 
+        };
+      }));
+
+      setPosts(postsWithProfileImg || []);
     }
   };
 
-  useEffect(() => {
-    fetchPosts();
-  }, []);
-
   return (
     <>
-      <div className="mx-12">
-        <div className="h-32" />
-        <ChannelProfile nickname="엄청난 물고기" follower={2.4} context="매일 물고기 썰 풀어드립니다." />
         <p className="text-xl font-black ml-4 mt-6">커뮤니티</p>
         <div className="ml-4 w-10/12">
           <BoardInput />
-          <div className="flex w-full flex-col bg-white rounded-lg mt-6 gap-6">
+          <div className="flex w-full flex-col-reverse bg-white rounded-lg mt-6 gap-6">
             {posts.map((post) => (
-              <Link key={post.id} href={`/channel/1/detail/${post.id}`} passHref>
-              <Post nickname={post.nickname} content={post.content} img_url={post.img_url}/>
-            </Link>
+              <div
+                key={post.id}
+                onClick={() => router.push(`/channel/${uid}/detail/${post.id}`)} 
+              >
+                <Post 
+                  nickname={post.nickname} 
+                  content={post.content} 
+                  img_url={post.img_url} 
+                  profile_img={post.profile_img}
+                />
+              </div>
             ))}
           </div>
         </div>
         <div className="h-32" />
-      </div>
     </>
   );
 };

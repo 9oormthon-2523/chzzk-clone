@@ -12,6 +12,10 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: 'yltgalkuhjkkvczgyano.supabase.co',
       },
+      {
+        protocol: 'http',
+        hostname: 'img1.kakaocdn.net',
+      },
     ],
   },
   webpack: (config) => {
