@@ -18,7 +18,7 @@ const useAudienceCnt = (payload: useAudienceCntPayload) => {
     const [audience, setAudience] = useState<Record<string, number>>({});  // 시청자 dto 저장
     const [pingChannel, setPingChannel] = useState<RealtimeChannel | null>(null); // 채널 저장
 
-    const TIME = 10 * 1000;
+    const TIME = 7.5 * 1000;
 
     // db 업데이트
     const updateAudienceCnt = async (cnt: number) => {
@@ -106,7 +106,7 @@ const useAudienceCnt = (payload: useAudienceCntPayload) => {
             console.log("시청자 수 채널 삭제 완료");
         }
     };
-    
+
 
     // 브라우저 종료시 리소스 정리
     useEffect(() => {

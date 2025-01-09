@@ -1,9 +1,11 @@
 import { useRef, useState } from 'react';
 import { audioControl } from './media/audioControls';
 import type * as AgoraRTCType from 'agora-rtc-sdk-ng';
+import useAudienceCnt from './audience/useAudienceCnt';
 import { delClient, initializeClient } from './client/useClient.client';
 import { extractMediaTrack, unpublishMediaTracks } from './media/useMediaTrack';
 import { useStreamingOnOff } from '@/app/_store/queries/streamingSettings/mutation';
+
 
 /**
  * 호스트가 사용하는 스트리밍 훅
@@ -29,6 +31,7 @@ const useStudioManager = (uid: string) => {
   }); // 오디오 컨트롤 훅
 
   const { onMutation, offMutation } = useStreamingOnOff(uid);
+  const { activateChannel, deactivateChannel } = useAudienceCnt({ host_uid:uid });
 
   // 사용법 addTrackShare():스크린 + 마이크 / addTrackShare("mic"):마이크 / addTrackShare("screen"): 스크린
   const addTrackShare = (type: mediaResource = 'all') =>
@@ -55,6 +58,7 @@ const useStudioManager = (uid: string) => {
     try {
       await initializeClient({ APP_ID, channel: uid, clientRef, uid });
       await onMutation();
+      activateChannel();
       return true;
     } catch (err: unknown) {
       await delClient(clientRef);
@@ -74,6 +78,7 @@ const useStudioManager = (uid: string) => {
       });
       await delClient(clientRef);
       await offMutation();
+      deactivateChannel
       return true;
     } catch (err: unknown) {
       console.log(err);
