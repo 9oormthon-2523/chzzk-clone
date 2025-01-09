@@ -1,9 +1,11 @@
 'use client';
 
+import useStreamingSettings from '@/app/_store/stores/studio/useStreamingSettings';
 import React, { useState } from 'react';
 
 const CellTextArea = () => {
   const [isFocus, setIsFocus] = useState(false);
+  const { setTitle } = useStreamingSettings();
 
   return (
     <div
@@ -17,6 +19,7 @@ const CellTextArea = () => {
         maxLength={100}
         onFocus={() => setIsFocus(true)}
         onBlur={() => setIsFocus(false)}
+        onChange={(e) => setTitle(e.target.value)}
       />
       <div className="text-[#9da5b6] text-[12px] mt-[3px] text-right">
         0/100
