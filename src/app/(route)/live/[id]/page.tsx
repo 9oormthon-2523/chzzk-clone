@@ -1,13 +1,12 @@
 import Header from "@/app/_components/Header/Header.server";
 import StreamingPage from "./widget/_StreamingPage.client";
 
-export default async function Page({ params }: { params: Promise<{ uid: string }> }) {
-  const { uid } = await params;
-
+export default function Page({ params }: { params: { id: string } }) {
+  const { id } = params;
   return (
     <>
       <Header />
-      <StreamingPage params={uid} />
+      <StreamingPage params={id} />
     </>
   );
 }

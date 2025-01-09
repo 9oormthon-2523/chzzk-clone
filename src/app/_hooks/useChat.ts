@@ -41,7 +41,6 @@ export const useChat = (roomId: string) => {
   // 채널 구독
   useEffect(() => {
     const channel = supabase.channel(`room:${roomId}`);
-
     channel
       .on("broadcast", { event: "message" }, (payload) => {
         const newMessage = payload.payload as Message;
