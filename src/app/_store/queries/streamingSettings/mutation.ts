@@ -47,7 +47,23 @@ const streamingUpdate = async (props: StreamingMutateType) => {
   if (!error) alert(`방송 정보가 업데이트 되었습니다.`);
 };
 
-export const useStreamingUpdate = () => {
+export const useStreamingUpdate = (uid: string) => {
+  const queryClient = useQueryClient();
+
+  const { mutate: streamingInfoMutate } = useMutation({
+    mutationKey: ['user-streaming', uid],
+    mutationFn: (props: StreamingMutateType) => {
+      return streamingUpdate(props);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['user-streaming', uid] });
+    },
+  });
+
+  return { streamingInfoMutate };
+};
+
+export const useStreamingOnOff = () => {
   const queryClient = useQueryClient();
 
   const { mutate: streamingInfoMutate } = useMutation({

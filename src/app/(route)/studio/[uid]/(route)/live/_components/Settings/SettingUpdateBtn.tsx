@@ -1,13 +1,15 @@
 'use client';
 
+import { useUID } from '@/app/_store/context/useUid';
 import { useStreamingUpdate } from '@/app/_store/queries/streamingSettings/mutation';
 import useStreamingSettings from '@/app/_store/stores/studio/useStreamingSettings';
 import { StreamingQueryType } from '@/app/_types/streaming.type';
 import React, { useEffect, useState } from 'react';
 
 const SettingUpdateBtn = ({ ...props }: StreamingQueryType) => {
+  const uid = useUID();
   const { data } = useStreamingSettings();
-  const { streamingInfoMutate } = useStreamingUpdate();
+  const { streamingInfoMutate } = useStreamingUpdate(uid);
 
   const [hasDiff, setHasDiff] = useState(false);
   useEffect(() => {
