@@ -1,24 +1,24 @@
 import Link from 'next/link';
 import DashBoardBox from '../DashBoardBox.server';
 import DashBoardTitle from '../DashBoardTitle.server';
-import DashBoardButton from '../DashBoardButton.server';
+// import DashBoardButton from '../DashBoardButton.server';
 
 const Widget5 = () => {
   const list = [
     {
-      title: '스트리밍 소프트웨어를 다운로드 하세요',
-      date: '2024 .12 .18',
+      title: '원 클릭으로 편하게 방송을 시작해 보세요.',
+      date: '2024.12.18',
       notice_id: 'd12jlf21-tj ',
     },
     {
-      title: '스트림 키를 소프트웨어에 붙여 넣어주세요.',
-      date: '2024 .12 .18',
+      title:
+        '방송관리 > "설정", "알림", "리허설 방송하기" 는 추후 구현 예정입니다.',
+      date: '2024.12.31',
       notice_id: 'd12j2jc1-au',
     },
     {
-      title:
-        '스트리밍 소프트웨어에서 방송을 시작하면 라이브 방송이 진행됩니다.',
-      date: '2024 .12 .18',
+      title: '시청자 관리 > "구독자", "활동 제한" 은 추후 구현 예정입니다.',
+      date: '2025.01.09',
       notice_id: 'pgmjlf21-po',
     },
   ];
@@ -35,9 +35,9 @@ const Widget5 = () => {
         ))}
       </ul>
 
-      <div className="mt-[20px] text-center">
+      {/* <div className="mt-[20px] text-center">
         <DashBoardButton theme="white">전체 보기</DashBoardButton>
-      </div>
+      </div> */}
     </DashBoardBox>
   );
 };
