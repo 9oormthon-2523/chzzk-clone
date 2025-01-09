@@ -1,10 +1,11 @@
 "use client"
 import Footer from "@/app/_components/Footer/footer";
+import React, { CSSProperties, ReactNode, useRef } from "react";
 import useScreenControl from "@/app/_store/live/useScreenControl";
-import { CSSProperties, ReactNode, useRef } from "react";
 
 /**
- * 라이브 스트리밍 컨테이너 컴포넌트
+ * 라이브 스트리밍 래퍼 컴포넌트
+ * 채팅 포지션과 (좌단/하단) 스크린 상태에 따라 flex 변경
  */
 
 interface LiveStreamWrapperProps {
@@ -14,9 +15,11 @@ interface LiveStreamWrapperProps {
 const LiveStreamWrapper = (props:LiveStreamWrapperProps) => {
     const { children } = props;
     const containerRef = useRef<HTMLDivElement>(null);
+    const isFullOrWide = useScreenControl(state => state.isFullOrWide);
+    const chatPosition = useScreenControl(state => state.chatPosition);
 
-    const { isFullOrWide, chatPosition } = useScreenControl();
 
+    // flex로 페이지 분리함
     const main_style: CSSProperties = {
         scrollbarWidth:'none', 
         flex: chatPosition === "side" ? "1 1 0%" : undefined,

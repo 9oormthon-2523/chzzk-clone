@@ -8,6 +8,7 @@ export default function RootLayout({
   }>) {
     return (
         <div id="container" className="">
+            <Header/>
             {children}
         </div>
     );

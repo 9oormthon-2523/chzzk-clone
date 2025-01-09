@@ -4,11 +4,15 @@ import useScreenControl from "@/app/_store/live/useScreenControl";
 import useNavToggle from "@/app/_store/main/useNavToggle.client";
 import { CSSProperties, ReactNode } from "react";
 
+/**
+ * streaming 페이지 전체 래퍼 컴포넌트
+ */
+
 interface LiveWrapperProps {
   children: ReactNode;
 }
 
-const LiveWrapper = ({ children }: LiveWrapperProps) => {
+const LiveTotalWrapper = ({ children }: LiveWrapperProps) => {
   const { isFullOrWide, chatPosition, isChatOpen } = useScreenControl();
   const isNavOpen = useNavToggle(state => state.isOpen);
   const navPadding = isNavOpen ? 16 : 0; // 좌측 패딩
@@ -47,4 +51,4 @@ const LiveWrapper = ({ children }: LiveWrapperProps) => {
   );
 };
 
-export default LiveWrapper;
+export default LiveTotalWrapper;
