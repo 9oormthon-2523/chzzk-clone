@@ -1,6 +1,6 @@
 export type Message = {
-  id: number;
-  user_id: number;
+  id: string;
+  room_id: string;
   nickname: string;
   message: string;
   created_at: string;
