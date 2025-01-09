@@ -1,7 +1,7 @@
 'use client';
-
-import React, { useState, useEffect } from 'react';
-import { createClient } from '@/app/_utils/supabase/client';
+import { useState, useEffect } from "react";
+import { createClient } from "@/app/_utils/supabase/client";
+import Image from "next/image";
 
 interface UserType {
   email: string;
@@ -16,9 +16,9 @@ export default function Settings() {
 
   const [user, setUser] = useState<UserType | null>(null);
   const [newImage, setNewImage] = useState<File | null>(null);
-  const [previewUrl, setPreviewUrl] = useState<string>('');
-  const [nickname, setNickname] = useState<string>('');
-  const [channelIntro, setChannelIntro] = useState<string>('');
+  const [previewUrl, setPreviewUrl] = useState<string>("");
+  const [nickname, setNickname] = useState<string>("");
+  const [channelIntro, setChannelIntro] = useState<string>("");
   const [nicknameLength, setNicknameLength] = useState<number>(0);
   const [channelIntroLength, setChannelIntroLength] = useState<number>(0);
 
@@ -34,37 +34,36 @@ export default function Settings() {
       }
 
       if (!supabaseUser) {
-        throw new Error('사용자 정보가 존재하지 않습니다.');
+        throw new Error("사용자 정보가 존재하지 않습니다.");
       }
 
       setUser({
-        email: supabaseUser.email ?? '',
+        email: supabaseUser.email ?? "",
         id: supabaseUser.id,
-        name: supabaseUser.user_metadata?.full_name ?? '',
-        img: supabaseUser.user_metadata?.avatar_url ?? '',
-        channel_intro: '', 
+        name: supabaseUser.user_metadata?.full_name ?? "",
+        img: supabaseUser.user_metadata?.avatar_url ?? "",
+        channel_intro: "",
       });
 
       if (supabaseUser.user_metadata?.avatar_url) {
         setPreviewUrl(supabaseUser.user_metadata.avatar_url);
       }
 
-      setNickname(supabaseUser.user_metadata?.full_name ?? '');
-      
+      setNickname(supabaseUser.user_metadata?.full_name ?? "");
+
       const { data: userDetails, error: fetchUserDetailsError } = await supabase
-        .from('users')
-        .select('channel_intro')
-        .eq('id', supabaseUser.id)
+        .from("users")
+        .select("channel_intro")
+        .eq("id", supabaseUser.id)
         .single();
 
       if (fetchUserDetailsError) {
         throw new Error(fetchUserDetailsError.message);
       }
 
-      setChannelIntro(userDetails?.channel_intro ?? '');
-
+      setChannelIntro(userDetails?.channel_intro ?? "");
     } catch (error) {
-      console.error('사용자 정보 불러오기 오류', error);
+      console.error("사용자 정보 불러오기 오류", error);
     }
   };
 
@@ -92,17 +91,17 @@ export default function Settings() {
         const filePath = `avatars/${user.id}/${Date.now()}_${newImage.name}`;
 
         const { error: uploadError } = await supabase.storage
-          .from('avatars')
+          .from("avatars")
           .upload(filePath, newImage);
 
         if (uploadError) {
           throw new Error(`이미지 업로드 오류: ${uploadError.message}`);
         }
 
-        const { data: publicUrlData } = supabase.storage.from('avatars').getPublicUrl(filePath);
+        const { data: publicUrlData } = supabase.storage.from("avatars").getPublicUrl(filePath);
 
         if (!publicUrlData) {
-          throw new Error('이미지 URL 가져오기 오류');
+          throw new Error("이미지 URL 가져오기 오류");
         }
 
         if (publicUrlData?.publicUrl) {
@@ -122,7 +121,7 @@ export default function Settings() {
       }
 
       const { error: upsertError } = await supabase
-        .from('users')
+        .from("users")
         .upsert([
           {
             id: user.id,
@@ -146,10 +145,10 @@ export default function Settings() {
       });
 
       setNewImage(null);
-      console.log('사용자 업데이트 성공', updatedUser);
-      alert('프로필이 업데이트되었습니다!');
+      console.log("사용자 업데이트 성공", updatedUser);
+      alert("프로필이 업데이트되었습니다!");
     } catch (error) {
-      console.error('프로필 업데이트 오류', error);
+      console.error("프로필 업데이트 오류", error);
     }
   };
 
@@ -164,8 +163,7 @@ export default function Settings() {
   };
 
   return (
-    <div className="mx-12">
-      <div className="h-32" />
+    <>
       <div className="flex items-center justify-end">
         <button
           className="inline-flex justify-center mr-2 py-2 px-4 w-16 border border-transparent shadow-sm text-sm rounded-md mt-4 font-black bg-gray-200 text-gray-500"
@@ -190,10 +188,13 @@ export default function Settings() {
               <div className="flex flex-row items-center gap-2">
                 {previewUrl ? (
                   <div className="rounded-full w-[140px] h-[140px] overflow-hidden">
-                    <img
+                    <Image
                       src={previewUrl}
                       alt="새 프로필 미리 보기"
-                      className="w-full h-full object-cover"
+                      width={140}
+                      height={140}
+                      className="object-cover"
+                      priority
                     />
                   </div>
                 ) : (
@@ -219,7 +220,7 @@ export default function Settings() {
                 onChange={handleNicknameChange}
                 maxLength={10}
               />
-              <div className="w-16 text-sm text-gray-500">{nicknameLength} / 10</div> 
+              <div className="w-16 text-sm text-gray-500">{nicknameLength} / 10</div>
             </div>
 
             <div className="flex flex-row gap-2 mt-4">
@@ -237,6 +238,6 @@ export default function Settings() {
           <div className="text-center">사용자 정보를 불러오는 중...</div>
         )}
       </div>
-    </div>
+    </>
   );
 }
