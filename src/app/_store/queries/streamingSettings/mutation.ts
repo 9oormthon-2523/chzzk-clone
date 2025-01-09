@@ -1,6 +1,7 @@
 import { StreamingMutateType } from '@/app/_types/streaming.type';
 import { createClient } from '@/app/_utils/supabase/client';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { format } from 'date-fns';
 
 const streamingUpdate = async (props: StreamingMutateType) => {
   const supabase = createClient();
@@ -63,18 +64,67 @@ export const useStreamingUpdate = (uid: string) => {
   return { streamingInfoMutate };
 };
 
-export const useStreamingOnOff = () => {
+const streamingOn = async () => {
+  const supabase = createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) throw new Error('Unauthorized');
+
+  console.log(format(new Date(), 'yyyy-MM-dd HH:mm:ss'));
+
+  await supabase.from('streaming_rooms').upsert({
+    uid: user.id,
+    is_active: true,
+    // start_time: ,
+  });
+};
+
+const streamingOff = async () => {
+  const supabase = createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) throw new Error('Unauthorized');
+
+  await supabase.from('streaming_rooms').upsert({
+    uid: user.id,
+    title: `${user.user_metadata.full_name}의 라이브 방송`,
+    thumbnail: null,
+    tags: [],
+    category: '',
+    is_active: false,
+    start_time: null,
+    audience_cnt: 0,
+  });
+};
+
+export const useStreamingOnOff = (uid: string) => {
   const queryClient = useQueryClient();
 
-  const { mutate: streamingInfoMutate } = useMutation({
-    mutationKey: ['user-streaming'],
-    mutationFn: (props: StreamingMutateType) => {
-      return streamingUpdate(props);
+  const { mutateAsync: onMutation } = useMutation({
+    mutationKey: ['user-streaming', uid],
+    mutationFn: () => {
+      return streamingOn();
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['user-streaming'] });
+      queryClient.invalidateQueries({ queryKey: ['user-streaming', uid] });
     },
   });
 
-  return { streamingInfoMutate };
+  const { mutateAsync: offMutation } = useMutation({
+    mutationKey: ['user-streaming', uid],
+    mutationFn: () => {
+      return streamingOff();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['user-streaming', uid] });
+    },
+  });
+
+  return { onMutation, offMutation };
 };

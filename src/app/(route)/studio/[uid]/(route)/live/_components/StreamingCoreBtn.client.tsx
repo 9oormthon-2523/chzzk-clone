@@ -2,27 +2,27 @@
 
 import useStudioManager from '@/app/_hooks/studio/useStudioManager.client';
 import { useUID } from '@/app/_store/context/useUid';
+import { useUserStreaming } from '@/app/_store/queries/streamingSettings/query';
 import React, { useState } from 'react';
 
 const StreamingCoreBtn = () => {
   const uid = useUID();
   const [loading, setLoading] = useState(false);
-  const [isStreaming, setIsStreaming] = useState(false);
+
   const { streamOn, streamOff, addTrackShare, stopTrackShare, volumeControl } =
     useStudioManager(uid);
   const { audioState, controlAudio, audioVolume } = volumeControl;
+  const { data } = useUserStreaming(uid);
 
   const handleStreamToggle = async () => {
     setLoading(true);
 
-    if (isStreaming) {
+    if (data?.is_active) {
       // 스트리밍 종료
-      const success = await streamOff();
-      if (success) setIsStreaming(false);
+      await streamOff();
     } else {
       // 스트리밍 시작
-      const success = await streamOn();
-      if (success) setIsStreaming(true);
+      await streamOn();
     }
 
     setLoading(false);
@@ -49,6 +49,10 @@ const StreamingCoreBtn = () => {
     setLoading(false);
   };
 
+  if (!data) {
+    return null; // data가 없으면 아무것도 렌더링하지 않음
+  }
+
   return (
     <>
       <button
@@ -57,12 +61,12 @@ const StreamingCoreBtn = () => {
       >
         {loading
           ? '처리 중...'
-          : isStreaming
+          : data.is_active
           ? '스트리밍 종료'
           : '스트리밍 시작하기'}
       </button>
 
-      {!loading && isStreaming && (
+      {!loading && data.is_active && (
         <button
           className="rounded-2xl bg-white text-[#697183] text-[15px] font-blackHanSans py-[5px] px-[15px]"
           onClick={screenSTOP}
@@ -71,7 +75,7 @@ const StreamingCoreBtn = () => {
         </button>
       )}
 
-      {!loading && isStreaming && (
+      {!loading && data.is_active && (
         <button
           className="rounded-2xl bg-white text-[#697183] text-[15px] font-blackHanSans py-[5px] px-[15px]"
           onClick={micOn}
@@ -80,7 +84,7 @@ const StreamingCoreBtn = () => {
         </button>
       )}
 
-      {!loading && isStreaming && (
+      {!loading && data.is_active && (
         <button
           className="rounded-2xl bg-white text-[#697183] text-[15px] font-blackHanSans py-[5px] px-[15px]"
           onClick={screenChange}
