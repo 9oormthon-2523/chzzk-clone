@@ -1,16 +1,25 @@
 import React from "react";
+import { useRouter } from "next/navigation";
 
 interface StreamCardProps {
   title: string;
   nickName: string;
   aduience_cnt: number;
+  streamKey: string;
   // tags: string[];
 }
 const dummyTags = ["발로란트", "픽셀네트워크"];
 const StreamCard = (card: StreamCardProps) => {
-  const { title, nickName, aduience_cnt } = card;
+  const { title, nickName, aduience_cnt, streamKey } = card;
+  const router = useRouter();
+  const handleCardClick = () => {
+    router.push(`/live/${streamKey}`);
+  };
   return (
-    <div className="hover:cursor-pointer bg-white rounded-lg shadow-md p-2 w-80">
+    <div
+      className="hover:cursor-pointer bg-white rounded-lg shadow-md p-2 w-80"
+      onClick={handleCardClick}
+    >
       {/* 이미지 */}
       <div className="relative bg-gray-300 h-44 rounded-lg">
         <div className="absolute top-2 left-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">
