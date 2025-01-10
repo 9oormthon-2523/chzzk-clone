@@ -21,7 +21,7 @@ const usePing = (payload: usePingPayload) => {
     useEffect(() => {
         if (is_active) {
             if (!channelRef.current) {
-                let clientUID = 
+                const clientUID = 
                     client_uid || localStorage.getItem("stream_client_uid") || crypto.randomUUID();
 
                 // 로그인 했음에도 로컬 스토리지가 존재하면 삭제

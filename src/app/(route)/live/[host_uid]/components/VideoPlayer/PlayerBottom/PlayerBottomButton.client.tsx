@@ -10,12 +10,11 @@ interface PlayerBottomButtonProps {
     svgName: SvgComponentNames
     style?: string
     info:string
-    onClick?: () => void
-    onHover?: () => void
+    onClick?: () => VideoDecoderConfig
 }
 
 const PlayerBottomButton = (props:PlayerBottomButtonProps) => {
-    const { svgName, style, info, onClick, onHover,} = props;
+    const { svgName, style, info, onClick } = props;
     
     return (
         <button onClick={onClick} aria-label={info} className="select-none text-[#fff] w-[34px] h-[34px] rounded-full hover:bg-[#ffffff20] m-[4px] relative flex group">
