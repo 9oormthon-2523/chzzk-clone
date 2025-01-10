@@ -13,8 +13,9 @@ interface StreamCardProps {
 
 const dummyTags = ["발로란트", "픽셀네트워크"];
 const StreamCard = (card: StreamCardProps) => {
-  const { title, nickname, audience_cnt, uid } = card;
+  const { title, nickname, audience_cnt, uid, thumbnail } = card;
   const router = useRouter();
+  console.log("thumb:", thumbnail);
   const handleCardClick = () => {
     router.push(`/live/${uid}`);
   };
@@ -24,7 +25,15 @@ const StreamCard = (card: StreamCardProps) => {
       onClick={handleCardClick}
     >
       {/* 이미지 */}
-      <div className="relative bg-gray-300 h-44 rounded-lg">
+      <div
+        className="relative h-44 rounded-lg border border-gray-200"
+        style={{
+          backgroundImage: `url(${thumbnail || "/mainPage/thumbnailImg.png"})`,
+          backgroundPosition: "center center",
+          backgroundSize: "contain",
+          backgroundRepeat: "no-repeat",
+        }}
+      >
         <div className="absolute top-2 left-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">
           LIVE
         </div>
