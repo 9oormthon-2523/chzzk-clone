@@ -7,6 +7,7 @@ import NavBar from "@/app/(route)/(main)/_components/NavBar/NavBar.client";
 import useNavToggle from "@/app/_store/main/useNavToggle.client";
 import { createClient } from "../../../_utils/supabase/client";
 import ChannelProfile from "@/app/(route)/channel/[uid]/components/ChannelProfile";
+import Footer from '@/app/_components/Footer/footer';
 
 interface RootLayoutProps {
   children: React.ReactNode;
@@ -55,7 +56,7 @@ const RootLayout = ({ children }: RootLayoutProps) => {
       <Header />
       {isOpen && <NavBar />}
       <div className="mx-12">
-        <div className="h-32" />
+        <div className="h-28" />
         <ChannelProfile
           img_url={userInfo.img_url}
           nickname={userInfo.nickname}
@@ -64,6 +65,7 @@ const RootLayout = ({ children }: RootLayoutProps) => {
         />
       {children}
       </div>
+      <Footer />
     </div>
   );
 };
