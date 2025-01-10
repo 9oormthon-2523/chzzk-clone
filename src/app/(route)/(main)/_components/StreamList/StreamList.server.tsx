@@ -10,6 +10,7 @@ interface StreamCardData {
   audience_cnt: number;
   nickname: string;
   thumbnail: string;
+  profile_img: string;
 }
 
 const supabase = createClient(
@@ -23,18 +24,40 @@ const StreamList: React.FC = () => {
   useEffect(() => {
     const fetchStreamData = async () => {
       try {
-        const { data, error } = await supabase
+        // 1. streaming_rooms 테이블에서 데이터 가져오기
+        const { data: streamData, error: streamError } = await supabase
           .from("streaming_rooms")
           .select(
             "uid, title, start_time, is_active, audience_cnt, nickname, thumbnail"
           );
 
-        if (error) {
-          console.error("데이터를 가져오는 중 오류 발생:", error.message);
+        if (streamError) {
+          console.error("데이터를 가져오는 중 오류 발생:", streamError.message);
           return;
         }
-        console.log("data:", data);
-        setStreamData(data || []);
+
+        // 2. 각 uid에 대해 profile_img 가져오기
+        const enrichedData = await Promise.all(
+          streamData.map(async (stream) => {
+            const { data: userData, error: userError } = await supabase
+              .from("users")
+              .select("profile_img")
+              .eq("id", stream.uid)
+              .single();
+
+            if (userError) {
+              console.error(
+                `사용자 정보 불러오기 오류 (uid: ${stream.uid})`,
+                userError
+              );
+              return { ...stream, profile_img: "" }; // 기본 값
+            }
+
+            return { ...stream, profile_img: userData.profile_img || "" };
+          })
+        );
+
+        setStreamData(enrichedData || []);
       } catch (error) {
         console.error("오류 발생:", error);
       }

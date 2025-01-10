@@ -1,5 +1,6 @@
 import React from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 interface StreamCardProps {
   uid: string;
@@ -9,16 +10,20 @@ interface StreamCardProps {
   audience_cnt: number;
   nickname: string;
   thumbnail: string;
+  profile_img: string;
 }
 
 const dummyTags = ["발로란트", "픽셀네트워크"];
+
 const StreamCard = (card: StreamCardProps) => {
-  const { title, nickname, audience_cnt, uid, thumbnail } = card;
+  const { title, nickname, audience_cnt, uid, thumbnail, profile_img } = card;
   const router = useRouter();
-  console.log("thumb:", thumbnail);
+  const defaultImage = "/mainPage/defaultProfile.png";
+
   const handleCardClick = () => {
     router.push(`/live/${uid}`);
   };
+
   return (
     <div
       className="hover:cursor-pointer bg-white rounded-lg shadow-md p-2 w-80"
@@ -47,7 +52,15 @@ const StreamCard = (card: StreamCardProps) => {
         <h2 className="text-sm font-semibold line-clamp-1">{title}</h2>
 
         <div className="flex items-center gap-1 mt-1">
-          <div className="w-6 h-6 bg-gray-500 rounded-full"></div>{" "}
+          <div className="relative w-6 h-6 rounded-full overflow-hidden">
+            <Image
+              src={profile_img || defaultImage}
+              alt={`${nickname} profile`}
+              layout="fill"
+              objectFit="cover"
+              className="rounded-full"
+            />
+          </div>
           <p className="text-xs text-gray-700 font-medium">{nickname}</p>
         </div>
 
