@@ -8,13 +8,23 @@ type MessageInputProps = {
   value: string;
   onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   onSend: () => void;
+  uid:string|undefined
 };
 
-const ChatInput = ({ value, onChange, onSend }: MessageInputProps) => {
+const ChatInput = (props: MessageInputProps) => {
+  const { value, onChange, onSend, uid } = props;
+
+  const onPressEnter = (e:React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      onSend();
+    }
+  }
+
   return (
     <div
       id="live-chatting-area"
-      className="flex-none p-[10px_20px] relative z-[100]"
+      className="flex-none p-[10px_20px] relative z-[30]"
     >
       <div className="items-center bg-[#f5f5f5] rounded-[8px] flex p-[5px] relative w-full">
         <button className="items-center flex-none h-[30px] relative w-[30px]">
@@ -23,10 +33,13 @@ const ChatInput = ({ value, onChange, onSend }: MessageInputProps) => {
           </i>
         </button>
         <textarea
+          disabled={!uid}
+          style={{ cursor : uid ? undefined : "not-allowed" }}
           aria-label="채팅 입력"
           className="!h-[40px] m-[-10px_0_-10px_4px] p-[10px_0] bg-transparent border-[0px] text-[#2e3033] max-h-[60px] min-h-[20px] outline-none overflow-y-auto relative resize-none whitespace-normal w-full"
           value={value}
           onChange={onChange}
+          onKeyDown={onPressEnter}
           placeholder="채팅을 입력해주세요"
         />
       </div>

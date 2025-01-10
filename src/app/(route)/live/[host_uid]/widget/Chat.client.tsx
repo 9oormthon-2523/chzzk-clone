@@ -7,9 +7,15 @@ import ChatInput from "../components/Chat/Input.client";
 import { useChat } from "@/app/_hooks/useChat";
 import { CSSProperties, useState } from "react";
 
-const ChatLayout = ({ roomId }: { roomId: string }) => {
+interface ChatLayoutProps {
+  host_uid: string
+  uid:string | undefined
+}
+
+const ChatLayout = (props: ChatLayoutProps) => {
+  const { host_uid, uid } = props
   const { isChatOpen, chatPosition, toggleChat } = useScreenControl();
-  const { messages, sendMessage } = useChat(roomId);
+  const { messages, sendMessage } = useChat(host_uid);
   const [newMessage, setNewMessage] = useState("");
 
   if (!isChatOpen) return null;
@@ -34,6 +40,7 @@ const ChatLayout = ({ roomId }: { roomId: string }) => {
       <ChatHeader ChatFold={toggleChat} />
       <ChatWindow messages={messages} />
       <ChatInput
+        uid={uid}
         value={newMessage}
         onChange={(e) => setNewMessage(e.target.value)}
         onSend={handleSendMessage}
