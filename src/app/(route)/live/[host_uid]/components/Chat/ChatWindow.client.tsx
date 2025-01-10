@@ -3,7 +3,7 @@ import { Message } from "@/app/_types/chat/Chat";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { getColorFromNickname } from "@/app/_utils/chat/hashColor";
-
+import { IoShieldCheckmarkSharp } from "react-icons/io5";
 /**
  * 채팅 창
  */
@@ -11,9 +11,10 @@ import { getColorFromNickname } from "@/app/_utils/chat/hashColor";
 //프롭스는 나중에
 type MessageListProps = {
   messages: Message[];
+  roomId: string;
 };
 
-const ChatWindow = ({ messages }: MessageListProps) => {
+const ChatWindow = ({ messages, roomId }: MessageListProps) => {
   useEffect(() => {
     console.log("msg:", messages);
   }, [messages]);
@@ -35,6 +36,7 @@ const ChatWindow = ({ messages }: MessageListProps) => {
               nickname={msg.nickname}
               message={msg.message}
               id={msg.id}
+              roomId={roomId}
             />
           ))}
         </div>
@@ -49,23 +51,31 @@ type ChatProps = {
   nickname: string;
   message: string;
   id: string;
+  roomId: string;
 };
 //채팅 박스
-const ChatBox = ({ nickname, message, id }: ChatProps) => {
+const ChatBox = ({ nickname, message, id, roomId }: ChatProps) => {
   const router = useRouter();
   const handleNicknameClick = () => {
     router.push(`/channel/${id}`);
   };
 
   const nicknameColor = getColorFromNickname(nickname);
+  const isBroadcaster = id === roomId;
   return (
     <div aria-label="chat w-full">
-      <div className="px-[6px] py-[4px] text-left">
+      <div className="px-[6px] py-[4px] text-left flex">
         <button
-          className="mr-[4px] leading-[18px] m-[-2px_0] p-[2px_4px_2px_2px] relative text-green-500"
+          className={`mr-[4px] leading-[18px] m-[-2px_0] p-[2px_4px_2px_2px] relative border-2 flex items-center ${
+            isBroadcaster ? "text-[#3a4338] font-bold" : `${nicknameColor}`
+          }`}
           onClick={handleNicknameClick}
-          style={{ color: nicknameColor }}
         >
+          {isBroadcaster && (
+            <span className={`font-bold text-[#1bb373] mr-1 text-xl`}>
+              <IoShieldCheckmarkSharp />
+            </span>
+          )}
           {nickname}
         </button>
 

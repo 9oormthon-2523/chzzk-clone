@@ -33,7 +33,7 @@ const ChatLayout = ({ roomId }: { roomId: string }) => {
       className="bg-white flex relative flex-col min-h-0"
     >
       <ChatHeader ChatFold={toggleChat} />
-      <ChatWindow messages={messages} />
+      <ChatWindow messages={messages} roomId={roomId} />
       <ChatInput
         value={newMessage}
         onChange={(e) => setNewMessage(e.target.value)}
