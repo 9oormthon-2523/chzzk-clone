@@ -3,6 +3,21 @@ export const getColorFromNickname = (nickname: string): string => {
   for (let i = 0; i < nickname.length; i++) {
     hash = nickname.charCodeAt(i) + ((hash << 5) - hash);
   }
-  const color = `hsl(${hash % 360}, 70%, 60%)`; // HSL 색상 생성 (밝고 다양하게)
+
+  // HSL 값 계산
+  let hue = hash % 360;
+
+  if (hue >= 50 && hue <= 60) {
+    hue = (hue + 70) % 360;
+  }
+
+  const saturation = 70;
+  let lightness = 60;
+
+  if (lightness >= 90) {
+    lightness = 60;
+  }
+
+  const color = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
   return color;
 };
