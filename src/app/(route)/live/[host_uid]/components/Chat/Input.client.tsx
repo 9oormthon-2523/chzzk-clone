@@ -1,6 +1,5 @@
 import React from "react";
 import SvgIcon from "../../../../../_components/SVGIcon.server";
-
 /**
  * 채팅 입력란
  */
@@ -9,7 +8,6 @@ type MessageInputProps = {
   onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   onSend: () => void;
 };
-
 const ChatInput = ({ value, onChange, onSend }: MessageInputProps) => {
   return (
     <div

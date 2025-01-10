@@ -2,6 +2,8 @@
 import { Message } from "@/app/_types/chat/Chat";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import { getColorFromNickname } from "@/app/_utils/chat/hashColor";
+
 /**
  * 채팅 창
  */
@@ -54,12 +56,15 @@ const ChatBox = ({ nickname, message, id }: ChatProps) => {
   const handleNicknameClick = () => {
     router.push(`/channel/${id}`);
   };
+
+  const nicknameColor = getColorFromNickname(nickname);
   return (
     <div aria-label="chat w-full">
       <button className="px-[6px] py-[4px] text-left">
         <button
           className="mr-[4px] leading-[18px] m-[-2px_0] p-[2px_4px_2px_2px] relative text-green-500"
           onClick={handleNicknameClick}
+          style={{ color: nicknameColor }}
         >
           {nickname}
         </button>
