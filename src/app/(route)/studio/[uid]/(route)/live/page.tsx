@@ -1,6 +1,6 @@
 import React from 'react';
 import Setting from './_components/Settings/Setting';
-import StreamingView from './_components/StreamingView';
+import StreamingView from './_components/StreamingArea/StreamingView';
 import { prefetchUserStreaming } from '@/app/_store/queries/streamingSettings/query';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import ChatLayout from '@/app/(route)/live/[host_uid]/widget/Chat.client';
