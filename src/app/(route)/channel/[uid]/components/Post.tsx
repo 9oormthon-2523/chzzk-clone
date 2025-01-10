@@ -9,23 +9,18 @@ interface PostProps {
 
 const Post = (props: PostProps) => {
   const { nickname, content, img_url, profile_img } = props;
+  const defaultImage = '/channelPage/blank_profile.svg';
 
   return (
     <div className="flex items-start w-full h-48 p-4 bg-gray-50 rounded-lg">
       <div className="flex flex-col flex-shrink-0 w-12 h-12 rounded-full bg-white shadow-md text-sm mr-2 relative">
-        {profile_img ? (
-          <Image
-            src={profile_img}
+        <Image
+            src={profile_img || defaultImage}
             alt="프로필 이미지"
             layout="fill"
             objectFit="cover" 
             className="rounded-full"
           />
-        ) : (
-          <div className="w-full h-full flex justify-center items-center text-gray-500">
-            N/A
-          </div>
-        )}
       </div>
       
       <div className="flex flex-col flex-wrap">
