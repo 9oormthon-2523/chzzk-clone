@@ -1,5 +1,5 @@
-import useScreenControl from "@/app/_store/live/useScreenControl";
-import useVideoControl from "@/app/_store/live/useVideoControl";
+import useScreenControl from "@/app/_store/stores/live/useScreenControl";
+import useVideoControl from "@/app/_store/stores/live/useVideoControl";
 import useNavToggle from "@/app/_store/main/useNavToggle.client";
 import { useCallback, useEffect, useRef, useState } from "react";
 

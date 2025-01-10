@@ -1,4 +1,4 @@
-import useScreenControl from "@/app/_store/live/useScreenControl";
+import useScreenControl from "@/app/_store/stores/live/useScreenControl";
 import { useEffect } from "react";
 
 /**

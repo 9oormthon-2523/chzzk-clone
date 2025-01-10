@@ -1,7 +1,6 @@
-// ChatLayout.tsx
 "use client";
 
-import useScreenControl from "@/app/_store/live/useScreenControl";
+import useScreenControl from "@/app/_store/stores/live/useScreenControl";
 import ChatWindow from "../components/Chat/ChatWindow.client";
 import ChatHeader from "../components/Chat/Header.client";
 import ChatInput from "../components/Chat/Input.client";

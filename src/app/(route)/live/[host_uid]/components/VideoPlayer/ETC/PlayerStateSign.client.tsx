@@ -1,7 +1,7 @@
 "use client"
 import React, { useEffect, useRef } from "react";
 import SvgIcon from "@/app/_components/SVGIcon.server";
-import useVideoControl from "@/app/_store/live/useVideoControl";
+import useVideoControl from "@/app/_store/stores/live/useVideoControl";
 
 const PlayerStateSign = () => {
     // 잔렌더 줄이기 위해 상태 구독 사용함

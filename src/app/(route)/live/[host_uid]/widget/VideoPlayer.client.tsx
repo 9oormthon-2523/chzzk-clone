@@ -6,7 +6,7 @@ import PlayerHeader from '../components/VideoPlayer/PlayerHeader/PlayerHeader.cl
 import PlayerStateSign from '../components/VideoPlayer/ETC/PlayerStateSign.client'
 import PlayerOverlay from '../components/VideoPlayer/ETC/PlayerOverlay.client' 
 import OpacityAnimation from '../utils/local/useOpacityAnimation.client'
-import useScreenControl from '@/app/_store/live/useScreenControl'
+import useScreenControl from '@/app/_store/stores/live/useScreenControl' 
 import useLiveManager from '@/app/_hooks/live/useLiveManager'
 
 // 스타일

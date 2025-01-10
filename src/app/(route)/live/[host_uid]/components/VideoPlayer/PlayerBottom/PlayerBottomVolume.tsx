@@ -1,5 +1,5 @@
 "use client"
-import useVideoControl from "@/app/_store/live/useVideoControl";
+import useVideoControl from "@/app/_store/stores/live/useVideoControl";
 
 //볼륨 조절 버튼
 const PlayerBottomBolumeControl = () => {

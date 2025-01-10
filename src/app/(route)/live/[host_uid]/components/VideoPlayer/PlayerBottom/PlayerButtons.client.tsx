@@ -1,8 +1,8 @@
 "use client"
 
-import useScreenControl from "@/app/_store/live/useScreenControl";
+import useScreenControl from "@/app/_store/stores/live/useScreenControl";
+import useVideoControl from "@/app/_store/stores/live/useVideoControl";
 import PlayerBottomButton from "./PlayerBottomButton.client";
-import useVideoControl from "@/app/_store/live/useVideoControl";
 import PlayerBottomBolumeControl from "./PlayerBottomVolume";
 
 export const WideBtn = () => {

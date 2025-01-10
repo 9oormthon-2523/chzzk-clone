@@ -1,6 +1,6 @@
 import AgoraRTC, { IRemoteVideoTrack, IRemoteAudioTrack } from "agora-rtc-sdk-ng";
 import { RefObject, useEffect, useRef, useState } from "react";
-import useVideoControl from "@/app/_store/live/useVideoControl"
+import useVideoControl from "@/app/_store/stores/live/useVideoControl";
 import type * as AgoraRTCType from "agora-rtc-sdk-ng";
 
 
