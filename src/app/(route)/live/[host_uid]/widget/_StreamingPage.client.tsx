@@ -62,7 +62,8 @@ export default function StreamingPage(props: StreamingPageProps) {
                         <LiveDetails
                           {...hostInfo}
                           {...liveInfo}
-                          uid={roomInit.uid}
+                          uid={client_uid}
+                          host_uid={roomInit.uid}
                           start_time={roomInit.start_time} 
                         />
                     }
