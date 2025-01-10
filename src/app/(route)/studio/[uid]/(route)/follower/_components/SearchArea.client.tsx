@@ -26,8 +26,8 @@ const SearchArea = () => {
         }}
       >
         <div
-          className={`bg-white border border-[#ddd] p-[9px_14px] inline-flex rounded-[5px] items-center gap-1 w-[250px] h-[40px] ${
-            isFocus ? 'border-[#4e41db]' : 'hover:border-[#aaa]'
+          className={`bg-white border  p-[9px_14px] inline-flex rounded-[5px] items-center gap-1 w-[250px] h-[40px] ${
+            isFocus ? 'border-[#4e41db]' : 'border-[#ddd] hover:border-[#aaa]'
           }`}
         >
           <SeacrhIcon />
@@ -43,7 +43,10 @@ const SearchArea = () => {
             value={inputText}
           />
         </div>
-        <button className="font-blackHanSans bg-[#0a0a0c26] text-[#4e41db] text-[16px] rounded-[5px] py-[5px] px-[25px]">
+        <button
+          className="font-blackHanSans bg-[#0a0a0c26] text-[#4e41db] text-[16px] rounded-[5px] py-[5px] px-[25px] hover:bg-[#4e41db] hover:text-white disabled:bg-[#0a0a0c26] disabled:text-[#4e41db] disabled:cursor-not-allowed"
+          disabled={!inputText}
+        >
           검색
         </button>
       </form>
