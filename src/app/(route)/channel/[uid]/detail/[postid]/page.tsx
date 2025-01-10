@@ -181,6 +181,54 @@ export default function Detail() {
   };
 
 
+  // 댓글 수정
+  const handleCommentEditStart = (id: number) => {
+    setComments((prev) =>
+      prev.map((c) =>
+        c.id === id
+          ? { ...c, isEditing: true, editContent: c.content }
+          : c
+      )
+    );
+  };
+
+  // 댓글 수정 저장
+  const handleCommentEditSave = async (id: number) => {
+    const targetComment = comments.find((c) => c.id === id);
+    if (!targetComment) return;
+
+    try {
+      const supabase = createClient();
+      const { error } = await supabase
+        .from('comments')
+        .update({ content: targetComment.editContent })
+        .eq('id', id);
+
+      if (error) {
+        console.error('댓글 수정 오류:', error);
+      } else {
+        console.log('댓글 수정 완료');
+        setComments((prev) =>
+          prev.map((c) =>
+            c.id === id
+              ? { ...c, isEditing: false, content: c.editContent || '' }
+              : c
+          )
+        );
+      }
+    } catch (err) {
+      console.error('댓글 수정 에러:', err);
+    }
+  };
+
+  // 댓글 수정 내용 변경
+  const handleCommentEditChange = (id: number, value: string) => {
+    setComments((prev) =>
+      prev.map((c) =>
+        c.id === id ? { ...c, editContent: value } : c
+      )
+    );
+  };
 
 
   if (!post) {
