@@ -230,6 +230,26 @@ export default function Detail() {
     );
   };
 
+  // 댓글 삭제
+  const handleCommentDelete = async (id: number) => {
+    try {
+      const supabase = createClient();
+      const { error } = await supabase
+        .from('comments')
+        .delete()
+        .eq('id', id);
+
+      if (error) {
+        console.error('댓글 삭제 오류:', error);
+      } else {
+        console.log('댓글 삭제 완료');
+        setComments((prev) => prev.filter((c) => c.id !== id));
+      }
+    } catch (err) {
+      console.error('댓글 삭제 에러:', err);
+    }
+  };
+
 
   if (!post) {
     return <div className="p-4">게시글을 불러오는 중입니다...</div>;
