@@ -4,6 +4,33 @@ import React, { useState } from "react";
 import { createClient } from "@/app/_utils/supabase/client";
 import { CgProfile } from "react-icons/cg";
 import { useRouter } from "next/navigation";
+import { FaArrowRightToBracket } from "react-icons/fa6";
+import { IoHeartCircleOutline } from "react-icons/io5";
+import { GrChannel } from "react-icons/gr";
+import { BsBroadcastPin } from "react-icons/bs";
+
+type ClickHandlers = {
+  handleGoToChannel: () => Promise<void>;
+  handleLogout: () => Promise<void>;
+  handleBroadCast: () => Promise<void>;
+};
+
+type IconItem = {
+  Icon: React.FC;
+  label: string;
+  onClick: keyof ClickHandlers;
+};
+
+const icons: IconItem[] = [
+  { Icon: GrChannel, label: "내 채널", onClick: "handleGoToChannel" },
+  { Icon: BsBroadcastPin, label: "치지직 방송", onClick: "handleBroadCast" },
+  {
+    Icon: IoHeartCircleOutline,
+    label: "팔로잉 채널",
+    onClick: "handleGoToChannel",
+  },
+  { Icon: FaArrowRightToBracket, label: "로그아웃", onClick: "handleLogout" },
+];
 
 const ProfileBtn = () => {
   const supabase = createClient();
@@ -15,7 +42,7 @@ const ProfileBtn = () => {
     window.location.reload();
   };
 
-  const handleGoToChannel = async () => {
+  const handleGoToChannel = async (path: string) => {
     try {
       const {
         data: { user: supabaseUser },
@@ -28,13 +55,19 @@ const ProfileBtn = () => {
 
       if (supabaseUser) {
         const uid = supabaseUser.id;
-        router.push(`/channel/${uid}`);
+        router.push(`${path}/${uid}`);
       } else {
         console.error("사용자 정보가 없습니다.");
       }
     } catch (error) {
       console.error("채널로 이동 오류", error);
     }
+  };
+
+  const handleClick: ClickHandlers = {
+    handleGoToChannel: () => handleGoToChannel("/channel"),
+    handleLogout,
+    handleBroadCast: () => handleGoToChannel("/studio"),
   };
 
   return (
@@ -48,18 +81,18 @@ const ProfileBtn = () => {
 
       {isFold && (
         <div className="flex flex-col absolute top-[50px] right-0">
-          <button
-            onClick={handleGoToChannel}
-            className="text-xs bg-[#333] text-white px-4 py-2 shadow w-auto whitespace-nowrap"
-          >
-            내 채널
-          </button>
-          <button
-            onClick={handleLogout}
-            className="text-xs bg-[#333] text-white px-4 py-2 shadow w-auto whitespace-nowrap"
-          >
-            로그아웃
-          </button>
+          {icons.map(({ Icon, label, onClick }, index) => (
+            <button
+              key={index}
+              onClick={handleClick[onClick]}
+              className="text-xs bg-[#333] text-white px-4 py-2 shadow w-auto whitespace-nowrap flex items-center gap-2 hover:bg-[#444]"
+            >
+              <span>
+                <Icon />
+              </span>
+              {label}
+            </button>
+          ))}
         </div>
       )}
     </div>
