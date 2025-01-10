@@ -60,7 +60,7 @@ const ChatBox = ({ nickname, message, id }: ChatProps) => {
   const nicknameColor = getColorFromNickname(nickname);
   return (
     <div aria-label="chat w-full">
-      <button className="px-[6px] py-[4px] text-left">
+      <div className="px-[6px] py-[4px] text-left">
         <button
           className="mr-[4px] leading-[18px] m-[-2px_0] p-[2px_4px_2px_2px] relative text-green-500"
           onClick={handleNicknameClick}
@@ -72,7 +72,7 @@ const ChatBox = ({ nickname, message, id }: ChatProps) => {
         <span className="text-[#2e3033] text-left break-words leading-[20px]">
           {message}
         </span>
-      </button>
+      </div>
     </div>
   );
 };
