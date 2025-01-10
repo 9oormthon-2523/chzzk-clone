@@ -78,7 +78,7 @@ const useStudioManager = (uid: string) => {
       });
       await delClient(clientRef);
       await offMutation();
-      deactivateChannel
+      deactivateChannel();
       return true;
     } catch (err: unknown) {
       console.log(err);
