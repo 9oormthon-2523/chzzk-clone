@@ -73,12 +73,10 @@ const streamingOn = async () => {
 
   if (!user) throw new Error('Unauthorized');
 
-  console.log(format(new Date(), 'yyyy-MM-dd HH:mm:ss'));
-
   await supabase.from('streaming_rooms').upsert({
     uid: user.id,
     is_active: true,
-    // start_time: ,
+    start_time: format(new Date(), 'yyyy-MM-dd HH:mm:ss'),
   });
 };
 
