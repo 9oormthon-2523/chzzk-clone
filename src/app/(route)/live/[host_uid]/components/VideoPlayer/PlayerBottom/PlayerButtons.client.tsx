@@ -5,6 +5,7 @@ import useVideoControl from "@/app/_store/stores/live/useVideoControl";
 import PlayerBottomButton from "./PlayerBottomButton.client";
 import PlayerBottomBolumeControl from "./PlayerBottomVolume";
 
+// 와이드
 export const WideBtn = () => {
     const toggleWideScreen = useScreenControl(state => state.toggleWideScreen);
     const isFullscreen = useScreenControl(state => state.isFullscreen);
@@ -18,6 +19,7 @@ export const WideBtn = () => {
     )
 }
 
+// 풀 스크린
 export const FullBtn = () => {
     const toggleFullscreen = useScreenControl(state => state.toggleFullscreen);
 
@@ -26,6 +28,7 @@ export const FullBtn = () => {
     )
 }
 
+// 정지,재생
 export const PlayPauseBtn = ()=> {
     const isEnabled = useVideoControl(state => state.videoTrack.isEnabled);
     const videoToggle = useVideoControl(state => state.videoToggle);
@@ -35,6 +38,7 @@ export const PlayPauseBtn = ()=> {
     )
 }
 
+// 볼륨륨
 export const VolumeBtn = () => {
     const volumeLevel = useVideoControl(state => state.audioTrack.volumeLevel);
     const isMuted = useVideoControl(state => state.audioTrack.isMuted);
@@ -44,7 +48,7 @@ export const VolumeBtn = () => {
     const getVolumeIcon = () => {
         const volume = volumeLevel;
       
-        if (isMuted === true) return "VideoVolume0"; // 조건 확인
+        if (isMuted === true) return "VideoVolume0"; 
         if (50 < volume) return "VideoVolume100";
         if (1 < volume) return "VideoVolume50";
       

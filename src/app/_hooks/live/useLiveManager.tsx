@@ -251,7 +251,7 @@ const useLiveManager = (payload: useStreamforStudioPayload) => {
                 await client.on('user-published', async(user, mediaType) => {
                     try {
                         mediaPublished({user, mediaType}, client);
-                    } catch (err:unknown) {
+                    } catch {
                         await client.unsubscribe(user, mediaType);
                         
                         if (mediaType === "audio") await cleanAudioTrack();
@@ -267,7 +267,7 @@ const useLiveManager = (payload: useStreamforStudioPayload) => {
                     try {
                         await client.unsubscribe(user, mediaType);
                         await mediaUnpublished({user, mediaType});
-                    } catch (err:unknown) {
+                    } catch {
                         await client.unsubscribe(user, mediaType);
                         
                         if (mediaType === "audio") await cleanAudioTrack();
@@ -275,7 +275,6 @@ const useLiveManager = (payload: useStreamforStudioPayload) => {
                         else if(mediaType === "video") await cleanVideoTrack();
                     }
                 });
-
 
                 // 호스트가 채널 나감
                 await client.on('user-left', async (user) => {
@@ -290,8 +289,7 @@ const useLiveManager = (payload: useStreamforStudioPayload) => {
                 clearAll();    
             }
         };
-        
-        
+           
         if (streaming_is_active) {
             initClient();
         } else {

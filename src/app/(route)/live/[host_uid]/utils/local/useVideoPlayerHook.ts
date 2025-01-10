@@ -47,13 +47,12 @@ export const useVideoPlayerResize = (props: useVideoPlayerResizeProps) => {
 
 
 
-interface useHoverStateProps<T> {
+interface useHoverStateProps {
     delay?:number
-    dependencies?: T[]
 }
 
 // 마우스 움직임 감지시 3초 동안 비디오 컨트롤러 visible
-export const useHoverState = <T extends unknown>(props: useHoverStateProps<T>) => {
+export const useHoverState = (props: useHoverStateProps) => {
     const { delay = 3000 } = props;
     const [isHover, setIsHover] = useState(false);
     const timerRef = useRef<NodeJS.Timeout | null>(null);

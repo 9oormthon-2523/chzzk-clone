@@ -9,20 +9,24 @@
  * */
 
 type OpacityAnimationProps = {
-    isHover: boolean;
+  isHover: boolean;
 };
 
-const OpacityAnimation = <P extends object>( WrappedComponent: React.ComponentType<P>) => {
-  return (props: P & OpacityAnimationProps) => {
-    const { isHover, ...rest } = props;
+const OpacityAnimation = <P extends object>(WrappedComponent: React.ComponentType<P>) => {
+const AnimatedComponent = (props: P & OpacityAnimationProps) => {
+  const { isHover, ...rest } = props;
 
-    return (
-      //hover animation
-      <div style={{ opacity: isHover ? 1 : 0, transition: 'opacity 0.3s ease' }}>
-        <WrappedComponent {...(rest as P)} />
-      </div>
-    );
-  };
+  return (
+
+    <div style={{ opacity: isHover ? 1 : 0, transition: 'opacity 0.3s ease' }}>
+      <WrappedComponent {...(rest as P)} />
+    </div>
+  );
 };
-  
+
+AnimatedComponent.displayName = `OpacityAnimation(${WrappedComponent.displayName || WrappedComponent.name || 'Component'})`;
+
+return AnimatedComponent;
+};
+
 export default OpacityAnimation;
