@@ -2,18 +2,21 @@ import React from "react";
 import { useRouter } from "next/navigation";
 
 interface StreamCardProps {
+  uid: string;
   title: string;
-  nickName: string;
-  aduience_cnt: number;
-  streamKey: string;
-  // tags: string[];
+  start_time: string;
+  is_active: boolean;
+  audience_cnt: number;
+  nickname: string;
+  thumbnail: string;
 }
+
 const dummyTags = ["발로란트", "픽셀네트워크"];
 const StreamCard = (card: StreamCardProps) => {
-  const { title, nickName, aduience_cnt, streamKey } = card;
+  const { title, nickname, audience_cnt, uid } = card;
   const router = useRouter();
   const handleCardClick = () => {
-    router.push(`/live/${streamKey}`);
+    router.push(`/live/${uid}`);
   };
   return (
     <div
@@ -27,7 +30,7 @@ const StreamCard = (card: StreamCardProps) => {
         </div>
 
         <div className="absolute top-2 right-2 bg-black text-white text-xs font-semibold px-2 py-1 rounded">
-          {aduience_cnt.toLocaleString()}명
+          {audience_cnt.toLocaleString()}명
         </div>
       </div>
 
@@ -36,7 +39,7 @@ const StreamCard = (card: StreamCardProps) => {
 
         <div className="flex items-center gap-1 mt-1">
           <div className="w-6 h-6 bg-gray-500 rounded-full"></div>{" "}
-          <p className="text-xs text-gray-700 font-medium">{nickName}</p>
+          <p className="text-xs text-gray-700 font-medium">{nickname}</p>
         </div>
 
         <div className="flex flex-wrap gap-1 mt-2">

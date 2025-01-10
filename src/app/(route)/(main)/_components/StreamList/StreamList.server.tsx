@@ -9,6 +9,7 @@ interface StreamCardData {
   is_active: boolean;
   audience_cnt: number;
   nickname: string;
+  thumbnail: string;
 }
 
 const supabase = createClient(
@@ -24,7 +25,9 @@ const StreamList: React.FC = () => {
       try {
         const { data, error } = await supabase
           .from("streaming_rooms")
-          .select("uid, title, start_time, is_active, audience_cnt, nickname");
+          .select(
+            "uid, title, start_time, is_active, audience_cnt, nickname, thumbnail"
+          );
 
         if (error) {
           console.error("데이터를 가져오는 중 오류 발생:", error.message);
@@ -43,13 +46,7 @@ const StreamList: React.FC = () => {
   return (
     <div className="flex flex-wrap gap-4 p-4 justify-center items-center">
       {streamData.map((data: StreamCardData) => (
-        <StreamCard
-          key={data.uid}
-          streamKey={data.uid}
-          title={data.title}
-          nickName={data.nickname}
-          aduience_cnt={data.audience_cnt}
-        />
+        <StreamCard key={data.uid} {...data} />
       ))}
     </div>
   );
