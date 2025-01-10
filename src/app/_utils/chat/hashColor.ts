@@ -14,8 +14,8 @@ export const getColorFromNickname = (nickname: string): string => {
   const saturation = 70;
   let lightness = 60;
 
-  if (lightness >= 90) {
-    lightness = 60;
+  if (lightness < 30) {
+    lightness = 40;
   }
 
   const color = `hsl(${hue}, ${saturation}%, ${lightness}%)`;

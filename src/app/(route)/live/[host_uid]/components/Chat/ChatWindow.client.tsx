@@ -66,10 +66,11 @@ const ChatBox = ({ nickname, message, id, roomId }: ChatProps) => {
     <div aria-label="chat w-full">
       <div className="px-[6px] py-[4px] text-left flex">
         <button
-          className={`mr-[4px] leading-[18px] m-[-2px_0] p-[2px_4px_2px_2px] relative border-2 flex items-center ${
-            isBroadcaster ? "text-[#3a4338] font-bold" : `${nicknameColor}`
-          }`}
+          className={`mr-[4px] leading-[18px] m-[-2px_0] p-[2px_4px_2px_2px] relative border-2 flex items-center`}
           onClick={handleNicknameClick}
+          style={{
+            color: isBroadcaster ? "#3a4338" : nicknameColor, // 조건에 따라 색상 적용
+          }}
         >
           {isBroadcaster && (
             <span className={`font-bold text-[#1bb373] mr-1 text-xl`}>
