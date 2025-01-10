@@ -145,6 +145,42 @@ export default function Detail() {
     }
   };
 
+  // 댓글 추가
+  const handleCommentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setNewComment(e.target.value);
+  };
+
+  const handleCommentSubmit = async () => {
+    if (!newComment) return;
+
+    try {
+      const supabase = createClient();
+      const { data: userData } = await supabase.auth.getUser();
+
+      if (userData?.user?.id) {
+        const { error } = await supabase
+          .from('comments')
+          .insert([
+            {
+              content: newComment,
+              post_id: postid,
+              user_id: userData.user.id,
+            },
+          ]);
+
+        if (error) {
+          console.error('댓글 추가 오류:', error);
+        } else {
+          setNewComment('');
+          await fetchComments();
+        }
+      }
+    } catch (err) {
+      console.error('댓글 추가 에러:', err);
+    }
+  };
+
+
 
 
   if (!post) {
