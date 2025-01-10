@@ -6,7 +6,7 @@ import PlayerHeader from '../components/VideoPlayer/PlayerHeader/PlayerHeader.cl
 import PlayerStateSign from '../components/VideoPlayer/ETC/PlayerStateSign.client'
 import PlayerOverlay from '../components/VideoPlayer/ETC/PlayerOverlay.client' 
 import OpacityAnimation from '../utils/local/useOpacityAnimation.client'
-import useScreenControl from '@/app/_store/stores/live/useScreenControl' 
+import useScreenControl from '@/app/_store/stores/live/useScreenControl'
 import useLiveManager from '@/app/_hooks/live/useLiveManager'
 
 // 스타일
@@ -30,11 +30,18 @@ const VideoPlayer = (props:VideoPlayerProps) => {
   const { uid, is_active } = props;
   const audioElRef = useRef<HTMLAudioElement>(null);
   const screenElRef = useRef<HTMLVideoElement | null>(null);
+  const canvaseElRef = useRef<HTMLCanvasElement | null>(null);
   const isChatOpen = useScreenControl(state => state.isChatOpen);
   const isFullOrWide = useScreenControl(state => state.isFullOrWide);
 
   // 라이브 스트리밍 훅
-  const { ratio: [ h_rate, w_rate ] } = useLiveManager({ channel:uid ,screenElRef , streaming_is_active:is_active, audioElRef:audioElRef });
+  const { ratio: [ h_rate, w_rate ] } = useLiveManager({ 
+    channel:uid,
+    audioElRef,
+    screenElRef, 
+    canvaseElRef,
+    streaming_is_active:is_active, 
+  });
 
   //마우스 호버 훅
   const { isHover, HoverHandler } = useHoverState({});
@@ -78,7 +85,7 @@ const VideoPlayer = (props:VideoPlayerProps) => {
               className='max-w-[100vw]'
             >
               <audio ref={audioElRef}/>
-              
+              <canvas ref={canvaseElRef} className='absolute' style={frameVideoPlayer_style(isFullOrWide, wh, h_rate)} /> 
               <video 
                 aria-label='비디오 대체 박스' 
                 id='streaming-video'
@@ -86,8 +93,9 @@ const VideoPlayer = (props:VideoPlayerProps) => {
                 style={{objectFit:"contain"}} 
                 muted 
                 className='w-full h-full'
-              />
-
+              >
+               
+              </video>
             </div>
 
           </div>

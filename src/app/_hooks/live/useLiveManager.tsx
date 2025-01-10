@@ -1,6 +1,6 @@
 import AgoraRTC, { IRemoteVideoTrack, IRemoteAudioTrack } from "agora-rtc-sdk-ng";
-import { RefObject, useEffect, useRef, useState } from "react";
 import useVideoControl from "@/app/_store/stores/live/useVideoControl";
+import { RefObject, useEffect, useRef, useState } from "react";
 import type * as AgoraRTCType from "agora-rtc-sdk-ng";
 
 
@@ -13,6 +13,7 @@ interface useStreamforStudioPayload {
     streaming_is_active:boolean //스트리밍이 true인지 false인지
     screenElRef:RefObject<HTMLVideoElement | null> //실제 비디오 연결된 ref
     audioElRef:RefObject<HTMLAudioElement|null>
+    canvaseElRef:RefObject<HTMLCanvasElement|null>
 }
 
 type mediaType = "audio" | "video" | "datachannel"
@@ -27,6 +28,7 @@ const useLiveManager = (payload: useStreamforStudioPayload) => {
         channel,
         audioElRef,
         screenElRef,
+        canvaseElRef,
         streaming_is_active, // 스트리밍_룸_상태
     } = payload;
 
@@ -44,9 +46,10 @@ const useLiveManager = (payload: useStreamforStudioPayload) => {
     const videoState = useVideoControl(state => state.videoTrack.isEnabled);
     const volumeLevel = useVideoControl(state => state.audioTrack.volumeLevel);
 
-    /** 미디어 공유 **/
+    /** 미디어 관리 **/
     //#region 
 
+    // 호스트가 공유하는 미디어 받아서 리소스 저장
     const mediaPublished = async (payload:publishPayload, client: AgoraRTCType.IAgoraRTCClient) => {
         const { user, mediaType } = payload;
 
@@ -93,8 +96,9 @@ const useLiveManager = (payload: useStreamforStudioPayload) => {
         }  
     }
 
+    //미디어 공유 끊고 리소스 클린업
     const mediaUnpublished = async (payload: publishPayload) => {
-        const { user, mediaType } = payload;
+        const { mediaType } = payload;
 
         const hasMediaTracks =
             screenTrackRef.current || audioTrackRef.current
@@ -106,6 +110,29 @@ const useLiveManager = (payload: useStreamforStudioPayload) => {
         else if(mediaType === "video") await cleanVideoTrack();
 
     };
+
+
+    // 비디오 캡처 정지 화면 추출
+    const getPauseImg = () => {
+        if (canvaseElRef.current && screenTrackRef.current && screenElRef.current) {
+            
+            if(!screenTrackRef.current.isPlaying) return;
+            canvaseElRef.current.style.opacity = "1";
+            const canvas = canvaseElRef.current;
+            const ctx = canvas.getContext("2d");
+        
+            const ratio = 1.2; 
+            const w = canvas.width * ratio; 
+            const h = canvas.height * ratio; 
+            
+            canvas.width = w;
+            canvas.height = h;
+    
+            ctx?.scale(ratio, ratio);
+            ctx?.drawImage(screenElRef.current, 0, 0, canvas.width / ratio, canvas.height / ratio);
+        }
+    }
+
     //#endregion
 
 
@@ -202,8 +229,6 @@ const useLiveManager = (payload: useStreamforStudioPayload) => {
     // 오디오 초기값 세팅 mute + 화면이 꺼질때 실행할 함수;
     useEffect(()=>{
         audioMute(true);
-
-    
     },[]);
 
     // 스트리밍
@@ -282,6 +307,7 @@ const useLiveManager = (payload: useStreamforStudioPayload) => {
         };
     }, [streaming_is_active]);   
 
+
     // 볼륨 비디오 조절
     useEffect(() => {
         if (!clientRef.current) return;
@@ -290,13 +316,24 @@ const useLiveManager = (payload: useStreamforStudioPayload) => {
 
         // 비디오 정지
         if (!videoState) {
-            audioTrackRef.current.stop();
-            if(screenTrackRef.current) screenTrackRef.current.stop();
+            try{
+                getPauseImg();         
+            } finally {
+                audioTrackRef.current.stop();
+                if(screenTrackRef.current) screenTrackRef.current.stop();
+            }
+
         } 
 
         // 비디오 플레이
         else {
-            if(screenTrackRef.current) screenTrackRef.current.play(screenElRef.current);
+            if(screenTrackRef.current) {
+                screenTrackRef.current.play(screenElRef.current);
+            }
+
+            if (canvaseElRef.current) {
+                canvaseElRef.current.style.opacity = "0";
+            }
 
             // Mute = true
             if (isMuted) {
