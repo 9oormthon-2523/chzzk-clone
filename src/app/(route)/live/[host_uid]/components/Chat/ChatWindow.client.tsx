@@ -1,4 +1,9 @@
+"use client";
 import { Message } from "@/app/_types/chat/Chat";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+import { getColorFromNickname } from "@/app/_utils/chat/hashColor";
+import { IoShieldCheckmarkSharp } from "react-icons/io5";
 /**
  * 채팅 창
  */
@@ -6,9 +11,13 @@ import { Message } from "@/app/_types/chat/Chat";
 //프롭스는 나중에
 type MessageListProps = {
   messages: Message[];
+  roomId: string;
 };
 
-const ChatWindow = ({ messages }: MessageListProps) => {
+const ChatWindow = ({ messages, roomId }: MessageListProps) => {
+  useEffect(() => {
+    console.log("msg:", messages);
+  }, [messages]);
   return (
     <div
       id="chatting-list-container"
@@ -22,7 +31,13 @@ const ChatWindow = ({ messages }: MessageListProps) => {
         <div id="empty-box-forChat" aria-label="빈 박스" />
         <div className="text-[14px]">
           {messages.map((msg, idx) => (
-            <ChatBox key={idx} nickname={msg.nickname} message={msg.message} />
+            <ChatBox
+              key={idx}
+              nickname={msg.nickname}
+              message={msg.message}
+              id={msg.id}
+              roomId={roomId}
+            />
           ))}
         </div>
       </div>
@@ -35,20 +50,40 @@ export default ChatWindow;
 type ChatProps = {
   nickname: string;
   message: string;
+  id: string;
+  roomId: string;
 };
 //채팅 박스
-const ChatBox = ({ nickname, message }: ChatProps) => {
+const ChatBox = ({ nickname, message, id, roomId }: ChatProps) => {
+  const router = useRouter();
+  const handleNicknameClick = () => {
+    router.push(`/channel/${id}`);
+  };
+
+  const nicknameColor = getColorFromNickname(nickname);
+  const isBroadcaster = id === roomId;
   return (
     <div aria-label="chat w-full">
-      <button className="px-[6px] py-[4px] text-left">
-        <span className="mr-[4px] leading-[18px] m-[-2px_0] p-[2px_4px_2px_2px] relative text-green-500">
+      <div className="px-[6px] py-[4px] text-left flex">
+        <button
+          className={`mr-[4px] leading-[18px] m-[-2px_0] p-[2px_4px_2px_2px] relative border-2 flex items-center`}
+          onClick={handleNicknameClick}
+          style={{
+            color: isBroadcaster ? "#3a4338" : nicknameColor, // 조건에 따라 색상 적용
+          }}
+        >
+          {isBroadcaster && (
+            <span className={`font-bold text-[#1bb373] mr-1 text-xl`}>
+              <IoShieldCheckmarkSharp />
+            </span>
+          )}
           {nickname}
-        </span>
+        </button>
 
         <span className="text-[#2e3033] text-left break-words leading-[20px]">
           {message}
         </span>
-      </button>
+      </div>
     </div>
   );
 };
