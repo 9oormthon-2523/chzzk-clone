@@ -22,7 +22,7 @@ import VideoFullscreen from "@public/livePage/Video/fullscreen.svg";
 import VideoLive from "@public/livePage/Video/live.svg";
 import VideoFollow from "@public/livePage/Video/follow.svg";
 import VideoBrokenFollow from "@public/livePage/Video/brokenFollow.svg";
-import VideoUnFollow from "@public/livePage/Video/unFollow.svg";
+import VideoUnFollow from "@public/livePage/Video/unfollow.svg";
 import VideoPause from "@public/livePage/Video/pause.svg";
 import VideoPlay from "@public/livePage/Video/play.svg";
 import VideoSetting from "@public/livePage/Video/videoSetting.svg";

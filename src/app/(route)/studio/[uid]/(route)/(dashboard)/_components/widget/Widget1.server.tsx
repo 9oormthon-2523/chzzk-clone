@@ -3,18 +3,21 @@ import { DashBoardBoxInfoProps } from '../DashBoardInfo.server';
 import DashBoardTitle from '../DashBoardTitle.server';
 import DashBoardBoxInfo from '../DashBoardInfo.server';
 import DashBoardButton from '../DashBoardButton.server';
+import Link from 'next/link';
 
-const Widget1 = () => {
+const Widget1 = ({ uid }: { uid: string }) => {
   const list = [
-    { title: '스트리밍 소프트웨어를 다운로드 하세요', info: '설명 없어요' },
     {
-      title: '스트림 키를 소프트웨어에 붙여 넣어주세요.',
-      info: '스트림 키는 방송 관리 > 설정 에서 확인 가능합니다.',
+      title: '아래의 방송하기 버튼을 클릭하여 해당 페이지로 이동해주세요.',
+      info: '좌측 방송관리 > 방송하기 페이지로도 이동 가능합니다.',
     },
     {
-      title:
-        '스트리밍 소프트웨어에서 방송을 시작하면 라이브 방송이 진행됩니다.',
-      info: '방송 시작과 종료를 스트리밍 소프트웨어에서 진행해주세요.',
+      title: '"스트리밍 시작하기" 버튼을 누르면 라이브 방송이 시작됩니다.',
+      info: '공유할 화면을 선택하고 공유된 스크린과 마이크 볼륨을 조절해주세요.',
+    },
+    {
+      title: '원 클릭 라이브 방송 성공!',
+      info: '방송 시작과 종료는 방송하기 페이지내에서 해주세요.',
     },
   ];
 
@@ -32,7 +35,9 @@ const Widget1 = () => {
 
       {/* 버튼 */}
       <div className="mt-[16px] text-center">
-        <DashBoardButton>방송하기</DashBoardButton>
+        <Link href={`/studio/${uid}/live`}>
+          <DashBoardButton>방송하기</DashBoardButton>
+        </Link>
       </div>
     </DashBoardBox>
   );

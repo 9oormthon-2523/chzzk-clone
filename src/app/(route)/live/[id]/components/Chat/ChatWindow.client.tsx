@@ -9,6 +9,7 @@ type MessageListProps = {
 };
 
 const ChatWindow = ({ messages }: MessageListProps) => {
+  console.log("msgs:", messages);
   return (
     <div
       id="chatting-list-container"

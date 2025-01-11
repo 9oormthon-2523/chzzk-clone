@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import Image from "next/image";
-import Link from "next/link";
-import React, { useEffect, useState } from "react";
-import ExpandNavButton from "./ExpandNavButton.client";
-import LoginButton from "./LoginButton.client";
-import ProfileBtn from "./ProfileBtn";
-import { createClient } from "@/app/_utils/supabase/client";
-import LoginModal from "../LoginModal/LoginModal.client";
+import Image from 'next/image';
+import Link from 'next/link';
+import React, { useEffect, useState } from 'react';
+import ExpandNavButton from './ExpandNavButton.client';
+import LoginButton from './LoginButton.client';
+import ProfileBtn from './ProfileBtn';
+import { createClient } from '@/app/_utils/supabase/client';
+import LoginModal from '../LoginModal/LoginModal.client';
 const Header = () => {
   const supabase = createClient();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -17,7 +17,6 @@ const Header = () => {
     const checkLoginStatus = async () => {
       const {
         data: { user },
-        error,
       } = await supabase.auth.getUser();
 
       if (user) {
@@ -34,9 +33,9 @@ const Header = () => {
     <header className="bg-[#222] fixed flex justify-between items-center px-[20px] py-[10px] w-full z-40 ">
       <div className="flex items-center gap-2">
         <ExpandNavButton />
-        <Link href={"/"}>
+        <Link href={'/'}>
           <Image
-            src={"/studioPage/WhiteLogo.svg"}
+            src={'/studioPage/WhiteLogo.svg'}
             width={74}
             height={26}
             alt="Logo"

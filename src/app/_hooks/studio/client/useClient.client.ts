@@ -11,6 +11,7 @@ interface initClientPlayload {
 // 클라이언트 생성 및 채널 참가
 export const initializeClient = async (payload:initClientPlayload) => {
     const { clientRef, APP_ID, channel, uid,} = payload;
+
     try {
         if (clientRef.current) {
             console.log('이미 클라이언트를 가지고 있습니다.');
@@ -22,7 +23,7 @@ export const initializeClient = async (payload:initClientPlayload) => {
         console.log("클라이언트 초기화 및 채널 참가 완료");
         client.enableDualStream(); // 네트워크 상태에 따라 적응형 스트림 관리
 
-    } catch (err:unknown) {
+    } catch {
         if (!clientRef.current) return;
 
         await clientRef.current.removeAllListeners();
