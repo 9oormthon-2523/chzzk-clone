@@ -1,20 +1,3 @@
-
-
-// 헤더
-import HeaderBell from "@public/livePage/Header/bell.svg"
-import HeaderCategory from "@public/livePage/Header/category.svg"
-import HeaderCheeze from "@public/livePage/Header/cheeze.svg"
-import HeaderCrownCoin from "@public/livePage/Header/crownCoin.svg"
-import HeaderCup from "@public/livePage/Header/cup.svg"
-import HeaderFollow from "@public/livePage/Header/follow.svg"
-import HeaderKey from "@public/livePage/Header/key.svg"
-import HeaderMoon from "@public/livePage/Header/moon.svg"
-import HeaderPc from "@public/livePage/Header/pc.svg"
-import HeaderClip from "@public/livePage/Header/clip.svg"
-import HeaderTicket from "@public/livePage/Header/ticket.svg"
-import HeaderVideo from "@public/livePage/Header/video.svg"
-
-
 // 비디오
 import VideoChatFold from "@public/livePage/Video/chatFold.svg";
 import VideoDots from "@public/livePage/Video/dots.svg";
@@ -41,20 +24,6 @@ import ChatSetting from "@public/livePage/Chat/setting.svg";
  */
 
 const SvgComponents = {
-  // 헤더
-  HeaderBell,
-  HeaderCategory,
-  HeaderCheeze,
-  HeaderCrownCoin,
-  HeaderCup,
-  HeaderFollow,
-  HeaderKey,
-  HeaderMoon,
-  HeaderPc,
-  HeaderClip,
-  HeaderTicket,
-  HeaderVideo,
-
   // 비디오
   VideoChatFold,
   VideoDots,

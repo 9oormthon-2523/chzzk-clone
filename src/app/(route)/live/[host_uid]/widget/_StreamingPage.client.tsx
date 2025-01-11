@@ -71,7 +71,7 @@ export default function StreamingPage(props: StreamingPageProps) {
                   </LiveStreamWrapper>
 
             {/* 채팅창 */}
-            <ChatLayout roomId={roomInit.uid} uid={client_uid} />
+            <ChatLayout roomId={roomInit.uid} client_uid={client_uid} />
       </LiveWrapper>
     </>
   );

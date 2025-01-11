@@ -28,7 +28,7 @@ const StudioLivePage = async ({
       </div>
 
       {/* 채팅 영역 */}
-      <ChatLayout roomId={uid} />
+      <ChatLayout roomId={uid} client_uid={uid}/>
     </div>
   );
 };

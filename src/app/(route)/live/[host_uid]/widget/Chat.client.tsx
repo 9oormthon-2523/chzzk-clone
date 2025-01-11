@@ -8,7 +8,7 @@ import ChatInput from "../components/Chat/Input.client";
 import { useChat } from "@/app/_hooks/useChat";
 import { CSSProperties, useState } from "react";
 
-const ChatLayout = ({ roomId }: { roomId: string }) => {
+const ChatLayout = ({ roomId, client_uid }: { roomId: string, client_uid:string|undefined }) => {
   const { isChatOpen, chatPosition, toggleChat } = useScreenControl();
   const { messages, sendMessage } = useChat(roomId);
   const [newMessage, setNewMessage] = useState("");
@@ -38,7 +38,7 @@ const ChatLayout = ({ roomId }: { roomId: string }) => {
         value={newMessage}
         onChange={(e) => setNewMessage(e.target.value)}
         onSend={handleSendMessage}
-        
+        client_uid={client_uid}
       />
     </aside>
   );
