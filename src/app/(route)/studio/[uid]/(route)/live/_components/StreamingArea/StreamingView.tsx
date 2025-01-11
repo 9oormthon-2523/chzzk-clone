@@ -5,9 +5,12 @@ import dynamic from 'next/dynamic';
 import { useUserStreaming } from '@/app/_store/queries/streamingSettings/query';
 import { useUID } from '@/app/_store/context/useUid';
 
-const StreamingCoreBtn = dynamic(() => import('./StreamingCoreBtn.client'), {
-  ssr: false,
-});
+const StreamingButtonList = dynamic(
+  () => import('./StreamingButtonList.client'),
+  {
+    ssr: false,
+  }
+);
 
 const StreamingView = () => {
   const uid = useUID();
@@ -24,7 +27,7 @@ const StreamingView = () => {
         }
       </p>
       <div className="mt-[30px]">
-        <StreamingCoreBtn />
+        <StreamingButtonList />
       </div>
       <div className="absolute bottom-0 w-full bg-[#222] border border-[#FFFFFF1A] font-bold text-[14px] h-[40px] flex justify-center items-center text-white gap-[5px]">
         <div
