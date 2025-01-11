@@ -28,44 +28,47 @@ export default function Settings() {
         data: { user: supabaseUser },
         error: getUserError,
       } = await supabase.auth.getUser();
-
+  
       if (getUserError) {
         throw new Error(getUserError.message);
       }
-
+  
       if (!supabaseUser) {
         throw new Error("사용자 정보가 존재하지 않습니다.");
       }
-
-      setUser({
-        email: supabaseUser.email ?? "",
-        id: supabaseUser.id,
-        name: supabaseUser.user_metadata?.full_name ?? "",
-        img: supabaseUser.user_metadata?.avatar_url ?? "",
-        channel_intro: "",
-      });
-
-      if (supabaseUser.user_metadata?.avatar_url) {
-        setPreviewUrl(supabaseUser.user_metadata.avatar_url);
-      }
-
-      setNickname(supabaseUser.user_metadata?.full_name ?? "");
-
+  
+      const userId = supabaseUser.id;
+  
       const { data: userDetails, error: fetchUserDetailsError } = await supabase
         .from("users")
-        .select("channel_intro")
-        .eq("id", supabaseUser.id)
+        .select("nickname, profile_img, channel_intro")
+        .eq("id", userId)
         .single();
-
+  
       if (fetchUserDetailsError) {
         throw new Error(fetchUserDetailsError.message);
       }
-
-      setChannelIntro(userDetails?.channel_intro ?? "");
+  
+      if (!userDetails) {
+        throw new Error("users 테이블에서 사용자 정보를 찾을 수 없습니다.");
+      }
+  
+      setUser({
+        email: supabaseUser.email ?? "",
+        id: userId,
+        name: userDetails.nickname ?? "",
+        img: userDetails.profile_img ?? "",
+        channel_intro: userDetails.channel_intro ?? "",
+      });
+  
+      setPreviewUrl(userDetails.profile_img ?? "");
+      setNickname(userDetails.nickname ?? "");
+      setChannelIntro(userDetails.channel_intro ?? "");
     } catch (error) {
       console.error("사용자 정보 불러오기 오류", error);
     }
   };
+  
 
   useEffect(() => {
     fetchUser();
