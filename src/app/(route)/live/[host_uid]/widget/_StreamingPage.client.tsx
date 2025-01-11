@@ -2,6 +2,7 @@
 
 import NavBar from "@/app/(route)/(main)/_components/NavBar/NavBar.client";
 import useFullscreenHandler from "../utils/local/useFullScreenHandler.client";
+import useScreenControl from "@/app/_store/stores/live/useScreenControl";
 import useNavToggle from "@/app/_store/main/useNavToggle.client";
 import useLiveInfo from "../utils/db/useLiveInfo.client";
 import LiveStreamWrapper from "./LiveStreamWrapper.client";
@@ -14,7 +15,7 @@ const VideoPlayer = dynamic(() => import("./VideoPlayer.client"), { ssr: false }
 
 import { getHostInfoPayload } from "../liveType";
 import usePing from "../utils/db/usePing.client";
-import useScreenControl from "@/app/_store/live/useScreenControl";
+
 interface StreamingPageProps extends getHostInfoPayload {
   client_uid: string | undefined
 }
@@ -61,7 +62,8 @@ export default function StreamingPage(props: StreamingPageProps) {
                         <LiveDetails
                           {...hostInfo}
                           {...liveInfo}
-                          uid={roomInit.uid}
+                          uid={client_uid}
+                          host_uid={roomInit.uid}
                           start_time={roomInit.start_time} 
                         />
                     }
@@ -69,7 +71,7 @@ export default function StreamingPage(props: StreamingPageProps) {
                   </LiveStreamWrapper>
 
             {/* 채팅창 */}
-            <ChatLayout roomId={roomInit.uid} />
+            <ChatLayout roomId={roomInit.uid} uid={client_uid} />
       </LiveWrapper>
     </>
   );

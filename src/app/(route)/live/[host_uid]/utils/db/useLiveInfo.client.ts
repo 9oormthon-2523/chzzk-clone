@@ -30,7 +30,6 @@ const useLiveInfo = (init:useLiveInfoPayload) => {
     const linkLimit = useRef<number>(0);
     
     useEffect(() => {
-
         const subscribeToRealtime = () => {
             const getRoomDto = supabase
                 .channel("streaming-room-updates")
@@ -82,12 +81,10 @@ const useLiveInfo = (init:useLiveInfoPayload) => {
     
             return getRoomDto;
         };
-    
+
         const getRoomDto = subscribeToRealtime();
         
-        return () => {
-            supabase.removeChannel(getRoomDto);
-        };
+        return () => { supabase.removeChannel(getRoomDto) };
     }, []);
 
     return {
@@ -97,7 +94,6 @@ const useLiveInfo = (init:useLiveInfoPayload) => {
         is_active,
         audience_cnt
     }
-    
 }
 
 export default useLiveInfo;

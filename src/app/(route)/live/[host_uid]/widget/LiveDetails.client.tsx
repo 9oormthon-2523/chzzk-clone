@@ -1,10 +1,12 @@
 "use client"
 import Link from 'next/link';
-import React, { CSSProperties } from 'react'
 import { getHostInfoType } from '../liveType';
 import LiveButton from '../components/LiveDetails/LiveDetailsButton.client'; 
 import LiveOptionButton from '../components/LiveDetails/LiveDetailsOptionButton.client';
 import { LiveDetailsTime, LiveDetailsViewer, LiveCategory, LiveNickName, LiveHashTag } from '../components/LiveDetails/LiveDetailComponents.client';
+import React, { CSSProperties, useEffect, useState } from 'react'
+import { useFollowerQuery } from '@/app/_store/queries/follow/query';
+import { useFollowAction } from '@/app/_store/queries/follow/mutation';
 
 /**
  * 라이브 스트리밍 정보 컴포넌트
@@ -12,7 +14,8 @@ import { LiveDetailsTime, LiveDetailsViewer, LiveCategory, LiveNickName, LiveHas
 
 interface HostInfoProps extends getHostInfoType {
     is_active:boolean
-    uid:string
+    uid:string | undefined;
+    host_uid:string
 }
 
 interface StreamInfoProps {
@@ -29,6 +32,7 @@ const LiveDetails = (props:LiveDetailsProps) => {
 
     const { 
         uid,
+        host_uid,
         tags,
         title,
         nickname, 
@@ -58,6 +62,7 @@ const LiveDetails = (props:LiveDetailsProps) => {
                 {/* 호스트 정보 */}
                 <HostInfoCompo 
                     uid={uid}
+                    host_uid={host_uid}
                     is_active={is_active}
                     nickname={nickname} 
                     profile_img={profile_img}
@@ -94,16 +99,42 @@ const StreamInfoCompo = (props:StreamInfoProps) => {
 
 // 호스트 정보
 const HostInfoCompo = (props:HostInfoProps) => {
-    const { uid, nickname, is_active, profile_img} = props;
+    const { uid, host_uid ,nickname, is_active, profile_img} = props;
+    const { data, isLoading, error } = useFollowerQuery(host_uid);
+    const { followMutate, unfollowMutate } = useFollowAction();
+    const [followState, setFollowState] = useState<boolean>(false);
+
+    const followerCount = error || isLoading || !data ? "n" : data.length;
+
+    const onClickHandler = () => {
+        if (!uid || uid === host_uid || isLoading || error) return;
+    
+        const fn = followState ? unfollowMutate : followMutate;
+        fn({ nickname, uid: host_uid });
+    }
+
+    useEffect(()=>{
+        if (!data || !uid) return;
+        setFollowState(data.some(({follower}) => follower.uid === uid));
+    },[data]);
 
     const circle_style:CSSProperties = {
         background: is_active ? "linear-gradient(320deg,#5bda30,#a8a8a8d5)" : undefined
     }
 
+    const no_allowed = !uid || isLoading || error || uid === host_uid
+
+    const followButton_style:CSSProperties = {
+        color:followState?"black":"#fff",
+        backgroundColor:followState? "#f3f4f6": "#1bb373",
+        cursor: no_allowed ? "not-allowed" : undefined,
+        filter: no_allowed ? "brightness(0.8)" : undefined,
+    }
+
     return (
         <div id="live-informaiton-details-row" className="mt-[6px] items-start flex w-full">
             <Link 
-                href={`/channel/${uid}`} 
+                href={`/channel/${host_uid}`} 
                 id="프로필 사진" 
                 style={circle_style}
                 className="select-none mr-[0.5rem] overflow-hidden relative flex justify-center items-center w-[60px] h-[60px] rounded-full flex-none p-[0.2px] m-[1.8px_3px]"
@@ -115,13 +146,22 @@ const HostInfoCompo = (props:HostInfoProps) => {
 
             <div aria-label='방송 정보' className="self-center flex flex-1 flex-col min-w-0">
                 <LiveNickName nickname={nickname}/>
-                <p className='mt-[2px] text-[13px] font-semibold text-[#666]'>팔로워 11명</p>
+                <p className='mt-[2px] text-[13px] font-semibold text-[#666]'>
+                    팔로워 { followerCount }명
+                </p> 
                 
             </div>
                 
             <div className="flex ml-4 pt-[19px] relative">
                 <div className="mr-[6px] relative flex gap-2">
-                    <LiveButton svgIcon='VideoUnFollow' title='팔로우' svgWight={20} svgHeight={20} style='bg-[#1bb373] text-[#fff]'/>
+                    <LiveButton 
+                        svgWight={20} 
+                        svgHeight={20} 
+                        onClick={onClickHandler} 
+                        style={followButton_style}
+                        title={!followState ? '팔로우' : '팔로우 중'} 
+                        svgIcon={!followState ? 'VideoUnFollow' : 'VideoFollow'} 
+                    />
                     <LiveOptionButton/>
                 </div>
             </div>

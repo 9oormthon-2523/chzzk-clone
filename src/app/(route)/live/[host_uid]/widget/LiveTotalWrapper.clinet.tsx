@@ -1,6 +1,6 @@
 "use client";
 
-import useScreenControl from "@/app/_store/live/useScreenControl";
+import useScreenControl from "@/app/_store/stores/live/useScreenControl";
 import useNavToggle from "@/app/_store/main/useNavToggle.client";
 import { CSSProperties, ReactNode } from "react";
 

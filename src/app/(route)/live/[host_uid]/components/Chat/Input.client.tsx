@@ -12,7 +12,7 @@ const ChatInput = ({ value, onChange, onSend }: MessageInputProps) => {
   return (
     <div
       id="live-chatting-area"
-      className="flex-none p-[10px_20px] relative z-[100]"
+      className="flex-none p-[10px_20px] relative z-[30]"
     >
       <div className="items-center bg-[#f5f5f5] rounded-[8px] flex p-[5px] relative w-full">
         <button className="items-center flex-none h-[30px] relative w-[30px]">

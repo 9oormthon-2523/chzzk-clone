@@ -1,7 +1,7 @@
 "use client"
 import React from 'react'
 import LiveBox from '../../_ETC/liveBox';
-import useScreenControl from '@/app/_store/live/useScreenControl';
+import useScreenControl from '@/app/_store/stores/live/useScreenControl';
 import PlayerHeaderButton, { PlayerHeaderButtonProps } from './PlayerHeaderButton.client';
 
 /**

@@ -1,7 +1,7 @@
 "use client"
 import Footer from "@/app/_components/Footer/footer";
 import React, { CSSProperties, ReactNode, useRef } from "react";
-import useScreenControl from "@/app/_store/live/useScreenControl";
+import useScreenControl from "@/app/_store/stores/live/useScreenControl";
 
 /**
  * 라이브 스트리밍 래퍼 컴포넌트

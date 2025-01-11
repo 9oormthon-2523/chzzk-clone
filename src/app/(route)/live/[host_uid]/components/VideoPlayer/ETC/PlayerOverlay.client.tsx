@@ -1,5 +1,5 @@
 "use client"
-import useVideoControl from "@/app/_store/live/useVideoControl";;
+import useVideoControl from "@/app/_store/stores/live/useVideoControl";
 import React from "react";
 
 /**
