@@ -38,6 +38,10 @@ const ChannelProfile = ({ nickname, follower, context, img_url }: ChannelProfile
 
   const isLoggedInUser = loggedInUserId === pageId; 
 
+  const handleChannelStudioClick = () => {
+    router.push(`/studio/${pageId}`);
+  };
+
   const handleChannelManagementClick = () => {
     router.push(`/channel/${pageId}/settings`);
   };
@@ -62,14 +66,41 @@ const ChannelProfile = ({ nickname, follower, context, img_url }: ChannelProfile
       </div>
 
       {isLoggedInUser ? (
-        <button 
-          onClick={handleChannelManagementClick}
-          className="w-20 h-8 bg-[#1bb373] rounded-full flex items-center justify-center text-white font-black"
-        >
-          채널 관리
-        </button>
+        <div className='flex flex-row gap-2'>
+          <button 
+            onClick={handleChannelStudioClick}
+            className="p-3 h-9 border border-gray-300 hover:bg-gray-200 rounded-full flex items-center justify-center text-md font-black">
+              <Image
+                src="/channelPage/video.svg"
+                alt="아이콘"
+                width={24}
+                height={24}
+                className="mr-1"
+              />
+              방송하기
+          </button>
+          <button 
+            onClick={handleChannelManagementClick}
+            className="p-3 h-9 border border-gray-300 hover:bg-gray-200 rounded-full flex items-center justify-center text-md font-black">
+              <Image
+                src="/channelPage/setting.svg"
+                alt="아이콘"
+                width={24}
+                height={24}
+                className="mr-1"
+              />
+              채널 관리
+          </button>
+        </div>
       ) : (
-        <button className="w-20 h-8 bg-[#1bb373] rounded-full flex items-center justify-center text-white font-black">
+        <button className="p-3 h-8 bg-[#1bb373] hover:bg-[#178c5c] rounded-full flex items-center justify-center text-white font-black">
+          <Image
+                src="/channelPage/heart.svg"
+                alt="아이콘"
+                width={20}
+                height={20}
+                className="mr-1"
+              />
           팔로우
         </button>
       )}
