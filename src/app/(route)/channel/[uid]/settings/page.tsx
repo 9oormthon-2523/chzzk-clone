@@ -22,6 +22,8 @@ export default function Settings() {
   const [nicknameLength, setNicknameLength] = useState<number>(0);
   const [channelIntroLength, setChannelIntroLength] = useState<number>(0);
 
+  const defaultImage = "/images/default_avatar.png";
+
   const fetchUser = async () => {
     try {
       const {
@@ -189,20 +191,15 @@ export default function Settings() {
             <div className="flex gap-2">
               <p className="w-24 mt-4 shrink-0 font-bold text-gray-700 mr-6 mb-24">프로필 이미지</p>
               <div className="flex flex-row items-center gap-2">
-                {previewUrl ? (
-                  <div className="rounded-full w-[140px] h-[140px] overflow-hidden">
-                    <Image
-                      src={previewUrl}
-                      alt="새 프로필 미리 보기"
-                      width={140}
-                      height={140}
-                      className="object-cover"
-                      priority
-                    />
-                  </div>
-                ) : (
-                  <div className="w-[100px] h-[100px] bg-gray-300 rounded-full mb-2" />
-                )}
+              <div className="w-32 h-32 rounded-full flex-shrink-0 shadow-md mr-4 relative">
+                <Image 
+                  src={previewUrl || defaultImage} 
+                  alt={`${nickname} profile`} 
+                  layout="fill" 
+                  objectFit="cover" 
+                  className="rounded-full" 
+                />
+              </div>
                 <label className="ml-2 inline-flex items-center h-9 px-4 py-2 bg-gray-50 text-sm font-semibold rounded-md cursor-pointer border border-gray-200 hover:bg-gray-200">
                   이미지 수정
                   <input type="file" onChange={handleImageChange} className="hidden" />
@@ -218,7 +215,7 @@ export default function Settings() {
             <div className="flex flex-row gap-2 mt-4">
               <p className="w-24 mr-8 shrink-0 font-bold text-gray-700">닉네임</p>
               <input
-                className="w-full border rounded p-2 w-64 text-sm bg-gray-100 focus:border-[#8dd9b9] focus:bg-white focus:outline-none"
+                className="w-full border rounded p-2 text-sm bg-gray-100 focus:border-[#8dd9b9] focus:bg-white focus:outline-none"
                 value={nickname}
                 onChange={handleNicknameChange}
                 maxLength={10}
@@ -229,7 +226,7 @@ export default function Settings() {
             <div className="flex flex-row gap-2 mt-4">
               <p className="w-24 mr-8 shrink-0 font-bold text-gray-700">채널 소개</p>
               <textarea
-                className="w-full h-20 border rounded outline-none resize-none p-2 w-64 text-sm bg-gray-100 focus:border-[#8dd9b9] focus:bg-white"
+                className="w-full h-20 border rounded outline-none resize-none p-2 text-sm bg-gray-100 focus:border-[#8dd9b9] focus:bg-white"
                 value={channelIntro}
                 onChange={handleChannelIntroChange}
                 maxLength={100}
@@ -237,10 +234,13 @@ export default function Settings() {
               <div className="w-16 text-sm text-gray-500">{channelIntroLength} / 100</div>
             </div>
           </div>
+
         ) : (
           <div className="text-center">사용자 정보를 불러오는 중...</div>
         )}
       </div>
+     <div className="h-20" />
+
     </>
   );
 }
