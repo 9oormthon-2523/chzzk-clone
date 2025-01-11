@@ -17,7 +17,3 @@ export interface getHostInfoPayload {
     roomInit:getRoomDtoType
     hostInfo:getHostInfoType
 }
-
-export interface RoomHostProfile {
-    
-}

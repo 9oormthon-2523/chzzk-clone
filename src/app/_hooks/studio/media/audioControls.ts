@@ -8,8 +8,6 @@ interface AudioState {
 }
 
 type micResource = "screen" | "mic" ;
-type mediaResource = "all" | micResource;
-
 
 interface audioControl {
     micTrackRef: RefObject<null | AgoraRTCType.IMicrophoneAudioTrack>

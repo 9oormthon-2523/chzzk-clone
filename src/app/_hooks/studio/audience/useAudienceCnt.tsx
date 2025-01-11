@@ -60,7 +60,7 @@ const useAudienceCnt = (payload: useAudienceCntPayload) => {
             setAudience((prev) => {
                 const now = Date.now();
                 // 갱신이 안된 시청자 제외
-                const activeAudiences = Object.entries(prev).filter(([_, timestamp]) => now - timestamp < TIME);
+                const activeAudiences = Object.entries(prev).filter((audiunce) => now - audiunce[1] < TIME);
                 const updated = Object.fromEntries(activeAudiences);
 
                 // 필터링된 시청자 db에 갱신함
@@ -68,6 +68,7 @@ const useAudienceCnt = (payload: useAudienceCntPayload) => {
 
                 return updated;
             });
+            console.log(audience);
         }, TIME);
 
 

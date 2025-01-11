@@ -25,7 +25,7 @@ const LoginModal = () => {
     if (error) console.error("OAuth 로그인 실패:", error.message);
   }
 
-  const onClickKakaoButton = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const onClickKakaoButton = () => {
     signInWithOAuth();
   };
 
