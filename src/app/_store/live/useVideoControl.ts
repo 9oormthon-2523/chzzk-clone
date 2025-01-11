@@ -1,13 +1,5 @@
 import { create } from 'zustand';
 
-// export type User = {
-//   uid: string;
-//   hasAudio: boolean;
-//   hasVideo: boolean; 
-//   videoTrack: VideoTrack | null; 
-//   audioTrack: AudioTrack | null; 
-// };
-
 export type VideoTrack = {
   isEnabled: boolean; 
 };
