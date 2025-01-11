@@ -67,7 +67,7 @@ const StreamList: React.FC = () => {
   }, []);
 
   return (
-    <div className="flex flex-wrap gap-4 p-4 justify-center items-center">
+    <div className="flex flex-wrap gap-4 px-4 justify-center items-center">
       {streamData.map((data: StreamCardData) => (
         <StreamCard key={data.uid} {...data} />
       ))}
