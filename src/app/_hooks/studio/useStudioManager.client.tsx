@@ -5,6 +5,7 @@ import useAudienceCnt from './audience/useAudienceCnt';
 import { delClient, initializeClient } from './client/useClient.client';
 import { extractMediaTrack, unpublishMediaTracks } from './media/useMediaTrack';
 import { useStreamingOnOff } from '@/app/_store/queries/streamingSettings/mutation';
+import useStreamCleanup from './client/useStreamCleanup.client';
 
 
 /**
@@ -30,8 +31,11 @@ const useStudioManager = (uid: string) => {
     setAudioVolume,
   }); // 오디오 컨트롤 훅
 
+  useStreamCleanup(uid, clientRef);
   const { onMutation, offMutation } = useStreamingOnOff(uid);
   const { activateChannel, deactivateChannel } = useAudienceCnt({ host_uid:uid });
+
+
 
   // 사용법 addTrackShare():스크린 + 마이크 / addTrackShare("mic"):마이크 / addTrackShare("screen"): 스크린
   const addTrackShare = (type: mediaResource = 'all') =>

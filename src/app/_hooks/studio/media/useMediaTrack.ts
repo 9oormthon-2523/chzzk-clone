@@ -124,7 +124,7 @@ export const unpublishMediaTracks = async (payload:delMediaTrackPayload) => {
         }
         console.log("모든 미디어 트랙 언퍼블리시 및 초기화 완료");
 
-    } catch (err: unknown) {
+    } catch {
         console.error("언퍼블리싱 실패. 모든 리소스를 초기화합니다.");
 
         // 실패 시 전체 리소스 정리

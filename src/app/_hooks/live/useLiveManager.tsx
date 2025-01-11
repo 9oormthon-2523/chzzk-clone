@@ -226,7 +226,7 @@ const useLiveManager = (payload: useStreamforStudioPayload) => {
                 await client.on('user-published', async(user, mediaType) => {
                     try {
                         mediaPublished({user, mediaType}, client);
-                    } catch (err:unknown) {
+                    } catch {
                         await client.unsubscribe(user, mediaType);
                         
                         if (mediaType === "audio") await cleanAudioTrack();
@@ -242,7 +242,7 @@ const useLiveManager = (payload: useStreamforStudioPayload) => {
                     try {
                         await client.unsubscribe(user, mediaType);
                         await mediaUnpublished({user, mediaType});
-                    } catch (err:unknown) {
+                    } catch {
                         await client.unsubscribe(user, mediaType);
                         
                         if (mediaType === "audio") await cleanAudioTrack();

@@ -8,16 +8,6 @@
  * export default AnimatedFrame 
  * */
 
-/**
- * is Hover 기반 투명도 애니메이션을 사용하는 HOC
- *
- * @example
- * // HOC로 감싸기
- * const Frame = () => {return {...</div>}}
- * const AnimatedFrame = OpacityAnimation(Frame);
- * export default AnimatedFrame 
- * */
-
 type OpacityAnimationProps = {
   isHover: boolean;
 };

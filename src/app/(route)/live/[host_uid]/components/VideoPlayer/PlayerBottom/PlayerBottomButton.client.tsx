@@ -10,7 +10,7 @@ interface PlayerBottomButtonProps {
     svgName: SvgComponentNames
     style?: string
     info:string
-    onClick?: () => VideoDecoderConfig
+    onClick?: () => void
 }
 
 const PlayerBottomButton = (props:PlayerBottomButtonProps) => {
