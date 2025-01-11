@@ -2,7 +2,9 @@ import { FollowInfo } from '@/app/_types/follow.type';
 import { QueryClient, useQuery } from '@tanstack/react-query';
 
 const getFollower = async (uid: string): Promise<FollowInfo[]> => {
-  const res = await fetch(`http://localhost:3000/api/user/follow/${uid}`);
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/user/follow/${uid}`
+  );
   return res.json();
 };
 

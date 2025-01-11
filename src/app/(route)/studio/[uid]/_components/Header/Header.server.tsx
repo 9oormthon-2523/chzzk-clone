@@ -53,11 +53,14 @@ export default Header;
 
 const getUserProfile = async (): Promise<{ user: User }> => {
   const header = await headers();
-  const response = await fetch('http://localhost:3000/api/auth/user', {
-    headers: {
-      cookie: header.get('cookie') || '',
-    },
-  });
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/user`,
+    {
+      headers: {
+        cookie: header.get('cookie') || '',
+      },
+    }
+  );
 
   return response.json();
 };
