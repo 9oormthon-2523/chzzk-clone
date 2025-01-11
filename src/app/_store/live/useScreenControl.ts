@@ -14,7 +14,7 @@ export interface screenControlState {
   
 }
 
-const useScreenControl = create<screenControlState>((set, get) => ({
+const useScreenControl = create<screenControlState>((set) => ({
   isChatOpen: true, //채팅
   isWideScreen: false, //와이드
   isFullscreen: false, //전체화면
@@ -50,7 +50,7 @@ const useScreenControl = create<screenControlState>((set, get) => ({
     });
   },
   offFullScreen: () => {
-    set((state) => {
+    set(() => {
       return {
         isFullscreen:false,
         isFullOrWide:false,

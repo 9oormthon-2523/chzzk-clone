@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import Link from 'next/link'
 
 /**
  * 시청자 수랑 방송시간

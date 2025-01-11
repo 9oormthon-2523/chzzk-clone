@@ -24,7 +24,7 @@ const getClientInfo = async () => {
 
         return data.user.id;
 
-    } catch (err) {
+    } catch {
         console.log('비 로그인'); 
         return undefined;
     }

@@ -94,7 +94,7 @@ const useLiveManager = (payload: useStreamforStudioPayload) => {
     }
 
     const mediaUnpublished = async (payload: publishPayload) => {
-        const { user, mediaType } = payload;
+        const { mediaType } = payload;
 
         const hasMediaTracks =
             screenTrackRef.current || audioTrackRef.current
