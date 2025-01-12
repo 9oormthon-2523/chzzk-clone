@@ -44,7 +44,7 @@ export default function Page() {
     try {
       let imageUrl = "";
       if (selectedFile) {
-        const fileName = `${Date.now()}_${selectedFile.name}`;
+        const fileName = `${Date.now()}_${crypto.randomUUID()}`;
         const { data: storageData, error: storageError } = await supabase
           .storage
           .from('post_img')

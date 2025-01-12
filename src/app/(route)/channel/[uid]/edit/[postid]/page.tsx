@@ -65,7 +65,7 @@ export default function EditPage() {
     try {
       let imageUrl = oldImageUrl || '';
       if (selectedFile) {
-        const fileName = `${Date.now()}_${selectedFile.name}`;
+        const fileName = `${Date.now()}_${crypto.randomUUID()}`;
         const { data: storageData, error: storageError } = await supabase
           .storage
           .from('post_img')
