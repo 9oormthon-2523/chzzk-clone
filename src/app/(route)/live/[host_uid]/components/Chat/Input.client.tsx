@@ -12,9 +12,11 @@ type MessageInputProps = {
 const ChatInput = ({ value, onChange, onSend, client_uid }: MessageInputProps) => {
   const [isComposing, setIsComposing] = useState(false);
   const onPressEnter = (e:React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === "Enter" && !isComposing) {
-      e.preventDefault(); 
-      onSend();
+    if (e.key === "Enter") {
+      e.preventDefault();
+      if(!isComposing) {
+        onSend();
+      }
     }
   }
   return (
