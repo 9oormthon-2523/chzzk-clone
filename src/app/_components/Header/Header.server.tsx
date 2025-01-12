@@ -32,9 +32,8 @@ const Header = () => {
   }, [supabase]);
 
   return (
-    <header className="bg-[#222] fixed flex justify-between items-center px-[20px] py-[10px] w-full z-40 ">
-      {isOpen && <NavBar />}
-
+    <header className="bg-[#222] fixed flex justify-between items-center px-[10px] py-[10px] w-full z-40 ">
+      <NavBar />
       <div className="flex items-center gap-2">
         <ExpandNavButton />
         <Link href={"/"}>
