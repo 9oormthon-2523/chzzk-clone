@@ -14,7 +14,7 @@ interface PostDetail {
   created_at: string;
   img_url: string | null;
   profile_img: string | null;
-  user_id: string; 
+  user_id: string;
 }
 
 interface CommentType {
@@ -23,6 +23,7 @@ interface CommentType {
   content: string;
   created_at: string;
   profile_img: string | null;
+  user_id: string;
 
   isEditing?: boolean;  
   editContent?: string; 
@@ -349,6 +350,7 @@ export default function Detail() {
             nickname={comment.nickname}
             content={comment.content}
             profile_img={comment.profile_img}
+            commentUserId={comment.user_id}
             onEdit={() => handleCommentEditStart(comment.id)}
             onDelete={() => handleCommentDelete(comment.id)}
             isEditing={comment.isEditing} 
