@@ -66,7 +66,7 @@ const useLiveManager = (payload: useStreamforStudioPayload) => {
                 screenElRef.current.muted = true;
                 remoteScreenTrack.play(screenElRef.current);     
                 screenElRef.current.play();
-                screenElRef.current.style.objectFit = "contain"
+                screenElRef.current.style.objectFit = "scale-down"
                 //비율
                 await remoteScreenTrack.on('video-state-changed', () => {
                     const stats = remoteScreenTrack.getStats();
