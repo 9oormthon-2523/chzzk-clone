@@ -22,50 +22,55 @@ export default function Settings() {
   const [nicknameLength, setNicknameLength] = useState<number>(0);
   const [channelIntroLength, setChannelIntroLength] = useState<number>(0);
 
+  const defaultImage = "/images/default_avatar.png";
+
   const fetchUser = async () => {
     try {
       const {
         data: { user: supabaseUser },
         error: getUserError,
       } = await supabase.auth.getUser();
-
+  
       if (getUserError) {
         throw new Error(getUserError.message);
       }
-
+  
       if (!supabaseUser) {
         throw new Error("사용자 정보가 존재하지 않습니다.");
       }
-
-      setUser({
-        email: supabaseUser.email ?? "",
-        id: supabaseUser.id,
-        name: supabaseUser.user_metadata?.full_name ?? "",
-        img: supabaseUser.user_metadata?.avatar_url ?? "",
-        channel_intro: "",
-      });
-
-      if (supabaseUser.user_metadata?.avatar_url) {
-        setPreviewUrl(supabaseUser.user_metadata.avatar_url);
-      }
-
-      setNickname(supabaseUser.user_metadata?.full_name ?? "");
-
+  
+      const userId = supabaseUser.id;
+  
       const { data: userDetails, error: fetchUserDetailsError } = await supabase
         .from("users")
-        .select("channel_intro")
-        .eq("id", supabaseUser.id)
+        .select("nickname, profile_img, channel_intro")
+        .eq("id", userId)
         .single();
-
+  
       if (fetchUserDetailsError) {
         throw new Error(fetchUserDetailsError.message);
       }
-
-      setChannelIntro(userDetails?.channel_intro ?? "");
+  
+      if (!userDetails) {
+        throw new Error("users 테이블에서 사용자 정보를 찾을 수 없습니다.");
+      }
+  
+      setUser({
+        email: supabaseUser.email ?? "",
+        id: userId,
+        name: userDetails.nickname ?? "",
+        img: userDetails.profile_img ?? "",
+        channel_intro: userDetails.channel_intro ?? "",
+      });
+  
+      setPreviewUrl(userDetails.profile_img ?? "");
+      setNickname(userDetails.nickname ?? "");
+      setChannelIntro(userDetails.channel_intro ?? "");
     } catch (error) {
       console.error("사용자 정보 불러오기 오류", error);
     }
   };
+  
 
   useEffect(() => {
     fetchUser();
@@ -186,20 +191,15 @@ export default function Settings() {
             <div className="flex gap-2">
               <p className="w-24 mt-4 shrink-0 font-bold text-gray-700 mr-6 mb-24">프로필 이미지</p>
               <div className="flex flex-row items-center gap-2">
-                {previewUrl ? (
-                  <div className="rounded-full w-[140px] h-[140px] overflow-hidden">
-                    <Image
-                      src={previewUrl}
-                      alt="새 프로필 미리 보기"
-                      width={140}
-                      height={140}
-                      className="object-cover"
-                      priority
-                    />
-                  </div>
-                ) : (
-                  <div className="w-[100px] h-[100px] bg-gray-300 rounded-full mb-2" />
-                )}
+              <div className="w-32 h-32 rounded-full flex-shrink-0 shadow-md mr-4 relative">
+                <Image 
+                  src={previewUrl || defaultImage} 
+                  alt={`${nickname} profile`} 
+                  layout="fill" 
+                  objectFit="cover" 
+                  className="rounded-full" 
+                />
+              </div>
                 <label className="ml-2 inline-flex items-center h-9 px-4 py-2 bg-gray-50 text-sm font-semibold rounded-md cursor-pointer border border-gray-200 hover:bg-gray-200">
                   이미지 수정
                   <input type="file" onChange={handleImageChange} className="hidden" />
@@ -215,7 +215,7 @@ export default function Settings() {
             <div className="flex flex-row gap-2 mt-4">
               <p className="w-24 mr-8 shrink-0 font-bold text-gray-700">닉네임</p>
               <input
-                className="w-full border rounded p-2 w-64 text-sm bg-gray-100 focus:border-[#8dd9b9] focus:bg-white focus:outline-none"
+                className="w-full border rounded p-2 text-sm bg-gray-100 focus:border-[#8dd9b9] focus:bg-white focus:outline-none"
                 value={nickname}
                 onChange={handleNicknameChange}
                 maxLength={10}
@@ -226,7 +226,7 @@ export default function Settings() {
             <div className="flex flex-row gap-2 mt-4">
               <p className="w-24 mr-8 shrink-0 font-bold text-gray-700">채널 소개</p>
               <textarea
-                className="w-full h-20 border rounded outline-none resize-none p-2 w-64 text-sm bg-gray-100 focus:border-[#8dd9b9] focus:bg-white"
+                className="w-full h-20 border rounded outline-none resize-none p-2 text-sm bg-gray-100 focus:border-[#8dd9b9] focus:bg-white"
                 value={channelIntro}
                 onChange={handleChannelIntroChange}
                 maxLength={100}
@@ -234,10 +234,13 @@ export default function Settings() {
               <div className="w-16 text-sm text-gray-500">{channelIntroLength} / 100</div>
             </div>
           </div>
+
         ) : (
           <div className="text-center">사용자 정보를 불러오는 중...</div>
         )}
       </div>
+     <div className="h-20" />
+
     </>
   );
 }
