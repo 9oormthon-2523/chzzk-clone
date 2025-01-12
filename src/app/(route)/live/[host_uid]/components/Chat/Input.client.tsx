@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import SvgIcon from "../../../../../_components/SVGIcon.server";
 /**
  * 채팅 입력란
@@ -10,11 +10,13 @@ type MessageInputProps = {
   client_uid: string|undefined
 };
 const ChatInput = ({ value, onChange, onSend, client_uid }: MessageInputProps) => {
-
+  const [isComposing, setIsComposing] = useState(false);
   const onPressEnter = (e:React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter") {
       e.preventDefault();
-      onSend();
+      if(!isComposing) {
+        onSend();
+      }
     }
   }
   return (
@@ -36,6 +38,8 @@ const ChatInput = ({ value, onChange, onSend, client_uid }: MessageInputProps) =
           value={value}
           onChange={onChange}
           onKeyDown={onPressEnter}
+          onCompositionStart={() => setIsComposing(true)}
+          onCompositionEnd={() => setIsComposing(false)}
           placeholder="채팅을 입력해주세요"
         />
       </div>
