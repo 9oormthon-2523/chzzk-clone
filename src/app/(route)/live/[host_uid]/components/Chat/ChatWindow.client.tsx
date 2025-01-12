@@ -53,6 +53,7 @@ type ChatProps = {
   id: string;
   roomId: string;
 };
+
 //채팅 박스
 const ChatBox = ({ nickname, message, id, roomId }: ChatProps) => {
   const router = useRouter();
@@ -64,26 +65,25 @@ const ChatBox = ({ nickname, message, id, roomId }: ChatProps) => {
   const isBroadcaster = id === roomId;
   return (
     <div aria-label="chat w-full">
-      <div className="px-[6px] py-[4px] text-left flex">
-        <button
-          className={`mr-[4px] leading-[18px] m-[-2px_0] p-[2px_4px_2px_2px] relative border-2 flex items-center border-none`}
-          onClick={handleNicknameClick}
-          style={{
-            color: isBroadcaster ? "#3a4338" : nicknameColor, // 조건에 따라 색상 적용
-          }}
-        >
+      <button
+        onClick={handleNicknameClick}
+        style={{ overflowWrap: "anywhere"}}
+        className="px-[6px] py-[4px] text-left break-all whitespace-pre-wrap text-black rounded-md hover:bg-[#00000008] cursor-pointer"
+      >
+        <span className="align-middle mr-[6px]">  
           {isBroadcaster && (
-            <span className={`font-bold text-[#1bb373] mr-1 text-xl`}>
+            <span className={`align-middle font-bold text-[#1bb373] mr-1 text-xl inline-block`}>
               <IoShieldCheckmarkSharp />
             </span>
           )}
-          {nickname}
-        </button>
-
-        <span className="text-[#2e3033] text-left break-words leading-[20px]">
+            <span      
+              style={{ 
+                color: isBroadcaster ? "#3a4338" : nicknameColor, // 조건에 따라 색상 적용
+            }}>{nickname}</span>
+          </span>
           {message}
-        </span>
-      </div>
+      </button>
     </div>
   );
 };
+
