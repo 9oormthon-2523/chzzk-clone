@@ -62,7 +62,7 @@ const RootLayout = ({ children }: RootLayoutProps) => {
     <div>
       <Header />
       {isOpen && <NavBar />}
-      <div className="mx-12">
+      <div className="mx-12 ml-28">
         <div className="h-28" />
         <ChannelProfile
           img_url={userInfo.img_url}
