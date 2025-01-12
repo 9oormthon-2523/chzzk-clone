@@ -16,43 +16,10 @@ export async function GET(request: Request) {
 
     // 오류가 없다면
     // 1. public.users 테이블에 유저 정보 저장
+    // => (데이터베이스 트리거 이용하여 auth.users에 데이터가 들어오면 public.users에 insert)
     // 2. next로 redirect
 
     if (!error) {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-
-      if (user) {
-        const { data: existingUser, error: selectError } = await supabase
-          .from('users')
-          .select('id')
-          .eq('id', user.id)
-          .single();
-
-        if (selectError) {
-          // 데이터 삽입중 Error 발생
-          return NextResponse.json({ error: selectError }, { status: 500 });
-        }
-
-        if (!existingUser) {
-          // 유저가 존재하지 않을 경우 insert
-          const { error: insertError } = await supabase.from('users').insert({
-            id: user.id,
-            email: user.email,
-            created_at: user.created_at,
-            nickname: user.user_metadata.full_name,
-            profile_img: user.user_metadata.avatar_url,
-            channel_intro: null,
-          });
-
-          if (insertError) {
-            // 데이터 삽입중 Error 발생
-            return NextResponse.json({ error: insertError }, { status: 500 });
-          }
-        }
-      }
-
       return NextResponse.redirect(`${origin}/`);
     }
   }
