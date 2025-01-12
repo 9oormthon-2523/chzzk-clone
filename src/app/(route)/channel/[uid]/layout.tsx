@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'next/navigation';
+import { useRouter, useParams, useSelectedLayoutSegment } from 'next/navigation';
 import Header from "@/app/_components/Header/Header.server";
 import NavBar from "@/app/(route)/(main)/_components/NavBar/NavBar.client";
 import useNavToggle from "@/app/_store/main/useNavToggle.client";
@@ -18,7 +18,10 @@ const RootLayout = ({ children }: RootLayoutProps) => {
   const [isClient, setIsClient] = useState(false); 
   const [userInfo, setUserInfo] = useState<{ nickname: string; channel_intro: string; img_url: string } | null>(null);
   const { uid } = useParams(); 
-  
+  const router = useRouter();
+  const activeSegment = useSelectedLayoutSegment();
+  const isCommunityActive = !activeSegment || ['post', 'comment', 'detail', 'edit'].includes(activeSegment || '');
+
   const fetchUserInfo = async () => {
     if (!uid) return; 
     const supabase = createClient();
@@ -37,6 +40,10 @@ const RootLayout = ({ children }: RootLayoutProps) => {
         img_url: data.profile_img || "",
       });
     }
+  };
+
+  const handleTabClick = (path: string) => {
+    router.push(path);
   };
 
   useEffect(() => {
@@ -62,8 +69,28 @@ const RootLayout = ({ children }: RootLayoutProps) => {
           nickname={userInfo.nickname}
           follower={2.4} 
           context={userInfo.channel_intro}
+          is_following={false}
         />
-      {children}
+        <div className="flex flex-row mb-6">
+          <p
+            className={`text-xl font-black ml-4 mt-6 p-2 cursor-pointer ${
+              isCommunityActive ? 'text-black border-b-4 border-black' : 'text-gray-400'
+            }`}
+            onClick={() => handleTabClick(`/channel/${uid}`)}
+          >
+            커뮤니티
+          </p>
+          <p
+            className={`text-xl font-black ml-4 mt-6 p-2 cursor-pointer ${
+              activeSegment === 'follow' ? 'text-black border-b-4 border-black' : 'text-gray-400'
+            }`}
+            onClick={() => handleTabClick(`/channel/${uid}/follow`)}
+          >
+            팔로우 목록
+          </p>
+        </div>
+
+        {children}
       </div>
       <Footer />
     </div>
