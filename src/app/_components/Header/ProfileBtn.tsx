@@ -13,6 +13,7 @@ type ClickHandlers = {
   handleGoToChannel: () => Promise<void>;
   handleLogout: () => Promise<void>;
   handleBroadCast: () => Promise<void>;
+  handleGoToFollowChannel: () => Promise<void>;
 };
 
 type IconItem = {
@@ -27,7 +28,7 @@ const icons: IconItem[] = [
   {
     Icon: IoHeartCircleOutline,
     label: "팔로잉 채널",
-    onClick: "handleGoToChannel",
+    onClick: "handleGoToFollowChannel",
   },
   { Icon: FaArrowRightToBracket, label: "로그아웃", onClick: "handleLogout" },
 ];
@@ -55,7 +56,10 @@ const ProfileBtn = () => {
 
       if (supabaseUser) {
         const uid = supabaseUser.id;
-        router.push(`${path}/${uid}`);
+
+        const finalPath = path.replace("[uid]", uid);
+
+        router.push(finalPath);
       } else {
         console.error("사용자 정보가 없습니다.");
       }
@@ -65,9 +69,10 @@ const ProfileBtn = () => {
   };
 
   const handleClick: ClickHandlers = {
-    handleGoToChannel: () => handleGoToChannel("/channel"),
+    handleGoToChannel: () => handleGoToChannel("/channel/[uid]"),
     handleLogout,
-    handleBroadCast: () => handleGoToChannel("/studio"),
+    handleBroadCast: () => handleGoToChannel("/studio/[uid]"),
+    handleGoToFollowChannel: () => handleGoToChannel("/channel/[uid]/follow"),
   };
 
   return (
