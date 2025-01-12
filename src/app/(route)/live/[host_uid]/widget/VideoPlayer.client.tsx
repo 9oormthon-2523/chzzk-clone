@@ -90,7 +90,7 @@ const VideoPlayer = (props:VideoPlayerProps) => {
                 aria-label='비디오 대체 박스' 
                 id='streaming-video'
                 ref={screenElRef} 
-                style={{objectFit:"contain"}} 
+                style={{objectFit:"scale-down"}} 
                 muted 
                 className='w-full h-full'
               >
