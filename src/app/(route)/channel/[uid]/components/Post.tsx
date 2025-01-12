@@ -12,8 +12,8 @@ const Post = (props: PostProps) => {
   const defaultImage = '/channelPage/blank_profile.svg';
 
   return (
-    <div className="flex items-start w-full h-48 p-4 bg-gray-50 rounded-lg">
-      <div className="flex flex-col flex-shrink-0 w-12 h-12 rounded-full bg-white shadow-md text-sm mr-2 relative">
+    <div className="flex items-start w-full h-48 p-4 bg-gray-50 rounded-lg cursor-pointer">
+      <div className="flex flex-col flex-shrink-0 w-12 h-12 rounded-full bg-white shadow-md text-sm mr-2 relative ">
         <Image
             src={profile_img || defaultImage}
             alt="프로필 이미지"
