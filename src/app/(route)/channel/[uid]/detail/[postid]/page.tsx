@@ -13,7 +13,8 @@ interface PostDetail {
   content: string;
   created_at: string;
   img_url: string | null;
-  profile_img: string | null; 
+  profile_img: string | null;
+  user_id: string; 
 }
 
 interface CommentType {
@@ -33,8 +34,25 @@ export default function Detail() {
   const [post, setPost] = useState<PostDetail | null>(null);
   const [comments, setComments] = useState<CommentType[]>([]);
   const [newComment, setNewComment] = useState<string>('');
+  const [loggedInUserId, setLoggedInUserId] = useState<string | null>(null);
   const formattedDate = post ? new Date(post.created_at).toLocaleString() : '';
   const defaultImage = '/channelPage/blank_profile.svg';
+
+// 현재 로그인한 사용자 정보 가져오기
+  useEffect(() => {
+    const fetchLoggedInUser = async () => {
+      const supabase = createClient();
+      const { data, error } = await supabase.auth.getUser();
+
+      if (error) {
+        console.error('로그인 사용자 정보 불러오기 오류:', error);
+      } else {
+        setLoggedInUserId(data?.user?.id || null);
+      }
+    };
+
+    fetchLoggedInUser();
+  }, []);
 
 // 게시글 불러오기
   useEffect(() => {
@@ -250,6 +268,7 @@ export default function Detail() {
     }
   };
 
+  const isPostOwner = loggedInUserId === post?.user_id;
 
   if (!post) {
     return <div className="p-4">게시글을 불러오는 중입니다...</div>;
@@ -257,24 +276,30 @@ export default function Detail() {
 
   return (
     <div className="p-4">
-      <button
-        className="mt-4 mr-2 px-4 py-2 bg-gray-100 font-bold rounded-xl hover:bg-gray-200"
-        onClick={() => router.push(`/channel/${uid}`)}
-      >
-        목록
-      </button>
-      <button
-        className="mt-4 mr-2 px-4 py-2 bg-gray-100 font-bold rounded-xl hover:bg-gray-200"
-        onClick={() => router.push(`/channel/${uid}/edit/${post.id}`)}
-      >
-        수정
-      </button>
-      <button
-        onClick={handleDelete}
-        className="mt-4 px-4 py-2 bg-gray-100 font-bold text-red-500 rounded-xl hover:bg-gray-200"
-      >
-        삭제
-      </button>
+      <div className="flex gap-2">
+        <button
+          className="mt-4 px-4 py-2 bg-gray-100 font-bold rounded-xl hover:bg-gray-200"
+          onClick={() => router.push(`/channel/${uid}`)}
+        >
+          목록
+        </button>
+        {isPostOwner && (
+          <>
+            <button
+              className="mt-4 px-4 py-2 bg-gray-100 font-bold rounded-xl hover:bg-gray-200"
+              onClick={() => router.push(`/channel/${uid}/edit/${post.id}`)}
+            >
+              수정
+            </button>
+            <button
+              onClick={handleDelete}
+              className="mt-4 px-4 py-2 bg-gray-100 font-bold text-red-500 rounded-xl hover:bg-gray-200"
+            >
+              삭제
+            </button>
+          </>
+        )}
+      </div>
 
       <div className="mt-6 max-w-5xl flex flex-row bg-gray-50 p-4 rounded-tl-xl rounded-tr-xl border-b border-gray-300">
         <div className="flex flex-col flex-shrink-0 w-12 h-12 rounded-full bg-white shadow-md text-sm mr-2 relative">
