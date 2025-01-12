@@ -24,15 +24,33 @@ export async function GET(request: Request) {
       } = await supabase.auth.getUser();
 
       if (user) {
-        const { error } = await supabase.from('users').upsert({
-          id: user.id,
-          email: user.email,
-          created_at: user.created_at,
-          nickname: user.user_metadata.full_name,
-          profile_img: user.user_metadata.avatar_url,
-          channel_intro: null,
-        });
-        if (error) return NextResponse.json({ error }, { status: 500 });
+        const { data: existingUser, error: selectError } = await supabase
+          .from('users')
+          .select('id')
+          .eq('id', user.id)
+          .single();
+
+        if (selectError) {
+          // 데이터 삽입중 Error 발생
+          return NextResponse.json({ error: selectError }, { status: 500 });
+        }
+
+        if (!existingUser) {
+          // 유저가 존재하지 않을 경우 insert
+          const { error: insertError } = await supabase.from('users').insert({
+            id: user.id,
+            email: user.email,
+            created_at: user.created_at,
+            nickname: user.user_metadata.full_name,
+            profile_img: user.user_metadata.avatar_url,
+            channel_intro: null,
+          });
+
+          if (insertError) {
+            // 데이터 삽입중 Error 발생
+            return NextResponse.json({ error: insertError }, { status: 500 });
+          }
+        }
       }
 
       return NextResponse.redirect(`${origin}/`);
