@@ -11,12 +11,12 @@ interface StreamCardProps {
   nickname: string;
   thumbnail: string;
   profile_img: string;
+  tags: string[];
 }
 
-const dummyTags = ["발로란트", "픽셀네트워크"];
-
 const StreamCard = (card: StreamCardProps) => {
-  const { title, nickname, audience_cnt, uid, thumbnail, profile_img } = card;
+  const { title, nickname, audience_cnt, uid, thumbnail, profile_img, tags } =
+    card;
   const router = useRouter();
   const defaultImage = "/mainPage/defaultProfile.png";
 
@@ -65,14 +65,15 @@ const StreamCard = (card: StreamCardProps) => {
         </div>
 
         <div className="flex flex-wrap gap-1 mt-2">
-          {dummyTags.map((tag, index) => (
-            <span
-              key={index}
-              className="bg-gray-200 text-xs text-gray-600 px-2 py-1 rounded-md"
-            >
-              {tag}
-            </span>
-          ))}
+          {tags.length > 0 &&
+            tags.map((tag, index) => (
+              <span
+                key={index}
+                className="bg-gray-200 text-xs text-gray-600 px-2 py-1 rounded-md "
+              >
+                {tag}
+              </span>
+            ))}
         </div>
       </div>
     </div>

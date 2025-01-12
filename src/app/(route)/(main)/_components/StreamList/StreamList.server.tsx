@@ -11,6 +11,7 @@ interface StreamCardData {
   nickname: string;
   thumbnail: string;
   profile_img: string;
+  tags: string[];
 }
 
 const supabase = createClient(
@@ -28,7 +29,7 @@ const StreamList: React.FC = () => {
         const { data: streamData, error: streamError } = await supabase
           .from("streaming_rooms")
           .select(
-            "uid, title, start_time, is_active, audience_cnt, nickname, thumbnail"
+            "uid, title, start_time, is_active, audience_cnt, nickname, thumbnail,tags"
           );
 
         if (streamError) {
@@ -50,7 +51,7 @@ const StreamList: React.FC = () => {
                 `사용자 정보 불러오기 오류 (uid: ${stream.uid})`,
                 userError
               );
-              return { ...stream, profile_img: "" }; // 기본 값
+              return { ...stream, profile_img: "" };
             }
 
             return { ...stream, profile_img: userData.profile_img || "" };
