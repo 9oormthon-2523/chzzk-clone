@@ -6,10 +6,11 @@ import ExpandNavButton from './ExpandNavButton.client';
 import ProfileButton from './ProfileButton.client';
 import { headers } from 'next/headers';
 import { use } from 'react';
-import { User } from '@supabase/supabase-js';
 
 const Header = ({ uid }: { uid: string }) => {
-  const { user } = use(getUserProfile());
+  const { data } = use(getUserProfile());
+
+  console.log(data);
 
   return (
     <header className="bg-[#222] fixed top-0 right-0 flex justify-between items-center px-[20px] py-[10px] w-full z-50">
@@ -43,7 +44,7 @@ const Header = ({ uid }: { uid: string }) => {
             height={40}
           />
         </Link>
-        <ProfileButton uid={uid} user={user} />
+        <ProfileButton uid={uid} user={data} />
       </div>
     </header>
   );
@@ -51,7 +52,16 @@ const Header = ({ uid }: { uid: string }) => {
 
 export default Header;
 
-const getUserProfile = async (): Promise<{ user: User }> => {
+export interface User {
+  id: string;
+  created_at: string;
+  nickname: string;
+  email: string;
+  profile_img: string | null;
+  channel_intro: string | null;
+}
+
+const getUserProfile = async (): Promise<{ data: User }> => {
   const header = await headers();
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/user`,

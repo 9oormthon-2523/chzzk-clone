@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import HeaderButton from './HeaderButton.client';
 import ProfileMenuList from './ProfileMenu.server';
 import OutsideClickDetector from '@/app/_components/OutsideClickWrapper.client';
-import { User } from '@supabase/supabase-js';
+import { User } from './Header.server';
 
 export interface ProfileProps {
   uid: string;
@@ -19,7 +19,7 @@ const ProfileButton = (props: ProfileProps) => {
     <div className="relative">
       <HeaderButton
         id="ignored-header"
-        imageSrc={user.user_metadata.avatar_url}
+        imageSrc={user.profile_img || '/userImage.webp'}
         desc={'내 프로필'}
         width={30}
         height={30}
