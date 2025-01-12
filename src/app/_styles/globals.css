@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Gothic+A1:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -5,6 +7,7 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --font-noto-sans-kr: 'Noto Sans KR';
 }
 
 @media (prefers-color-scheme: white) {
@@ -18,4 +21,11 @@ body {
   @apply font-sans;
   color: var(--foreground);
   background: var(--background);
+}
+
+@layer utilities {
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: #ccc;
+  }
 }

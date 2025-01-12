@@ -1,0 +1,32 @@
+button, input {
+    background: 0 0;
+    border: 0;
+    border-radius: 0;
+}
+body, button, dd, dl, dt, fieldset, form, h1, h2, h3, h4, h5, h6, input, legend, li, ol, p, pre, select, table, td, textarea, th, ul {
+    margin: 0;
+    padding: 0;
+}
+a, abbr, address, article, aside, audio, b, blockquote, body, br, button, canvas, caption, cite, code, col, data, datalist, dd, del, dfn, div, dl, dt, em, embed, fieldset, figcaption, figure, footer, form, h1, h2, h3, h4, h5, h6, header, hr, html, i, iframe, img, input, ins, kbd, label, legend, li, main, mark, meter, nav, object, ol, output, p, pre, progress, q, s, samp, section, select, small, span, strong, sub, sup, table, td, textarea, th, time, u, ul, var, video {
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+/* chrome & safari */
+#volume-range::-webkit-slider-thumb {
+    appearance: none; 
+    width: 12px;
+    height: 12px;
+    background: #ffffff;
+    border-radius: 50%; 
+    border: 2px solid #ffffff; 
+}
+/* Firefox */
+#volume-range::-moz-range-thumb {
+    width: 12px;
+    height: 12px;
+    background: #ffffff;
+    border-radius: 50%;
+    border: 2px solid #ffffff;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
