@@ -84,8 +84,8 @@ const Channel = () => {
                 <Image 
                   src="/channelPage/no_content.svg" 
                   alt="No content" 
-                  width={180} 
-                  height={180} 
+                  width={140} 
+                  height={140} 
                 />
                 <p className="text-md font-bold">이 채널의 커뮤니티는 너무 조용해요...</p>
 

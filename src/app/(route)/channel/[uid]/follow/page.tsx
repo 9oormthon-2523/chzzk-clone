@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { createClient } from '@/app/_utils/supabase/client';
 import { useParams, useRouter } from 'next/navigation';
 import FollowChannel from '../components/FollowChannel';
+import Image from 'next/image';
 
 interface FollowingUser {
   id: string;
@@ -90,7 +91,15 @@ const Follow = () => {
   return (
     <div className="max-w-3xl py-8 px-6">
       {followingUsers.length === 0 ? (
-        <p className="text-center text-gray-500">팔로우한 사용자가 없습니다.</p>
+        <div className="flex flex-col items-center justify-center mt-10 pb-40">
+          <Image
+            src="/channelPage/no_content.svg"
+            alt="No Content"
+            width={140}
+            height={140}
+          />
+          <p className="text-center text-gray-500 mt-4">팔로우한 사용자가 없습니다.</p>
+        </div>
       ) : (
         <ul className="space-y-4">
           {followingUsers.map((user) => (
