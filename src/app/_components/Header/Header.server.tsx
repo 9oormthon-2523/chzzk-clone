@@ -8,12 +8,10 @@ import LoginButton from "./LoginButton.client";
 import ProfileBtn from "./ProfileBtn";
 import { createClient } from "@/app/_utils/supabase/client";
 import LoginModal from "../LoginModal/LoginModal.client";
-import useNavToggle from "@/app/_store/main/useNavToggle.client";
 import NavBar from "@/app/(route)/(main)/_components/NavBar/NavBar.client";
 const Header = () => {
   const supabase = createClient();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const { isOpen } = useNavToggle();
   // 로그인 상태 확인
   useEffect(() => {
     const checkLoginStatus = async () => {
