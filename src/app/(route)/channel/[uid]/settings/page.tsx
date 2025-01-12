@@ -22,7 +22,7 @@ export default function Settings() {
   const [nicknameLength, setNicknameLength] = useState<number>(0);
   const [channelIntroLength, setChannelIntroLength] = useState<number>(0);
 
-  const defaultImage = "/images/default_avatar.png";
+  const defaultImage = "/channelPage/blank_profile.svg";
 
   const fetchUser = async () => {
     try {
