@@ -71,7 +71,10 @@ const ChannelProfile = ({ nickname, follower, context, img_url, is_following }: 
     fetchLoggedInUser();
     if (params.uid) {
       const pageId = Array.isArray(params.uid) ? params.uid[0] : params.uid;
-      fetchFollowerCountAndStatus(pageId || '');
+  
+      if (loggedInUserId && pageId && loggedInUserId !== pageId) {
+        fetchFollowerCountAndStatus(pageId);
+      }
     }
   }, [params.uid, loggedInUserId]);
 
