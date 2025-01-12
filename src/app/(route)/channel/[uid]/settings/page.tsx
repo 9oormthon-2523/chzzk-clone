@@ -93,7 +93,7 @@ export default function Settings() {
       let finalImageUrl = user.img;
 
       if (newImage) {
-        const filePath = `avatars/${user.id}/${Date.now()}_${newImage.name}`;
+        const filePath = `${Date.now()}_${crypto.randomUUID()}`;
 
         const { error: uploadError } = await supabase.storage
           .from("avatars")
@@ -136,6 +136,18 @@ export default function Settings() {
           },
         ]);
 
+        const { error } = await supabase
+        .from("streaming_rooms")
+        .upsert({
+          uid: user.id,
+          nickname: nickname,
+          title: `${nickname}의 라이브 방송`,
+        });
+  
+      if (error) {
+        throw new Error(`streaming_rooms 테이블 업데이트 실패: ${error.message}`);
+      }
+
       if (upsertError) {
         throw new Error(`users 테이블 업데이트 실패: ${upsertError.message}`);
       }
@@ -152,6 +164,7 @@ export default function Settings() {
       setNewImage(null);
       console.log("사용자 업데이트 성공", updatedUser);
       alert("프로필이 업데이트되었습니다!");
+      window.location.reload()
     } catch (error) {
       console.error("프로필 업데이트 오류", error);
     }
