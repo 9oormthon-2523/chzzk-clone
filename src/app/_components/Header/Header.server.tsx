@@ -8,7 +8,6 @@ import LoginButton from "./LoginButton.client";
 import ProfileBtn from "./ProfileBtn";
 import { createClient } from "@/app/_utils/supabase/client";
 import LoginModal from "../LoginModal/LoginModal.client";
-import NavBar from "@/app/(route)/(main)/_components/NavBar/NavBar.client";
 const Header = () => {
   const supabase = createClient();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -31,7 +30,6 @@ const Header = () => {
 
   return (
     <header className="bg-[#222] fixed flex justify-between items-center px-[10px] py-[10px] w-full z-40 ">
-      <NavBar />
       <div className="flex items-center gap-2">
         <ExpandNavButton />
         <Link href={"/"}>
