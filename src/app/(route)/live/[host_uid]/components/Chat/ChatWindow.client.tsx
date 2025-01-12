@@ -1,6 +1,6 @@
 "use client";
 import { Message } from "@/app/_types/chat/Chat";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 import { useEffect, useRef } from "react";
 import { getColorFromNickname } from "@/app/_utils/chat/hashColor";
 import { IoShieldCheckmarkSharp } from "react-icons/io5";
@@ -38,7 +38,7 @@ const ChatWindow = ({ messages, roomId }: MessageListProps) => {
     }
   };
 
-  // 스크롤 상태 가져오기기
+  // 스크롤 상태 가져오기
   const getScrollState = () => {
     const chatFrame = chatFrameRef.current;
     if (chatFrame) {
@@ -106,9 +106,10 @@ type ChatProps = {
 
 //채팅 박스
 const ChatBox = ({ nickname, message, id, roomId }: ChatProps) => {
-  const router = useRouter();
+  // const router = useRouter();
   const handleNicknameClick = () => {
-    router.push(`/channel/${id}`);
+    // router.push(`/channel/${id}`);
+    window.open(`/channel/${id}`, '_blank');
   };
 
   const nicknameColor = getColorFromNickname(nickname);

@@ -104,7 +104,7 @@ const HostInfoCompo = (props:HostInfoProps) => {
     const { followMutate, unfollowMutate } = useFollowAction();
     const [followState, setFollowState] = useState<boolean>(false);
 
-    const followerCount = error || isLoading || !data ? "n" : data.length;
+    const followerCount = error || isLoading || !data ? "0" : data.length;
 
     const onClickHandler = () => {
         if (!uid || uid === host_uid || isLoading || error) return;
