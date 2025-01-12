@@ -19,7 +19,7 @@ const streamingUpdate = async (props: StreamingMutateType) => {
   // - thumbnail이 string일때 => imageUrl에 바로 저장
   if (props.thumbnail) {
     if (props.thumbnail instanceof File) {
-      const fileName = `${Date.now()}_${props.thumbnail.name}`;
+      const fileName = `${Date.now()}_${crypto.randomUUID()}`;
       const { data: storageData } = await supabase.storage
         .from('streaming')
         .upload(fileName, props.thumbnail);
