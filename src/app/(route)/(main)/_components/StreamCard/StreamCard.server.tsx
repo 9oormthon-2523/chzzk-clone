@@ -18,7 +18,7 @@ const StreamCard = (card: StreamCardProps) => {
   const { title, nickname, audience_cnt, uid, thumbnail, profile_img, tags } =
     card;
   const router = useRouter();
-  const defaultImage = "/mainPage/defaultProfile.png";
+  const defaultImage = "/channelPage/blank_profile.svg";
 
   const handleCardClick = () => {
     router.push(`/live/${uid}`);
