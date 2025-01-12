@@ -35,7 +35,7 @@ const StreamCard = (card: StreamCardProps) => {
     router.push(`/channel/${uid}`);
   };
   return (
-    <div className="hover:cursor-pointer bg-white rounded-lg p-2 w-80 ">
+    <div className="hover:cursor-pointer bg-white rounded-lg p-2 w-80 min-h-[300px]">
       {/* 이미지 */}
       <div
         className="relative h-44 rounded-lg border border-gray-200 hover:cursor-pointer"
