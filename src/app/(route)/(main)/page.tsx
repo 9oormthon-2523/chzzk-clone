@@ -1,7 +1,6 @@
 "use client";
 import Header from "../../_components/Header/Header.server";
 import StreamList from "./_components/StreamList/StreamList.server";
-import NavBar from "./_components/NavBar/NavBar.client";
 export default function Home() {
   return (
     <div>
