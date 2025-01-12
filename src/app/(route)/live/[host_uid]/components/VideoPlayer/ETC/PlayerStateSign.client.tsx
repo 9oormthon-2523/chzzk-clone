@@ -1,7 +1,11 @@
 "use client"
 import React, { useEffect, useState } from "react";
 import SvgIcon from "@/app/_components/SVGIcon.server";
-import useVideoControl from "@/app/_store/live/useVideoControl";
+import useVideoControl from "@/app/_store/stores/live/useVideoControl";
+
+/**
+ *  재생 on/off 애니메이션
+ */
 
 /**
  *  재생 on/off 애니메이션
