@@ -115,7 +115,7 @@ const StreamingButtonList = () => {
             type="range"
             step={1}
             min={0}
-            max={1000}
+            max={100}
             value={audioVolume.mic}
             onChange={(e) => controlAudio('mic', Number(e.currentTarget.value))}
             className="w-full"
@@ -130,7 +130,7 @@ const StreamingButtonList = () => {
             type="range"
             step={1}
             min={0}
-            max={1000}
+            max={100}
             value={audioVolume.screen}
             onChange={(e) =>
               controlAudio('screen', Number(e.currentTarget.value))

@@ -27,6 +27,30 @@ interface ScreenTrackPayload extends delMediaTrackPayload{
 
 type trackType = RefObject<null | AgoraRTCType.IMicrophoneAudioTrack | AgoraRTCType.ILocalVideoTrack | AgoraRTCType.ILocalAudioTrack>
 
+const applyAudioFilters = (audioTrack: AgoraRTCType.IMicrophoneAudioTrack) => {
+  const audioContext = new AudioContext();
+
+  const source = audioContext.createMediaStreamSource(
+    new MediaStream([audioTrack.getMediaStreamTrack()])
+  );
+
+  const lowPassFilter = audioContext.createBiquadFilter();
+  lowPassFilter.type = "lowpass";
+  lowPassFilter.frequency.value = 300; 
+
+  const highPassFilter = audioContext.createBiquadFilter();
+  highPassFilter.type = "highpass";
+  highPassFilter.frequency.value = 800; 
+
+  const destination = audioContext.createMediaStreamDestination();
+  source.connect(highPassFilter);
+  highPassFilter.connect(lowPassFilter);
+  lowPassFilter.connect(destination);
+
+  const filteredTrack = destination.stream.getAudioTracks()[0];
+  return AgoraRTC.createCustomAudioTrack({ mediaStreamTrack: filteredTrack });
+};
+
 export const extractMediaTrack = async (payload: ScreenTrackPayload) => {
     const {
       type,
@@ -58,8 +82,8 @@ export const extractMediaTrack = async (payload: ScreenTrackPayload) => {
           micTrackRef.current = null;
         } else {
           // 트랙 추출 및 퍼블리시
-          const micTrack = await AgoraRTC.createMicrophoneAudioTrack({ AGC: true, ANS: true });
-          await clientRef.current.publish(micTrack);
+          const micTrack = await AgoraRTC.createMicrophoneAudioTrack({ ANS: true, encoderConfig:"high_quality" });
+          await clientRef.current.publish(applyAudioFilters(micTrack));
           micTrack.setVolume(audioVolume.mic);
           micTrackRef.current = micTrack;
           console.log("마이크 트랙 생성 및 퍼블리시 성공");

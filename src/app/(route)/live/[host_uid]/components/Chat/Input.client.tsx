@@ -14,7 +14,12 @@ const ChatInput = ({ value, onChange, onSend, client_uid }: MessageInputProps) =
   const onPressEnter = (e:React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter") {
       e.preventDefault();
-      if(!isComposing) {
+      if(navigator.userAgent.includes("Firefox")) {
+        if(!e.nativeEvent.isComposing) {
+          onSend();
+        }
+      }
+      else if(!isComposing) {
         onSend();
       }
     }
@@ -38,8 +43,14 @@ const ChatInput = ({ value, onChange, onSend, client_uid }: MessageInputProps) =
           value={value}
           onChange={onChange}
           onKeyDown={onPressEnter}
-          onCompositionStart={() => setIsComposing(true)}
-          onCompositionEnd={() => setIsComposing(false)}
+          onCompositionStart={() => {
+            if(navigator.userAgent.includes("Firefox")) return;
+            setIsComposing(true)
+          }}
+          onCompositionEnd={() => {
+            if(navigator.userAgent.includes("Firefox")) return;
+            setIsComposing(false)}
+          }
           placeholder="채팅을 입력해주세요"
         />
       </div>
