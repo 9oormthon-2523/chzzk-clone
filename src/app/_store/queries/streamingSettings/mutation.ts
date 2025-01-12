@@ -89,9 +89,15 @@ const streamingOff = async () => {
 
   if (!user) throw new Error('Unauthorized');
 
+  const { data } = await supabase
+    .from('users')
+    .select('nickname')
+    .eq('id', user.id)
+    .single();
+
   await supabase.from('streaming_rooms').upsert({
     uid: user.id,
-    title: `${user.user_metadata.full_name}의 라이브 방송`,
+    title: `${data?.nickname}의 라이브 방송`,
     thumbnail: null,
     tags: [],
     category: '',
