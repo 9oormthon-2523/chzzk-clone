@@ -23,8 +23,8 @@ export async function GET(request: Request) {
         data: { user },
       } = await supabase.auth.getUser();
 
-      if (user)
-        await supabase.from('users').upsert({
+      if (user) {
+        const { error } = await supabase.from('users').upsert({
           id: user.id,
           email: user.email,
           created_at: user.created_at,
@@ -32,6 +32,9 @@ export async function GET(request: Request) {
           profile_img: user.user_metadata.avatar_url,
           channel_intro: null,
         });
+        if (error) return NextResponse.json({ error }, { status: 500 });
+      }
+
       return NextResponse.redirect(`${origin}/`);
     }
   }
