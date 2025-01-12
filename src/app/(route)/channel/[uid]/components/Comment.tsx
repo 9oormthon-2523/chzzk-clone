@@ -1,19 +1,21 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import CommentInput from './CommentInput';
+import { createClient } from '@/app/_utils/supabase/client';
 
 interface Props {
   nickname: string;
   content: string;
   profile_img: string | null;
+  commentUserId: string;
   onEdit: () => void;
   onDelete: () => void;
   isEditing?: boolean;
   editContent?: string;
-  onEditChange?: (value: string) => void; 
-  onEditSave?: () => void; 
+  onEditChange?: (value: string) => void;
+  onEditSave?: () => void;
 }
 
 const Comment = (props: Props) => {
@@ -21,16 +23,33 @@ const Comment = (props: Props) => {
     nickname,
     content,
     profile_img,
+    commentUserId,
     onEdit,
     onDelete,
     isEditing = false,
-    editContent = '', 
+    editContent = '',
     onEditChange,
     onEditSave,
   } = props;
 
+  const [loggedInUserId, setLoggedInUserId] = useState<string | null>(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const defaultImage = '/channelPage/blank_profile.svg';
+
+  useEffect(() => {
+    const fetchLoggedInUser = async () => {
+      const supabase = createClient();
+      const { data, error } = await supabase.auth.getUser();
+
+      if (error) {
+        console.error('로그인 사용자 정보 불러오기 오류:', error);
+      } else {
+        setLoggedInUserId(data?.user?.id || null);
+      }
+    };
+
+    fetchLoggedInUser();
+  }, []);
 
   const toggleDropdown = () => {
     setIsDropdownOpen((prev) => !prev);
@@ -69,13 +88,13 @@ const Comment = (props: Props) => {
       ) : (
         <>
           <div className="flex flex-col flex-shrink-0 w-10 h-10 rounded-full bg-white shadow-md text-sm mr-2 relative">
-              <Image
-                src={profile_img||defaultImage}
-                alt="프로필 이미지"
-                layout="fill"
-                objectFit="cover"
-                className="rounded-full"
-              />
+            <Image
+              src={profile_img || defaultImage}
+              alt="프로필 이미지"
+              layout="fill"
+              objectFit="cover"
+              className="rounded-full"
+            />
           </div>
 
           <div className="flex flex-col flex-wrap w-full">
@@ -99,36 +118,54 @@ const Comment = (props: Props) => {
         </button>
 
         {isDropdownOpen && (
-          <div 
+          <div
             className="absolute right-0 mt-2 bg-white shadow-lg rounded-lg w-20 z-[10]"
             style={{ overflow: 'visible' }}
           >
-            <button
-              onClick={handleEditClick}
-              className="flex w-full p-2 text-sm font-bold text-gray-700 hover:bg-gray-100 rounded-lg"
-            >
-              <Image
-                src="/channelPage/edit.svg"
-                alt="수정"
-                width={18}
-                height={18}
-                className="mr-2"
-              />
-              수정
-            </button>
-            <button
-              onClick={handleDelete}
-              className="flex w-full text-left font-bold p-2 text-sm text-red-500 hover:bg-gray-100 rounded-lg"
-            >
-              <Image
-                src="/channelPage/delete.svg"
-                alt="삭제"
-                width={18}
-                height={18}
-                className="mr-2"
-              />
-              삭제
-            </button>
+            {loggedInUserId === commentUserId ? (
+              <>
+                <button
+                  onClick={handleEditClick}
+                  className="flex w-full p-2 text-sm font-bold text-gray-700 hover:bg-gray-100 rounded-lg"
+                >
+                  <Image
+                    src="/channelPage/edit.svg"
+                    alt="수정"
+                    width={18}
+                    height={18}
+                    className="mr-2"
+                  />
+                  수정
+                </button>
+                <button
+                  onClick={handleDelete}
+                  className="flex w-full text-left font-bold p-2 text-sm text-red-500 hover:bg-gray-100 rounded-lg"
+                >
+                  <Image
+                    src="/channelPage/delete.svg"
+                    alt="삭제"
+                    width={18}
+                    height={18}
+                    className="mr-2"
+                  />
+                  삭제
+                </button>
+              </>
+            ) : (
+              <button
+                className="flex w-full text-left m-auto align-middle font-bold p-2 text-sm  hover:bg-gray-100 rounded-lg"
+                onClick={() => alert('신고 기능은 준비 중입니다.')}
+              >
+                <Image
+                  src="/channelPage/invisible.svg"
+                  alt="신고"
+                  width={18}
+                  height={18}
+                  className="ml-1 mr-2"
+                />
+                신고
+              </button>
+            )}
           </div>
         )}
       </div>
