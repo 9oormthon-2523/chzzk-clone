@@ -1,6 +1,6 @@
 "use client"
 import React from 'react'
-import LiveBox from '../../LiveDetails/liveBox';
+import LiveBox from '../../LiveDetails/LiveBox';
 import useScreenControl from '@/app/_store/stores/live/useScreenControl';
 import PlayerHeaderButton, { PlayerHeaderButtonProps } from './PlayerHeaderButton.client';
 
