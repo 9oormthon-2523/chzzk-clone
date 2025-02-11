@@ -2,6 +2,8 @@ import useScreenControl from "@/app/_store/stores/live/useScreenControl";
 import useVideoControl from "@/app/_store/stores/live/useVideoControl";
 import useNavToggle from "@/app/_store/main/useNavToggle.client";
 import { useCallback, useEffect, useRef, useState } from "react";
+import useChatPositionUpdater from "./useChatPositionUpdater";
+import useLiveControl from "@/app/_store/stores/live/useLiveControl";
 
 interface useVideoPlayerResizeProps {
     w_rate: number, //리사이즈 비율
@@ -18,7 +20,15 @@ export const useVideoPlayerResize = (props: useVideoPlayerResizeProps) => {
     const videoTotalRef = useRef<HTMLDivElement|null>(null); // 비디오 재생 컨트롤 프레임
 
     const isNavOpen = useNavToggle(state => state.isOpen);
-    const { isChatOpen, isFullscreen, chatPosition , isWideScreen, updateChatPosition } = useScreenControl();
+    // const { isChatOpen, isFullscreen, chatPosition , isWideScreen, updateChatPosition } = useScreenControl();
+
+    const isChatOpen = useLiveControl(state => state.screen.state.isChatOpen);
+    const isFullscreen = useLiveControl(state => state.screen.state.isFullscreen);
+    const chatPosition = useLiveControl(state => state.screen.state.chatPosition);
+    const isWideScreen = useLiveControl(state => state.screen.state.isWidescreen);
+
+    const { calculateChatPosition } = useChatPositionUpdater();
+    
     
 
     //비디오 플레이어 창 핸들러
@@ -33,7 +43,8 @@ export const useVideoPlayerResize = (props: useVideoPlayerResizeProps) => {
           w: videoTotalRef.current.clientWidth,
           h: videoTotalRef.current.clientHeight,
         });
-        updateChatPosition(w_rate);
+        // updateChatPosition(w_rate);
+        calculateChatPosition(w_rate);
       };
       
       useEffect(() => {

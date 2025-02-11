@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import SvgIcon from "@/app/_components/SVGIcon.server";
 import useVideoControl from "@/app/_store/stores/live/useVideoControl";
+import useLiveControl from "@/app/_store/stores/live/useLiveControl";
 
 /**
  *  재생 on/off 애니메이션
@@ -12,7 +13,8 @@ import useVideoControl from "@/app/_store/stores/live/useVideoControl";
  */
 
 const PlayerStateSign = () => {
-    const isEnabled = useVideoControl((state) => state.videoTrack.isEnabled);
+    // const isEnabled = useVideoControl((state) => state.videoTrack.isEnabled);
+    const isEnabled = useLiveControl((state) => state.videoTrack.state.isEnabled);
     const [opaticy, setOpaticy] = useState<number>(0);
 
     const triggerAnimation = () => {

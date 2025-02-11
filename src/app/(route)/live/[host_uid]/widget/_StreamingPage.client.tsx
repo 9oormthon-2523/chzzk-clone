@@ -15,6 +15,7 @@ const VideoPlayer = dynamic(() => import("./VideoPlayer.client"), { ssr: false }
 
 import { getHostInfoPayload } from "@/app/_types/live/liveType";
 import usePing from "@/app/_utils/live/db/usePing.client";
+import useLiveControl from "@/app/_store/stores/live/useLiveControl";
 
 interface StreamingPageProps extends getHostInfoPayload {
   client_uid: string | undefined
@@ -27,7 +28,8 @@ interface StreamingPageProps extends getHostInfoPayload {
 export default function StreamingPage(props: StreamingPageProps) {
   const { hostInfo, roomInit, client_uid } = props;
   const isOpen = useNavToggle((state) => state.isOpen);
-  const isFullOrWide = useScreenControl(state => state.isFullOrWide);
+  // const isFullOrWide = useScreenControl(state => state.isFullOrWide);
+  const isFullOrWide = useLiveControl(state => state.screen.state.isFullOrWide);
 
   // 풀 스크린 핸들러
   useFullscreenHandler();

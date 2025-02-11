@@ -1,8 +1,10 @@
 
-/** TYPE **/
+import { create } from "zustand";
+
+/** LIVE STATE TYPE **/
 //#region
 
-import { create } from "zustand";
+type chatType = "side"|"bottom";
 
 // 스크린 제어
 interface ScreenState {
@@ -10,7 +12,7 @@ interface ScreenState {
     isWidescreen: boolean;
     isFullscreen: boolean;
     isFullOrWide: boolean; 
-    chatPosition: "side"|"bottom";
+    chatPosition: chatType;
 }
 
 interface ScreenAction {
@@ -18,6 +20,7 @@ interface ScreenAction {
     offFullScreen: () => void;
     toggleFullscreen: () => void;
     toggleWideScreen: () => void;
+    updateChatPosition: (type : chatType) => void;
 }
 
 export type VideoTrack = {
@@ -38,8 +41,8 @@ interface AudioAction {
     audioMute: (mute:boolean) => void;
 };
 
+//#endregion
 
-// 라이브 컨트롤 모듈 형식
 interface Module<TState, TAction> {
     state: TState;
     actions: TAction;
@@ -50,8 +53,6 @@ export interface LiveControlState {
     videoTrack: Module<VideoTrack,VideoAction>;
     audioTrack: Module<AudioTrack,AudioAction>;
 }
-
-//#endregion
 
 
 
@@ -67,7 +68,6 @@ const useLiveControl = create<LiveControlState>((set) => ({
         },
 
         actions: {
-            // 채팅 토글
             toggleChat: () => {
                 set(({ screen }) => {
                     const updatedState = {
@@ -79,7 +79,6 @@ const useLiveControl = create<LiveControlState>((set) => ({
                 });
             },
 
-            // 풀 스크린 강제 OFF
             offFullScreen: () => {
                 set(({ screen }) => {
                     const updatedState = {
@@ -104,7 +103,7 @@ const useLiveControl = create<LiveControlState>((set) => ({
                 });
             },
 
-            toggleWideScreen: ()=> {
+            toggleWideScreen: () => {
                 set(({ screen }) => {
                     const updatedState = {
                         ...screen.state,
@@ -115,6 +114,16 @@ const useLiveControl = create<LiveControlState>((set) => ({
                     return { screen: { ...screen, state: updatedState } };
                 });
             },
+            
+            updateChatPosition: (type:chatType) => {
+                set(({screen}) => {
+                    const updatedState = {
+                        ...screen.state,
+                        chatPosition: type,
+                    };
+                    return { screen: { ...screen, state: updatedState } };
+                });
+            }
         }
         
     },
