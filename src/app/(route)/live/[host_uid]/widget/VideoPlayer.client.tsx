@@ -1,11 +1,11 @@
 "use client"
-import { useHoverState, useVideoPlayerResize } from '../utils/local/useVideoPlayerHook'
+import { useHoverState, useVideoPlayerResize } from '@/app/_utils/live/local/useVideoPlayerHook'
 import React, { ReactNode, useRef } from 'react'
 import PlayerBottom from '../components/VideoPlayer/PlayerBottom/PlayerBottom.client' 
 import PlayerHeader from '../components/VideoPlayer/PlayerHeader/PlayerHeader.client' 
 import PlayerStateSign from '../components/VideoPlayer/ETC/PlayerStateSign.client'
 import PlayerOverlay from '../components/VideoPlayer/ETC/PlayerOverlay.client' 
-import OpacityAnimation from '../utils/local/useOpacityAnimation.client'
+import OpacityAnimation from '@/app/_utils/live/local/useOpacityAnimation.client'
 import useScreenControl from '@/app/_store/stores/live/useScreenControl'
 import useLiveManager from '@/app/_hooks/live/useLiveManager'
 

@@ -11,8 +11,7 @@ interface LiveButtonProps {
     svgIcon: SvgComponentNames
     svgWight?:number
     svgHeight?:number
-    title?:string
-    
+    title?:string 
 }
 
 const LiveButton = (props:LiveButtonProps) => {

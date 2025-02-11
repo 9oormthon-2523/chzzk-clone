@@ -1,10 +1,10 @@
 "use client";
 
 import NavBar from "@/app/(route)/(main)/_components/NavBar/NavBar.client";
-import useFullscreenHandler from "../utils/local/useFullScreenHandler.client";
+import useFullscreenHandler from "@/app/_utils/live/local/useFullScreenHandler.client";
 import useScreenControl from "@/app/_store/stores/live/useScreenControl";
 import useNavToggle from "@/app/_store/main/useNavToggle.client";
-import useLiveInfo from "../utils/db/useLiveInfo.client";
+import useLiveInfo from "@/app/_utils/live/db/useLiveInfo.client";
 import LiveStreamWrapper from "./LiveStreamWrapper.client";
 import LiveWrapper from "./LiveTotalWrapper.clinet";
 import LiveDetails from "./LiveDetails.client";
@@ -13,8 +13,8 @@ import dynamic from "next/dynamic";
 
 const VideoPlayer = dynamic(() => import("./VideoPlayer.client"), { ssr: false });
 
-import { getHostInfoPayload } from "../liveType";
-import usePing from "../utils/db/usePing.client";
+import { getHostInfoPayload } from "@/app/_types/live/liveType";
+import usePing from "@/app/_utils/live/db/usePing.client";
 
 interface StreamingPageProps extends getHostInfoPayload {
   client_uid: string | undefined

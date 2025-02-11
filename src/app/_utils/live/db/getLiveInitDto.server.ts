@@ -1,5 +1,5 @@
+import { getHostInfoPayload } from '@/app/_types/live/liveType';
 import { createClient } from "@/app/_utils/supabase/client";
-import { getHostInfoPayload } from "../../liveType";
 
 /**
  * 라이브 페이지 초기 데이터 가져오기 (호스트)
