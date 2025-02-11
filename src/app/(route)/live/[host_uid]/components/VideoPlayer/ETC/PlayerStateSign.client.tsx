@@ -1,7 +1,6 @@
 "use client"
 import React, { useEffect, useState } from "react";
 import SvgIcon from "@/app/_components/SVGIcon.server";
-import useVideoControl from "@/app/_store/stores/live/useVideoControl";
 import useLiveControl from "@/app/_store/stores/live/useLiveControl";
 
 /**
@@ -13,7 +12,6 @@ import useLiveControl from "@/app/_store/stores/live/useLiveControl";
  */
 
 const PlayerStateSign = () => {
-    // const isEnabled = useVideoControl((state) => state.videoTrack.isEnabled);
     const isEnabled = useLiveControl((state) => state.videoTrack.state.isEnabled);
     const [opaticy, setOpaticy] = useState<number>(0);
 

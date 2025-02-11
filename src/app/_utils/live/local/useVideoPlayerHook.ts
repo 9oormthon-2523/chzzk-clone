@@ -1,5 +1,3 @@
-import useScreenControl from "@/app/_store/stores/live/useScreenControl";
-import useVideoControl from "@/app/_store/stores/live/useVideoControl";
 import useNavToggle from "@/app/_store/main/useNavToggle.client";
 import { useCallback, useEffect, useRef, useState } from "react";
 import useChatPositionUpdater from "./useChatPositionUpdater";
@@ -20,7 +18,6 @@ export const useVideoPlayerResize = (props: useVideoPlayerResizeProps) => {
     const videoTotalRef = useRef<HTMLDivElement|null>(null); // 비디오 재생 컨트롤 프레임
 
     const isNavOpen = useNavToggle(state => state.isOpen);
-    // const { isChatOpen, isFullscreen, chatPosition , isWideScreen, updateChatPosition } = useScreenControl();
 
     const isChatOpen = useLiveControl(state => state.screen.state.isChatOpen);
     const isFullscreen = useLiveControl(state => state.screen.state.isFullscreen);
@@ -43,7 +40,6 @@ export const useVideoPlayerResize = (props: useVideoPlayerResizeProps) => {
           w: videoTotalRef.current.clientWidth,
           h: videoTotalRef.current.clientHeight,
         });
-        // updateChatPosition(w_rate);
         calculateChatPosition(w_rate);
       };
       
@@ -67,7 +63,7 @@ export const useHoverState = (props: useHoverStateProps) => {
     const { delay = 3000 } = props;
     const [isHover, setIsHover] = useState(false);
     const timerRef = useRef<NodeJS.Timeout | null>(null);
-    const volumeLevel = useVideoControl((state) => state.audioTrack.volumeLevel);
+    const volumeLevel = useLiveControl((state) => state.audioTrack.state.volumeLevel);
   
     //3초 동안 Hover가 안꺼짐
     const HoverHandler = useCallback(() => {

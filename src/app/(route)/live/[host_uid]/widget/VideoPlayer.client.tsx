@@ -6,7 +6,6 @@ import PlayerHeader from '../components/VideoPlayer/PlayerHeader/PlayerHeader.cl
 import PlayerStateSign from '../components/VideoPlayer/ETC/PlayerStateSign.client'
 import PlayerOverlay from '../components/VideoPlayer/ETC/PlayerOverlay.client' 
 import OpacityAnimation from '@/app/_utils/live/local/useOpacityAnimation.client'
-import useScreenControl from '@/app/_store/stores/live/useScreenControl'
 import useLiveManager from '@/app/_hooks/live/useLiveManager'
 
 // 스타일
@@ -16,6 +15,7 @@ import {
   frameVideoPlayer_style, 
   containerVideoPlayer_style 
 } from '../style/VideoPlayerStyle'
+import useLiveControl from '@/app/_store/stores/live/useLiveControl'
 
 /**
  * 라이브 스트리밍 플레이어 컴포넌트
@@ -31,8 +31,8 @@ const VideoPlayer = (props:VideoPlayerProps) => {
   const audioElRef = useRef<HTMLAudioElement>(null);
   const screenElRef = useRef<HTMLVideoElement | null>(null);
   const canvaseElRef = useRef<HTMLCanvasElement | null>(null);
-  const isChatOpen = useScreenControl(state => state.isChatOpen);
-  const isFullOrWide = useScreenControl(state => state.isFullOrWide);
+  const isChatOpen = useLiveControl(state => state.screen.state.isChatOpen);
+  const isFullOrWide = useLiveControl(state => state.screen.state.isFullOrWide);
 
   // 라이브 스트리밍 훅
   const { ratio: [ h_rate, w_rate ] } = useLiveManager({ 

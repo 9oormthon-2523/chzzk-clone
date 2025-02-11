@@ -1,5 +1,4 @@
 import useLiveControl from "@/app/_store/stores/live/useLiveControl";
-import useScreenControl from "@/app/_store/stores/live/useScreenControl";
 import { useEffect } from "react";
 
 /**
@@ -7,8 +6,6 @@ import { useEffect } from "react";
  */
 
 const useFullscreenHandler = () => {
-    // const isFullscreen = useScreenControl(state => state.isFullscreen);
-    // const offFullScreen = useScreenControl(state => state.offFullScreen);
     const isFullscreen = useLiveControl(state => state.screen.state.isFullscreen);
     const offFullScreen = useLiveControl(state => state.screen.actions.offFullScreen);
     

@@ -1,16 +1,10 @@
 "use client"
-
-import useScreenControl from "@/app/_store/stores/live/useScreenControl";
-import useVideoControl from "@/app/_store/stores/live/useVideoControl";
 import PlayerBottomButton from "./PlayerBottomButton.client";
 import PlayerBottomBolumeControl from "./PlayerBottomVolume";
 import useLiveControl from "@/app/_store/stores/live/useLiveControl";
 
 // 와이드
 export const WideBtn = () => {
-    // const toggleWideScreen = useScreenControl(state => state.toggleWideScreen);
-    // const isFullscreen = useScreenControl(state => state.isFullscreen);
-
     const toggleWideScreen = useLiveControl(state => state.screen.actions.toggleWideScreen);
     const isFullscreen = useLiveControl(state => state.screen.state.isFullscreen);
 
@@ -25,8 +19,6 @@ export const WideBtn = () => {
 
 // 풀 스크린
 export const FullBtn = () => {
-    // const toggleFullscreen = useScreenControl(state => state.toggleFullscreen);
-
     const toggleFullscreen = useLiveControl(state => state.screen.actions.toggleFullscreen);
 
     return (
@@ -36,8 +28,6 @@ export const FullBtn = () => {
 
 // 정지,재생
 export const PlayPauseBtn = ()=> {
-    // const isEnabled = useVideoControl(state => state.videoTrack.isEnabled);
-    // const videoToggle = useVideoControl(state => state.videoToggle);
     const isEnabled = useLiveControl(state => state.videoTrack.state.isEnabled);
     const videoToggle = useLiveControl(state => state.videoTrack.actions.videoToggle);
 
@@ -48,9 +38,6 @@ export const PlayPauseBtn = ()=> {
 
 // 볼륨
 export const VolumeBtn = () => {
-    // const volumeLevel = useVideoControl(state => state.audioTrack.volumeLevel);
-    // const isMuted = useVideoControl(state => state.audioTrack.isMuted);
-    // const audioMute = useVideoControl(state => state.audioMute);
     const volumeLevel = useLiveControl(state => state.audioTrack.state.volumeLevel);
     const isMuted = useLiveControl(state => state.audioTrack.state.isMuted);
     const audioMute = useLiveControl(state => state.audioTrack.actions.audioMute);

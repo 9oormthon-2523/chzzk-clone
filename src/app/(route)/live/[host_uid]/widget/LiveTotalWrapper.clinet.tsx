@@ -1,6 +1,5 @@
 "use client";
 
-import useScreenControl from "@/app/_store/stores/live/useScreenControl";
 import useNavToggle from "@/app/_store/main/useNavToggle.client";
 import { CSSProperties, ReactNode } from "react";
 import useLiveControl from "@/app/_store/stores/live/useLiveControl";
@@ -14,7 +13,6 @@ interface LiveWrapperProps {
 }
 
 const LiveTotalWrapper = ({ children }: LiveWrapperProps) => {
-  // const { isFullOrWide, chatPosition, isChatOpen } = useScreenControl();
   const isFullOrWide = useLiveControl(state => state.screen.state.isFullOrWide);
   const chatPosition = useLiveControl(state => state.screen.state.chatPosition); 
   const isChatOpen = useLiveControl(state => state.screen.state.isChatOpen);

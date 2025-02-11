@@ -1,7 +1,6 @@
 "use client"
 import React from 'react'
 import LiveBox from '../../LiveDetails/LiveBox';
-import useScreenControl from '@/app/_store/stores/live/useScreenControl';
 import PlayerHeaderButton, { PlayerHeaderButtonProps } from './PlayerHeaderButton.client';
 import useLiveControl from '@/app/_store/stores/live/useLiveControl';
 
@@ -9,10 +8,7 @@ import useLiveControl from '@/app/_store/stores/live/useLiveControl';
  * 비디오 플레이어 헤더
  */
 
-const PlayerHeader = () => {
-  // const isChatOpen = useScreenControl(state => state.isChatOpen);
-  // const toggleChat = useScreenControl(state => state.toggleChat);
-
+const PlayerHeader = () => {;
   const isChatOpen = useLiveControl(state => state.screen.state.isChatOpen);
   const toggleChat = useLiveControl(state => state.screen.actions.toggleChat);
 

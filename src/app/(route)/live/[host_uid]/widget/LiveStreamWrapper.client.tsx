@@ -1,7 +1,6 @@
 "use client"
 import Footer from "@/app/_components/Footer/footer";
 import React, { CSSProperties, ReactNode, useRef } from "react";
-import useScreenControl from "@/app/_store/stores/live/useScreenControl";
 import useLiveControl from "@/app/_store/stores/live/useLiveControl";
 
 /**
@@ -16,8 +15,6 @@ interface LiveStreamWrapperProps {
 const LiveStreamWrapper = (props:LiveStreamWrapperProps) => {
     const { children } = props;
     const containerRef = useRef<HTMLDivElement>(null);
-    // const isFullOrWide = useScreenControl(state => state.isFullOrWide);
-    // const chatPosition = useScreenControl(state => state.chatPosition);
     const isFullOrWide = useLiveControl(state => state.screen.state.isFullOrWide);
     const chatPosition = useLiveControl(state => state.screen.state.chatPosition);
 

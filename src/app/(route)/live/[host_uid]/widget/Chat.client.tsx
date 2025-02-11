@@ -1,8 +1,6 @@
 // ChatLayout.tsx
 "use client";
 
-import useScreenControl from "@/app/_store/stores/live/useScreenControl";
-
 import ChatWindow from "../components/Chat/ChatWindow.client";
 import ChatHeader from "../components/Chat/Header.client";
 import ChatInput from "../components/Chat/Input.client";
@@ -12,7 +10,6 @@ import { CSSProperties, useState } from "react";
 import useLiveControl from "@/app/_store/stores/live/useLiveControl";
 
 const ChatLayout = ({ roomId, client_uid }: { roomId: string, client_uid:string|undefined }) => {
-  // const { isChatOpen, chatPosition, toggleChat } = useScreenControl();
   
   const chatPosition = useLiveControl(state => state.screen.state.chatPosition);
   const isChatOpen = useLiveControl(state => state.screen.state.isChatOpen);

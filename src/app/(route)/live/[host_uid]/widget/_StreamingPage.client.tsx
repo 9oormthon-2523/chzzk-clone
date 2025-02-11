@@ -2,7 +2,6 @@
 
 import NavBar from "@/app/(route)/(main)/_components/NavBar/NavBar.client";
 import useFullscreenHandler from "@/app/_utils/live/local/useFullScreenHandler.client";
-import useScreenControl from "@/app/_store/stores/live/useScreenControl";
 import useNavToggle from "@/app/_store/main/useNavToggle.client";
 import useLiveInfo from "@/app/_utils/live/db/useLiveInfo.client";
 import LiveStreamWrapper from "./LiveStreamWrapper.client";
@@ -28,7 +27,6 @@ interface StreamingPageProps extends getHostInfoPayload {
 export default function StreamingPage(props: StreamingPageProps) {
   const { hostInfo, roomInit, client_uid } = props;
   const isOpen = useNavToggle((state) => state.isOpen);
-  // const isFullOrWide = useScreenControl(state => state.isFullOrWide);
   const isFullOrWide = useLiveControl(state => state.screen.state.isFullOrWide);
 
   // 풀 스크린 핸들러
