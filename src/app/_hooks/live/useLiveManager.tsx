@@ -1,7 +1,8 @@
 import AgoraRTC, { IRemoteVideoTrack, IRemoteAudioTrack } from "agora-rtc-sdk-ng";
-import useVideoControl from "@/app/_store/stores/live/useVideoControl";
+import useLiveControl from "@/app/_store/stores/live/useLiveControl";
 import { RefObject, useEffect, useRef, useState } from "react";
 import type * as AgoraRTCType from "agora-rtc-sdk-ng";
+
 
 
 /**
@@ -41,10 +42,10 @@ const useLiveManager = (payload: useStreamforStudioPayload) => {
 
     // 볼륨 조절
     const audiolimit = useRef<boolean>(false);
-    const audioMute = useVideoControl(state => state.audioMute);
-    const isMuted = useVideoControl(state => state.audioTrack.isMuted);
-    const videoState = useVideoControl(state => state.videoTrack.isEnabled);
-    const volumeLevel = useVideoControl(state => state.audioTrack.volumeLevel);
+    const audioMute = useLiveControl(state => state.audioTrack.actions.audioMute);
+    const isMuted = useLiveControl(state => state.audioTrack.state.isMuted);
+    const videoState = useLiveControl(state => state.videoTrack.state.isEnabled);
+    const volumeLevel = useLiveControl(state => state.audioTrack.state.volumeLevel);
 
     /** 미디어 관리 **/
     //#region 

@@ -1,8 +1,8 @@
 "use client";
 
-import useScreenControl from "@/app/_store/stores/live/useScreenControl";
 import useNavToggle from "@/app/_store/main/useNavToggle.client";
 import { CSSProperties, ReactNode } from "react";
+import useLiveControl from "@/app/_store/stores/live/useLiveControl";
 
 /**
  * streaming 페이지 전체 래퍼 컴포넌트
@@ -13,7 +13,9 @@ interface LiveWrapperProps {
 }
 
 const LiveTotalWrapper = ({ children }: LiveWrapperProps) => {
-  const { isFullOrWide, chatPosition, isChatOpen } = useScreenControl();
+  const isFullOrWide = useLiveControl(state => state.screen.state.isFullOrWide);
+  const chatPosition = useLiveControl(state => state.screen.state.chatPosition); 
+  const isChatOpen = useLiveControl(state => state.screen.state.isChatOpen);
   const isNavOpen = useNavToggle(state => state.isOpen);
   const navPadding = isNavOpen ? 16 : 0; // 좌측 패딩
 

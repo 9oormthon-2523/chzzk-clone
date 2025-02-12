@@ -1,12 +1,12 @@
 "use client"
-import useVideoControl from "@/app/_store/stores/live/useVideoControl";
+import useLiveControl from "@/app/_store/stores/live/useLiveControl";
 
 //볼륨 조절 버튼
 const PlayerBottomBolumeControl = () => {
-    const audioMute = useVideoControl((state) => state.audioMute);
-    const volumeControl = useVideoControl((state) => state.volumeControl);
-    const isMuted = useVideoControl((state) => state.audioTrack.isMuted);
-    const volumeLevel = useVideoControl((state) => state.audioTrack.volumeLevel);
+    const audioMute = useLiveControl(state => state.audioTrack.actions.audioMute);
+    const volumeControl = useLiveControl((state) => state.audioTrack.actions.volumeControl);
+    const isMuted = useLiveControl((state) => state.audioTrack.state.isMuted);
+    const volumeLevel = useLiveControl((state) => state.audioTrack.state.volumeLevel);
     
     const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (isMuted) audioMute(false);

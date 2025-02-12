@@ -1,6 +1,6 @@
 "use client"
 import Link from 'next/link';
-import { getHostInfoType } from '../liveType';
+import { getHostInfoType } from '@/app/_types/live/liveType'; 
 import LiveButton from '../components/LiveDetails/LiveDetailsButton.client'; 
 import LiveOptionButton from '../components/LiveDetails/LiveDetailsOptionButton.client';
 import { LiveDetailsTime, LiveDetailsViewer, LiveCategory, LiveNickName, LiveHashTag } from '../components/LiveDetails/LiveDetailComponents.client';

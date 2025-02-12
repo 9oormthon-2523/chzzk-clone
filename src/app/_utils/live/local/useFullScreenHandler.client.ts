@@ -1,4 +1,4 @@
-import useScreenControl from "@/app/_store/stores/live/useScreenControl";
+import useLiveControl from "@/app/_store/stores/live/useLiveControl";
 import { useEffect } from "react";
 
 /**
@@ -6,8 +6,8 @@ import { useEffect } from "react";
  */
 
 const useFullscreenHandler = () => {
-    const isFullscreen = useScreenControl(state => state.isFullscreen);
-    const offFullScreen = useScreenControl(state => state.offFullScreen);
+    const isFullscreen = useLiveControl(state => state.screen.state.isFullscreen);
+    const offFullScreen = useLiveControl(state => state.screen.actions.offFullScreen);
     
   
     // 풀 스크린 상태가 해제 되면 풀 스크린 상태 false로 변환

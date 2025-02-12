@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import SvgIcon from "../../../../../_components/SVGIcon.server";
+import SvgIcon from "@/app/_components/SVGIcon.server";
 /**
  * 채팅 입력란
  */
@@ -36,7 +36,7 @@ const ChatInput = ({ value, onChange, onSend, client_uid }: MessageInputProps) =
           </i>
         </button>
         <textarea
-        aria-label="채팅 입력"
+          aria-label="채팅 입력"
           disabled={!client_uid}
           style={{ cursor : client_uid ? undefined : "not-allowed" }}
           className="!h-[40px] m-[-10px_0_-10px_4px] p-[10px_0] bg-transparent border-[0px] text-[#2e3033] max-h-[60px] min-h-[20px] outline-none overflow-y-auto relative resize-none whitespace-normal w-full"

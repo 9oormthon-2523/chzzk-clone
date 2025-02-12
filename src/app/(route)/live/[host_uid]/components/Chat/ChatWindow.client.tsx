@@ -1,10 +1,9 @@
 "use client";
 import { Message } from "@/app/_types/chat/Chat";
-// import { useRouter } from "next/navigation";
 import { useEffect, useRef } from "react";
 import { getColorFromNickname } from "@/app/_utils/chat/hashColor";
 import { IoShieldCheckmarkSharp } from "react-icons/io5";
-import { throttle } from "../../utils/local/throttle.client";
+import { throttle } from "@/app/_utils/live/local/throttle.client";
 import ArrowBttom from "@public/livePage/Chat/arrowBottom.svg"
 /**
  * 채팅 창

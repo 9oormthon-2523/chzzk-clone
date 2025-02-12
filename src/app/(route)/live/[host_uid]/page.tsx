@@ -1,4 +1,4 @@
-import { getLiveInitDto } from "./utils/db/getLiveInitDto.server";
+import { getLiveInitDto } from "@/app/_utils/live/db/getLiveInitDto.server";
 import StreamingPage from "./widget/_StreamingPage.client";
 import { redirect } from "next/navigation";
 import { createClient } from '@/app/_utils/supabase/server';
