@@ -115,6 +115,7 @@ const useMediaControl = (payload:useMeidaControl_payload) => {
 
     // 뮤트 제어
     useEffect(()=>{
+        if (!audioTrackRef.current) return;
         const AudioState = isMuted ? "muted" : "unmuted";
         
         if (AudioState === "muted") {
@@ -122,7 +123,7 @@ const useMediaControl = (payload:useMeidaControl_payload) => {
         } else if (AudioState === "unmuted") {
             PlayAudio();
         }
-    },[isMuted, PlayAudio, StopAudio]);
+    },[isMuted, audioTrackRef, PlayAudio, StopAudio]);
 
 
     // 비디오 제어 
