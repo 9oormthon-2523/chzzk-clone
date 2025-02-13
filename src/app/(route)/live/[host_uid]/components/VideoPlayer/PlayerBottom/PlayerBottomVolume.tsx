@@ -4,13 +4,14 @@ import useLiveControl from "@/app/_store/stores/live/useLiveControl";
 //볼륨 조절 버튼
 const PlayerBottomBolumeControl = () => {
     const audioMute = useLiveControl(state => state.audioTrack.actions.audioMute);
-    const volumeControl = useLiveControl((state) => state.audioTrack.actions.volumeControl);
-    const isMuted = useLiveControl((state) => state.audioTrack.state.isMuted);
-    const volumeLevel = useLiveControl((state) => state.audioTrack.state.volumeLevel);
+    const volumeControl = useLiveControl(state => state.audioTrack.actions.volumeControl);
+    const isMuted = useLiveControl(state => state.audioTrack.state.isMuted);
+    const volumeLevel = useLiveControl(state => state.audioTrack.state.volumeLevel);
+    const videoState =  useLiveControl(state => state.videoTrack.state.isEnabled);
     
     const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (isMuted) audioMute(false);
-        volumeControl(Number(e.target.value)); 
+        if (videoState && isMuted) audioMute(false);
+        volumeControl(Number(e.target.value));  
     };
 
     return (
