@@ -1,6 +1,6 @@
 import { IRemoteVideoTrack, IRemoteAudioTrack } from "agora-rtc-sdk-ng";
 import useLiveControl from "@/app/_store/stores/live/useLiveControl";
-import { RefObject, useEffect } from "react";
+import { RefObject, useCallback, useEffect, useRef } from "react";
 
 
 interface useMeidaControl_payload {
@@ -21,13 +21,20 @@ const useMediaControl = (payload:useMeidaControl_payload) => {
     } = payload;
     
     // Volume Control
-    const audioMute = useLiveControl(state => state.audioTrack.actions.audioMute);
     const isMuted = useLiveControl(state => state.audioTrack.state.isMuted);
     const videoState = useLiveControl(state => state.videoTrack.state.isEnabled);
     const volumeLevel = useLiveControl(state => state.audioTrack.state.volumeLevel);
+    const audioMute = useLiveControl(state => state.audioTrack.actions.audioMute);
 
-    // 정지화면 캡처
-    const PauseCanvasCapture = () => {
+    // 초기값 리밋
+    const didInit = useRef(false);
+
+
+    /** 미디어 제어 함수 **/
+    //#region 
+
+    // 캔버스 캡처(정지화면 활성화화)
+    const PauseCanvasCapture = useCallback(()=>{
         if (canvasElRef.current && videoTrackRef.current && videoElRef.current) {
             
             if(!videoTrackRef.current.isPlaying) return;
@@ -45,57 +52,94 @@ const useMediaControl = (payload:useMeidaControl_payload) => {
             ctx?.scale(ratio, ratio);
             ctx?.drawImage(videoElRef.current, 0, 0, canvas.width / ratio, canvas.height / ratio);
         }
-    }
+    },[canvasElRef, videoElRef, videoTrackRef]);
 
-    const EraseCanvas = () => {
+    // 정지화면 비활성화
+    const EraseCanvas = useCallback(() => {
         if (canvasElRef.current) canvasElRef.current.style.opacity = "0";
-    }
+    },[canvasElRef]);
 
-    const PlayAudio = () => {
-        if (audioTrackRef.current && !audioTrackRef.current.isPlaying) {
-            audioTrackRef.current.play();
-        }
-    }
 
-    const MuteAudio = () => audioMute(true);
-    const StopAudio = () => audioTrackRef.current?.stop();
-    const SetAudio = () => {audioTrackRef.current?.setVolume(volumeLevel);}
-    
-    const PauseVideo = () => videoTrackRef.current?.stop();
-    const PlayVideo = () => {
+    // 비디오 제어
+    const PauseVideo = useCallback(() => {
+        videoTrackRef.current?.stop();
+    },[videoTrackRef]);
+
+    const PlayVideo = useCallback(() => {
         if(videoTrackRef.current && videoElRef.current) 
             if(!videoTrackRef.current.isPlaying)
                 videoTrackRef.current.play(videoElRef.current);
-    }
+    },[videoElRef, videoTrackRef]);
 
-    
-    
 
-    // 오디오 초기값 mute 세팅 (브라우저 정책 우회 위함)
-    useEffect(()=>{MuteAudio()},[]);
+    // 오디오 제어
+    const PlayAudio = useCallback(() => {
+        if (audioTrackRef.current && !audioTrackRef.current.isPlaying) {
+            audioTrackRef.current.play();
 
+            // 정책 해제 
+            if (!audiolimit.current) 
+                audiolimit.current = true;
+        }
+
+    },[audioTrackRef, audiolimit]);
+
+    const StopAudio = useCallback(() => {
+        audioTrackRef.current?.stop()
+    },[audioTrackRef]);
+
+    const SetVolume = useCallback(() => {
+        audioTrackRef.current?.setVolume(volumeLevel)
+    },[audioTrackRef, volumeLevel]);
+
+    //#endregion 
+
+
+    /** useEffect **/
+    //#region 
+
+    // 오디오 초기 mute 세팅 (브라우저 정책 우회 위함)
     useEffect(() => {
-        if (!audioTrackRef.current || !videoTrackRef.current) return;
-        if (!audiolimit.current) audiolimit.current = true; 
+        if (didInit.current) return; 
+        didInit.current = true; 
 
-        const VideoState = videoState ? "play" : "pause";
+        audioMute(true); 
+    }, [audioMute]);
+
+
+    // 볼륨 제어
+    useEffect(()=>{
+        SetVolume();
+    },[SetVolume]);
+
+
+    // 뮤트 제어
+    useEffect(()=>{
         const AudioState = isMuted ? "muted" : "unmuted";
-      
-        if (VideoState === "pause") {
+        
+        if (AudioState === "muted") {
+            StopAudio();
+        } else if (AudioState === "unmuted") {
+            PlayAudio();
+        }
+    },[isMuted, PlayAudio, StopAudio]);
+
+
+    // 비디오 제어 
+    useEffect(() => {
+       if (!videoTrackRef.current) return;
+       const VideoState = videoState ? "play" : "pause";
+
+       if (VideoState === "pause") {
             PauseCanvasCapture();
             PauseVideo();
-            StopAudio(); 
-        } else if (VideoState === "play") {
-          PlayVideo(); 
-          EraseCanvas();
-          if (AudioState === "muted") {
-            StopAudio(); 
-          } else {
-            PlayAudio(); 
-            SetAudio(); 
-          }
-        }
-      }, [isMuted, videoState, volumeLevel, PlayAudio, SetAudio]);
+       } else if (VideoState === "play") {
+            EraseCanvas();
+            PlayVideo();
+       }
+    },[videoState, videoTrackRef, PlayVideo, PauseVideo, PauseCanvasCapture, EraseCanvas]);
+
+    //#endregion 
     return {
         EraseCanvas,
     }

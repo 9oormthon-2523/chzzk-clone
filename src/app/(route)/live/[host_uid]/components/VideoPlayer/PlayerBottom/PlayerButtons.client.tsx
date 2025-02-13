@@ -40,6 +40,7 @@ export const PlayPauseBtn = ()=> {
 export const VolumeBtn = () => {
     const volumeLevel = useLiveControl(state => state.audioTrack.state.volumeLevel);
     const isMuted = useLiveControl(state => state.audioTrack.state.isMuted);
+    const videoState = useLiveControl(state => state.videoTrack.state.isEnabled);
     const audioMute = useLiveControl(state => state.audioTrack.actions.audioMute);
 
     //svg 추출
@@ -53,7 +54,10 @@ export const VolumeBtn = () => {
         return "VideoVolume0";
       };
 
-    const volumeMute = () => audioMute(!isMuted);
+    const volumeMute = () => {
+        if(videoState)
+            audioMute(!isMuted);
+    }
     
     return (
         <>

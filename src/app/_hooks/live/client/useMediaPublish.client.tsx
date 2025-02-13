@@ -31,8 +31,6 @@ const useMediaPublish = (payload : useMediaPublish_payload) => {
     } = payload;
 
     // Volume Control
-    // const audioMute = useVideoControl(state => state.audioMute);
-    // const volumeLevel = useVideoControl(state => state.audioTrack.volumeLevel);
     const audioMute = useLiveControl(state => state.audioTrack.actions.audioMute);
     const volumeLevel = useLiveControl(state => state.audioTrack.state.volumeLevel);
 
@@ -180,9 +178,11 @@ const useMediaPublish = (payload : useMediaPublish_payload) => {
         } catch {
             await client.unsubscribe(user, mediaType);
                         
-            if (mediaType === "audio") await cleanAudioTrack();
+            if (mediaType === "audio") 
+                await cleanAudioTrack();
 
-            else if(mediaType === "video") await cleanVideoTrack();
+            else if(mediaType === "video") 
+                await cleanVideoTrack();
 
             throw Error ("미디어 퍼블리싱 실패");
         }

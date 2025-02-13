@@ -1,12 +1,11 @@
 "use client"
 import { useHoverState, useVideoPlayerResize } from '@/app/_utils/live/local/useVideoPlayerHook'
-import React, { ReactNode, useRef } from 'react'
+import React, { ReactNode } from 'react'
 import PlayerBottom from '../components/VideoPlayer/PlayerBottom/PlayerBottom.client' 
 import PlayerHeader from '../components/VideoPlayer/PlayerHeader/PlayerHeader.client' 
 import PlayerStateSign from '../components/VideoPlayer/ETC/PlayerStateSign.client'
 import PlayerOverlay from '../components/VideoPlayer/ETC/PlayerOverlay.client' 
 import OpacityAnimation from '@/app/_utils/live/local/useOpacityAnimation.client'
-import useLiveManager from '@/app/_hooks/live/useLiveManager'
 
 // 스타일
 import { 
@@ -29,21 +28,10 @@ interface VideoPlayerProps {
 
 const VideoPlayer = (props:VideoPlayerProps) => {
   const { uid, is_active } = props;
-  // const audioElRef = useRef<HTMLAudioElement>(null);
-  // const screenElRef = useRef<HTMLVideoElement | null>(null);
-  // const canvaseElRef = useRef<HTMLCanvasElement | null>(null);
   const isChatOpen = useLiveControl(state => state.screen.state.isChatOpen);
   const isFullOrWide = useLiveControl(state => state.screen.state.isFullOrWide);
 
   // 라이브 스트리밍 훅
-  // const { ratio: [ h_rate, w_rate ] } = useLiveManager({ 
-  //   channel:uid,
-  //   audioElRef,
-  //   screenElRef, 
-  //   canvaseElRef,
-  //   streaming_is_active:is_active, 
-  // });
-
   const {
     videoElRef,
     audioElRef,

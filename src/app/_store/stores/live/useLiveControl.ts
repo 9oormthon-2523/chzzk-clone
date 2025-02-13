@@ -136,16 +136,48 @@ const useLiveControl = create<LiveControlState>((set) => ({
         },
     
         actions: {
-            videoToggle: () => {
-                set(({ videoTrack }) => {
-                    const updatedState = {
-                        ...videoTrack.state,
-                        isEnabled: !videoTrack.state.isEnabled,
-                    };
+
+            // videoToggle: () => {
+            //     set(({ videoTrack }) => {
+            //         const updatedState = {
+            //             ...videoTrack.state,
+            //             isEnabled: !videoTrack.state.isEnabled,
+            //         };
     
-                    return { videoTrack: { ...videoTrack, state: updatedState } };
+            //         return { videoTrack: { ...videoTrack, state: updatedState } };
+            //     });
+            // },
+
+            videoToggle: () => {
+                set((state) => {
+                    const videoState = !state.videoTrack.state.isEnabled;
+            
+                    const updatedAudioTrack = {
+                        ...state.audioTrack,
+                        state: {
+                            ...state.audioTrack.state,
+                            isMuted: !videoState,
+                        },
+                    };
+            
+                    const updatedVideoTrack = {
+                        ...state.videoTrack,
+                        state: {
+                            ...state.videoTrack.state,
+                            isEnabled: videoState,
+                        },
+                    };
+            
+                    const updatedState = {
+                        ...state,
+                        audioTrack: updatedAudioTrack,
+                        videoTrack: updatedVideoTrack,
+                    };
+            
+                    return updatedState;
                 });
             },
+            
         },
     },
 

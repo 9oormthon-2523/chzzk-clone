@@ -68,7 +68,7 @@ const useLive = (payload:useLive_payload) => {
         videoTrackRef,
     });
 
-     // 모든 리소스 클리어
+    //  // 모든 리소스 클리어
      const clearAll = async () => {
         EraseCanvas();
         await cleanAudioTrack();
@@ -105,22 +105,22 @@ const useLive = (payload:useLive_payload) => {
         });
      }
 
+    // 함수 의존성을 삽입하면 무한 반복함
+    // client에 새로운 이벤트를 추가하면 새로운 client라고 판단하는듯? 
+    // 웹 소켓 특성상 반복하면 오류나서 함수 ref로 우회함
+    const startStreamRef = useRef(initStreamClient);
+    const clearResorceRef = useRef(clearAll);
 
-     useEffect(()=>{
+    useEffect(()=>{
         const streamState = streaming_is_active ? "Stream_ON" : "Stream_OFF";
     
         if (streamState === "Stream_ON") {
-            initStreamClient();
-        } 
-        
-        else if (streamState === "Stream_OFF") {
-            clearAll();
+            startStreamRef.current();
+        } else if (streamState === "Stream_OFF") {
+            clearResorceRef.current();
         } 
 
-        return () => { 
-            clearClient();
-        };
-    }, [streaming_is_active, clientRef]);
+    }, [streaming_is_active]);
      
 
      return {
