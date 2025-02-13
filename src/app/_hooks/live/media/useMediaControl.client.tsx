@@ -111,7 +111,7 @@ const useMediaControl = (payload:useMeidaControl_payload) => {
     useEffect(()=>{
         SetVolume();
     },[SetVolume]);
-
+    
 
     // 뮤트 제어
     useEffect(()=>{
@@ -138,8 +138,9 @@ const useMediaControl = (payload:useMeidaControl_payload) => {
             PlayVideo();
        }
     },[videoState, videoTrackRef, PlayVideo, PauseVideo, PauseCanvasCapture, EraseCanvas]);
-
+    
     //#endregion 
+    
     return {
         EraseCanvas,
     }

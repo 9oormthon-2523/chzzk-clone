@@ -105,9 +105,7 @@ const useLive = (payload:useLive_payload) => {
         });
      }
 
-    // 함수 의존성을 삽입하면 무한 반복함
-    // client에 새로운 이벤트를 추가하면 새로운 client라고 판단하는듯? 
-    // 웹 소켓 특성상 반복하면 오류나서 함수 ref로 우회함
+    // 의존성 우회
     const startStreamRef = useRef(initStreamClient);
     const clearResorceRef = useRef(clearAll);
 
