@@ -50,7 +50,7 @@ export default function StreamingPage(props: StreamingPageProps) {
         {isOpen && <NavBar />}
             <LiveWrapper>
                 <LiveStreamWrapper>
-
+                  
                     {/* 비디오 플레이어 */}
                     <VideoPlayer 
                         uid={roomInit.uid} 

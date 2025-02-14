@@ -96,12 +96,12 @@ export type Database = {
 }
 
 // 스트리밍 룸 DTO_TYPE
-export type StreamingRoomState = 
-    Database["public"]["Tables"]["streaming_rooms"]["Row"];
+export type StreamRoomState = 
+    Omit<Database["public"]["Tables"]["streaming_rooms"]["Row"], "nickname">;
 
 // 호스트 DTO_TYPE
 export type HostInfoState = 
-    Pick<Database["public"]["Tables"]["users"]["Row"], "id" | "profile_img" | "nickname">;
+    Pick<Database["public"]["Tables"]["users"]["Row"], "profile_img" | "nickname">;
 
 export type getRoomDtoType = {
     uid:string
