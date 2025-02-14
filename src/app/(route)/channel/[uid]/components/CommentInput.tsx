@@ -41,6 +41,8 @@ const CommentInput = ({ value, onChange, onClick }: CommentInputProps) => {
     fetchUserProfile();
   }, []);
 
+  const isActive = value.trim().length > 0;
+
   return (
     <div className="flex flex-col w-full p-2 bg-white rounded-xl border border-gray-100 items-center font-semibold text-gray-500 pl-4">
       <div className="flex w-full flex-row">
@@ -68,8 +70,13 @@ const CommentInput = ({ value, onChange, onClick }: CommentInputProps) => {
       </div>
 
       <button
-        className="ml-auto bg-gray-100 hover:bg-gray-200 rounded-2xl px-4 py-2 text-sm font-bold text-gray-500 mt-2"
+        disabled={!isActive}
         onClick={onClick}
+        className={`ml-auto rounded-2xl px-4 py-2 text-sm font-bold mt-2 transition-colors ${
+          isActive
+            ? 'bg-gray-800 hover:bg-gray-400 text-white'
+            : 'bg-gray-100 text-gray-500'
+        }`}
       >
         등록
       </button>
