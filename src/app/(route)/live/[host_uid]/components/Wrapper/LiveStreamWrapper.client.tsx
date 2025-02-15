@@ -3,14 +3,14 @@ import Footer from "@/app/_components/Footer/footer";
 import React, { CSSProperties, ReactNode, useRef } from "react";
 import useLiveControl from "@/app/_store/stores/live/useLiveControl";
 
+interface LiveStreamWrapperProps {
+    children?: ReactNode;
+}
+
 /**
  * 라이브 스트리밍 래퍼 컴포넌트
  * 채팅 포지션과 (좌단/하단) 스크린 상태에 따라 flex 변경
  */
-
-interface LiveStreamWrapperProps {
-    children?: ReactNode
-}
 
 const LiveStreamWrapper = (props:LiveStreamWrapperProps) => {
     const { children } = props;
