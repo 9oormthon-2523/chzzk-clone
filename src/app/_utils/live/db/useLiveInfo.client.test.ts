@@ -12,16 +12,16 @@ interface Payload {
   streamRoom:StreamRoomState,
 }
 
-const useUpdateStreamDto = (payload:Payload) => {
+const useLiveInfo = (payload:Payload) => {
     const {
         hostInfo,
         streamRoom,
     } = payload;
     const supabase = createClient();
+    const { host_uid } = useParams();
     const updateHostState = useLiveControl(state => state.hostInfo.actions.updateState);
     const updateStreamState = useLiveControl(state => state.streamRoom.actions.updateState);
     const updateField = useLiveControl(state => state.streamRoom.actions.updateField);
-    const { host_uid } = useParams();
     
     const LIMITCNT = 3; // 구독 실패시 재시도 횟수
     const linkLimit = useRef<number>(0);
@@ -96,4 +96,4 @@ const useUpdateStreamDto = (payload:Payload) => {
     
 }  
 
-export default useUpdateStreamDto;
+export default useLiveInfo;

@@ -1,6 +1,5 @@
 import { HostInfoState, StreamRoomState } from "@/app/_types/live/liveType";
 
-
 export type chatType = "side"|"bottom";
 
 // 스크린 제어

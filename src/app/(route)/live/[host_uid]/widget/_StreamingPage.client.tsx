@@ -44,7 +44,7 @@ export default function StreamingPage(props: StreamingPageProps) {
 
   // 호스트 핑(시청자 수)
   usePing({ client_uid, host_uid:roomInit.uid, is_active:liveInfo.is_active });
-
+  
   return (
     <>
         {isOpen && <NavBar />}
