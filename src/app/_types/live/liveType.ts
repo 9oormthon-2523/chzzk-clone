@@ -95,13 +95,22 @@ export type Database = {
   }
 }
 
-// 스트리밍 룸 DTO_TYPE
-export type StreamRoomState = 
-    Omit<Database["public"]["Tables"]["streaming_rooms"]["Row"], "nickname">;
+// get base
+export type HostInfoType = Database["public"]["Tables"]["users"]["Row"];
+export type StreamRoomType = Database["public"]["Tables"]["streaming_rooms"]["Row"];
 
-// 호스트 DTO_TYPE
-export type HostInfoState = 
-    Pick<Database["public"]["Tables"]["users"]["Row"], "profile_img" | "nickname">;
+// for init dto
+export type getHostInitDto = Pick<HostInfoType, "nickname"|"profile_img">;
+export type getStreamRoomDto = Omit<StreamRoomType, "thumbnail"|"nickname"|"uid">;
+
+// for zustand
+export type HostInfoState = getHostInitDto;
+export type StreamRoomState = {
+  host_uid:string,
+  client_uid:string|null,
+} & getStreamRoomDto;
+
+
 
 export type getRoomDtoType = {
     uid:string

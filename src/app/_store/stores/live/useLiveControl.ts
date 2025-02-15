@@ -1,8 +1,8 @@
 
 import { create } from "zustand";
 
-import { AudioAction, AudioTrack, ScreenAction, ScreenState, StreamRoomAction, VideoAction, VideoTrack } from "./useLiveControl.type";
-import { StreamRoomState } from "@/app/_types/live/liveType";
+import { AudioAction, AudioTrack, chatType, HostInfoAction, ScreenAction, ScreenState, StreamRoomAction, VideoAction, VideoTrack } from "./useLiveControl.type";
+import { HostInfoState, StreamRoomState } from "@/app/_types/live/liveType";
 
 interface Module<TState, TAction> {
     state: TState;
@@ -13,6 +13,7 @@ export interface LiveControlState {
     screen: Module<ScreenState, ScreenAction>;
     videoTrack: Module<VideoTrack,VideoAction>;
     audioTrack: Module<AudioTrack,AudioAction>;
+    hostInfo: Module<HostInfoState, HostInfoAction>;   
     streamRoom: Module<StreamRoomState, StreamRoomAction>;   
 }
 
@@ -161,17 +162,51 @@ const useLiveControl = create<LiveControlState>((set) => ({
         }
     },
 
+    hostInfo: {
+        state:{
+            nickname:null,
+            profile_img:null,
+        },
+
+        actions:{
+            // 개별 필드 업데이트트
+            updateField: (key, value) => {
+                set(({ hostInfo }) => ({
+                    hostInfo:{
+                        ...hostInfo,
+                        state: {
+                            ...hostInfo.state,
+                            [key]: value,
+                        }
+                    }
+                }));
+            },
+
+             // 여러 필드 업데이트
+             updateState: (newState) =>
+                set((state) => ({
+                    hostInfo: {
+                    ...state.hostInfo,
+                    state: {
+                      ...state.hostInfo.state,
+                      ...newState,
+                    },
+                },
+            })),
+        },
+    },
+
     // 스트리밍 룸 정보 제어
     streamRoom: {
         state:{
-            uid:"",
+            host_uid: "",
+            client_uid: null,
             title:null,
             tags:[],
             category:null,
             audience_cnt:0,
             is_active:false,
             start_time:null,
-            thumbnail:null,
         },
 
         actions:{
@@ -201,8 +236,6 @@ const useLiveControl = create<LiveControlState>((set) => ({
             })),
         }
     },
-
-
   }));
   
   export default useLiveControl;

@@ -1,7 +1,7 @@
-import { StreamRoomState } from "@/app/_types/live/liveType";
+import { HostInfoState, StreamRoomState } from "@/app/_types/live/liveType";
 
 
-type chatType = "side"|"bottom";
+export type chatType = "side"|"bottom";
 
 // 스크린 제어
 export interface ScreenState {
@@ -40,12 +40,10 @@ export interface AudioAction {
     audioMute: (mute:boolean) => void;
 };
 
-
-export interface StreamRoomAction {
-    updateField: <K extends keyof StreamRoomState>(
-        key: K,
-        value: StreamRoomState[K]
-      ) => void;
-
-    updateState: (newState: Partial<StreamRoomState>) => void;
+export interface DBStateActions<T> {
+    updateField: <K extends keyof T>(key: K, value: T[K]) => void;
+    updateState: (newState: Partial<T>) => void;
 }
+
+export type StreamRoomAction = DBStateActions<StreamRoomState>;
+export type HostInfoAction = DBStateActions<HostInfoState>;
