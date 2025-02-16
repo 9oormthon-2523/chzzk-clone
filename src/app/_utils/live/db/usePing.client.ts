@@ -2,16 +2,23 @@ import { createClient } from '@/app/_utils/supabase/client';
 import { RealtimeChannel } from '@supabase/supabase-js';
 import { useEffect, useRef } from 'react';
 
-/**
- * 호스트가 핑을 전달하면 호스트에게 응답해주는 훅
- * 시청자 수를 세기 위함
- */
-
 interface usePingPayload {
     client_uid: string | undefined
     host_uid: string
     is_active: boolean
 }
+
+
+/**
+ * 호스트가 핑을 전달하면 호스트에게 응답해주는 훅
+ * 시청자 수를 세기 위함
+ * 
+ *  client_uid: string | undefined
+ * 
+ *  host_uid: string
+ * 
+ *  is_active: boolean
+ */
 
 const usePing = (payload: usePingPayload) => {
     const { client_uid, host_uid, is_active } = payload;

@@ -7,7 +7,7 @@ type MessageInputProps = {
   value: string;
   onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   onSend: () => void;
-  client_uid: string|undefined
+  client_uid: string|null
 };
 const ChatInput = ({ value, onChange, onSend, client_uid }: MessageInputProps) => {
   const [isComposing, setIsComposing] = useState(false);

@@ -2,7 +2,7 @@
 import useLiveControl from "@/app/_store/stores/live/useLiveControl";
 
 //볼륨 조절 버튼
-const PlayerBottomBolumeControl = () => {
+const PlayerBottomVolumeControl = () => {
     const audioMute = useLiveControl(state => state.audioTrack.actions.audioMute);
     const volumeControl = useLiveControl(state => state.audioTrack.actions.volumeControl);
     const isMuted = useLiveControl(state => state.audioTrack.state.isMuted);
@@ -16,6 +16,7 @@ const PlayerBottomBolumeControl = () => {
 
     return (
         <div className="flex i tems-center justify-center w-[84px]">
+            <label htmlFor="volume-range" className="sr-only">볼륨 조절</label>
             <input
                 type="range" 
                 aria-label="볼륨 조절"
@@ -33,4 +34,4 @@ const PlayerBottomBolumeControl = () => {
     )
 }
 
-export default PlayerBottomBolumeControl;
+export default PlayerBottomVolumeControl;

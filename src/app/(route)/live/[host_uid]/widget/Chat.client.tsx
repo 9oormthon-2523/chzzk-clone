@@ -9,7 +9,7 @@ import { CSSProperties, useState } from "react";
 
 import useLiveControl from "@/app/_store/stores/live/useLiveControl";
 
-const ChatLayout = ({ roomId, client_uid }: { roomId: string, client_uid:string|undefined }) => {
+const ChatLayout = ({ roomId, client_uid }: { roomId: string, client_uid:string|null }) => {
   
   const chatPosition = useLiveControl(state => state.screen.state.chatPosition);
   const isChatOpen = useLiveControl(state => state.screen.state.isChatOpen);

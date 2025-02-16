@@ -1,5 +1,5 @@
 "use client"
-
+import PlayerBottomVolumeControl from "./PlayerBottomVolume";
 import { FullBtn, PlayPauseBtn, VolumeBtn, WideBtn } from "./PlayerButtons.client"
 import React from "react";
 
@@ -16,6 +16,7 @@ const PlayerBottom  = () => {
                 <div className="min-w-0 items-center flex left-0 relative">
                     <PlayPauseBtn/>
                     <VolumeBtn/>
+                    <PlayerBottomVolumeControl/>
                 </div>
 
                 <div className="min-w-0 items-center flex left-0 relative">
@@ -29,4 +30,3 @@ const PlayerBottom  = () => {
 }
 
 export default React.memo(PlayerBottom);
-
