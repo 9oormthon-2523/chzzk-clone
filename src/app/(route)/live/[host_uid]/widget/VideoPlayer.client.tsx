@@ -111,7 +111,7 @@ const VideoPlayer = (props:VideoPlayerProps) => {
           style={videoControler_style(isFullOrWide, isChatOpen, wh)} 
           className="absolute max-h-[100vh]" onMouseMove={HoverHandler}
         > 
-          <h2 id='video-player-controller' className='sr-only'>비디오 플레이어 컨트롤러</h2>
+          <h2 id='video-player-controller-title' className='sr-only'>비디오 플레이어 컨트롤러</h2>
 
           {/* 호버 래핑 */}
           <HoverWrapper isHover={isHover}>

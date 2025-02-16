@@ -11,6 +11,7 @@ import useLiveControl from '@/app/_store/stores/live/useLiveControl';
 const PlayerHeader = () => {;
   const isChatOpen = useLiveControl(state => state.screen.state.isChatOpen);
   const toggleChat = useLiveControl(state => state.screen.actions.toggleChat);
+  const is_active = useLiveControl(state => state.streamRoom.state.is_active);
 
   const ChattingControl:PlayerHeaderButtonProps = {
     fnName:"채팅 토글",
@@ -23,7 +24,7 @@ const PlayerHeader = () => {;
         <div className='flex justify-end gap-[0_40px] p-[15px_15px_0] w-full'>
           <div className='flex flex-col'>
             {/* LIVE BOX */}
-            <LiveBox/>
+            {is_active && <LiveBox/>}
 
             {/* CONTROL BUTTONS */}
             <div className='items-end flex flex-col gap-[10px_0] mt-[20px]'>

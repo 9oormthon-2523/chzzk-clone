@@ -30,7 +30,7 @@ const ChatInput = ({ value, onChange, onSend, client_uid }: MessageInputProps) =
       className="flex-none p-[10px_20px] relative z-[30]"
     >
       <div className="items-center bg-[#f5f5f5] rounded-[8px] flex p-[5px] relative w-full">
-        <button className="items-center flex-none h-[30px] relative w-[30px]">
+        <button aria-label="no-option" className="items-center flex-none h-[30px] relative w-[30px]">
           <i className="bg-[#0000001a] rounded-[5px] text-[#2e3033] inline-block h-[24px] p-[2px] align-top w-[24px]">
             <SvgIcon name="ChatSetting" width={20} height={20} />
           </i>
@@ -57,6 +57,7 @@ const ChatInput = ({ value, onChange, onSend, client_uid }: MessageInputProps) =
 
       <div className="items-center flex mt-[10px] p-[2px_0] relative">
         <button
+          aria-label="send-chat-message"
           type="button"
           className="bg-[#f5f5f5] rounded-[8px] flex-none text-[13px] h-[28px] ml-auto p-[0_9px]"
           onClick={onSend}

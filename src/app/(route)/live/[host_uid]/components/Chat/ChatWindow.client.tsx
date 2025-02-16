@@ -74,7 +74,7 @@ const ChatWindow = ({ messages, roomId }: MessageListProps) => {
         className="flex flex-col overflow-y-auto p-[0_12px] w-full"
       >
         {/* 채팅 */}
-        <div id="empty-box-forChat" aria-label="빈 박스" />
+        <div id="empty-box-forChat"/>
         <div className="text-[14px]">
           {messages.map((msg, idx) => (
             <ChatBox
@@ -85,7 +85,11 @@ const ChatWindow = ({ messages, roomId }: MessageListProps) => {
               roomId={roomId}
             />
           ))}
-          <button onClick={setScrollEnd} className="outline-none absolute rounded-full bottom-0 right-[12px] w-[28px] h-[28px] bg bg-[#eeeeee] flex items-center justify-center text-[18px]">
+          <button 
+            aria-label="scroll-to-latest-message"
+            onClick={setScrollEnd} 
+            className="outline-none absolute rounded-full bottom-0 right-[12px] w-[28px] h-[28px] bg bg-[#eeeeee] flex items-center justify-center text-[18px]"
+          >
             <ArrowBttom/>
           </button>
         </div>
