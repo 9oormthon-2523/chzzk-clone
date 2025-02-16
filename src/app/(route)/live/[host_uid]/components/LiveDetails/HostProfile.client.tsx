@@ -20,7 +20,6 @@ const HostProfile = () => {
     return (
         <Link
             style={circle_style}
-            title="호스트 프로필로 이동"
             aria-label="호스트 프로필로 이동"
             href={`/channel/${host_uid}`} 
             className="select-none mr-[0.5rem] overflow-hidden relative flex justify-center items-center w-[60px] h-[60px] rounded-full flex-none p-[0.2px] m-[1.8px_3px]"
@@ -28,6 +27,7 @@ const HostProfile = () => {
 
             <div className='w-[52px] h-[52px] border-[2px] overflow-hidden border-solid border-[white] bg-[#ffffff] left-0 top-0 rounded-full flex justify-center items-center'>    
                 <Image 
+                    id="host-info-profile-img"
                     priority 
                     width={60} 
                     height={60} 

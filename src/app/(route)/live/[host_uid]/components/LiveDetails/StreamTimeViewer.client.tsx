@@ -41,7 +41,7 @@ const StreamTimeView = () => {
 
   return (
     <strong
-      id="스트리밍시간"
+      id="stream-room-info-stream-time-view"
       className="text-#2e3033 ml-[4px] text-[12px] font-semibold relative leading-[25px]"
     >
       {viewTime} 스트리밍 중

@@ -8,7 +8,10 @@ const StreamTitle = () => {
     const title = useLiveControl(state => state.streamRoom.state.title);
 
     return (
-        <h2 className="text-[#2e3033] mb-1 text-[22px] font-bold tracking-[-0.3px] leading-[28px]">
+        <h2 
+            id="stream-room-info-title"
+            className="text-[#2e3033] mb-1 text-[22px] font-bold tracking-[-0.3px] leading-[28px]"
+        >
             {title}
         </h2>
     );

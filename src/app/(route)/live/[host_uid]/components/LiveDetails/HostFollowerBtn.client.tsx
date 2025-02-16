@@ -54,6 +54,7 @@ const HostFollowerBtn = (props: Props) => {
         <div className="flex ml-4 pt-[19px] relative">
             <div className="mr-[6px] relative flex gap-2">
                 <button 
+                    id="host-info-follow-button"
                     style={style} 
                     onClick={onClickHandler} 
                     className={`className="bg-[#1bb373] text-[#fff] rounded-[17px] pr-[16px] pl-[12px] h-[34px] inline-flex items-center justify-center gap-x-[4px] text-sm leading-none font-sans cursor-pointer transition-all duration-200 ease-in-out relative align-top focus:outline-none hover:brightness-90`}
@@ -64,7 +65,7 @@ const HostFollowerBtn = (props: Props) => {
                         name={svgIcon} 
                     />
 
-                    <span>
+                    <span id="host-info-follow-button-state">
                         {title}
                     </span>
                 </button>

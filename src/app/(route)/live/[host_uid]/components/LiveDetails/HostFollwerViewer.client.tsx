@@ -20,7 +20,10 @@ const HostFollowerViwer = (props:Props) => {
     const followerCnt = error || isLoading || !data ? "0" : data.length; 
 
     return (
-        <p className='mt-[2px] text-[13px] font-semibold text-[#666]'>
+        <p 
+            id="host-info-follower-cnt"
+            className='mt-[2px] text-[13px] font-semibold text-[#666]'
+        >
             팔로워 { followerCnt }명
         </p> 
     );

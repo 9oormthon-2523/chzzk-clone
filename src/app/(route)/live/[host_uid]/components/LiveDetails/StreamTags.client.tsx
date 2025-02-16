@@ -8,7 +8,10 @@ const StreamTags = () => {
     const tags = useLiveControl(state => state.streamRoom.state.tags);
     
     return (
-        <ul id="관련태그" className="text-[#898989] font-blackHanSans overflow-hidden flex flex-wrap items-center justify-center text-[9px] gap-[4px] ">
+        <ul 
+            id="stream-room-info-tags"
+            className="text-[#898989] font-blackHanSans overflow-hidden flex flex-wrap items-center justify-center text-[9px] gap-[4px]"
+        >
             {
                 tags.map((tag, idx) => {
                     return (
