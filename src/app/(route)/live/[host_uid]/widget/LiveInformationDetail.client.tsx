@@ -33,7 +33,9 @@ const LiveInformationDetail = () => {
 export default LiveInformationDetail;
 
 
-
+/**
+ * 스트리밍 정보 컴포넌트
+ */
 const StreamRoomInformation = () => {
     return(
         <section 
@@ -56,7 +58,9 @@ const StreamRoomInformation = () => {
     );
 };
 
-
+/**
+ * 호스트 정보 컴포넌트
+ */
 const HostInformation = () => {
     const host_uid = useLiveControl(state => state.streamRoom.state.host_uid);
     const followerQuery = useFollowerQuery(host_uid);

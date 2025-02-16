@@ -1,11 +1,7 @@
 import useLiveControl from "@/app/_store/stores/live/useLiveControl";
 import { useEffect, useState } from "react";
 
-/**
- * 스트리밍 경과시간 컴포넌트
- */
-
-const StreamTimeView = () => {
+const StreamTime = () => {
     const startTime = useLiveControl(state => state.streamRoom.state.start_time);
     const is_active = useLiveControl(state => state.streamRoom.state.is_active);
     const [viewTime, setViewtime] = useState<string>("00:00:00");
@@ -40,11 +36,23 @@ const StreamTimeView = () => {
     }, [startTime, is_active]);
 
   return (
+      <>
+        {!startTime ? "00:00:00" : viewTime} 
+      </>
+  );
+};
+
+/**
+ * 스트리밍 경과시간 컴포넌트
+ */
+const StreamTimeView = () => {
+
+  return(
     <strong
       id="stream-room-info-stream-time-view"
       className="text-#2e3033 ml-[4px] text-[12px] font-semibold relative leading-[25px]"
     >
-      {viewTime} 스트리밍 중
+      <StreamTime /> 스트리밍 중
     </strong>
   );
 };

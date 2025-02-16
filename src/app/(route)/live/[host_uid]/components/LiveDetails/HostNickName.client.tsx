@@ -1,11 +1,10 @@
-import useLiveControl from "@/app/_store/stores/live/useLiveControl";
-
 /**
  * 호스트 닉네임 컴포넌트트
  */
 
+import StateRenderer from "../StateRenderer.client";
+
 const HostNickName = () => {
-    const nickname = useLiveControl(state => state.hostInfo.state.nickname);
     
     return (
         <div role="paragraph" className="flex m-0 p-0">
@@ -17,7 +16,7 @@ const HostNickName = () => {
                         style={{textOverflow:"ellipsis"}} 
                         className="pr-[1px] overflow-hidden whitespace-nowrap"
                     >
-                        {nickname}
+                        <StateRenderer keyName="nickname" storeName="hostInfo"/>
                     </span>
                 </span>
                 
