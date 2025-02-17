@@ -11,7 +11,7 @@
     "gen-type-windows": "npx dotenv -- npm run _gen-type-windows",
     "_gen-type": "supabase gen types typescript --project-id \"$SUPABASE_PROJECT_ID\" -s public > src/app/_utils/supabase/database.types.ts",
     "gen-type": "dotenv -- npm run _gen-type"
-    },
+  },
   "dependencies": {
     "@supabase/ssr": "^0.5.2",
     "@supabase/supabase-js": "^2.47.3",
@@ -36,6 +36,7 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "dotenv-cli": "^8.0.0",
     "eslint": "^9",
     "eslint-config-next": "15.1.0",
     "eslint-config-prettier": "^10.0.1",
