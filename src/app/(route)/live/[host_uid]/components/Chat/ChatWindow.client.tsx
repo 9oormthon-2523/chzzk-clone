@@ -1,6 +1,6 @@
 "use client";
 import { Message } from "@/app/_types/chat/Chat";
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { getColorFromNickname } from "@/app/_utils/chat/hashColor";
 import { IoShieldCheckmarkSharp } from "react-icons/io5";
 import { throttle } from "@/app/_utils/live/local/throttle.client";
@@ -30,12 +30,12 @@ const ChatWindow = ({ messages, roomId }: MessageListProps) => {
     }
   }
 
-  // 새로운 채팅이 들어왔을 때 스크롤이 끝이면 실행행
-  const scrollToBottom = () => {
+  // 새로운 채팅이 들어왔을 때 스크롤이 끝이면 실행
+  const scrollToBottom = useCallback(() => {
     if (isScrollendRef.current === true) {
       setScrollEnd();
     }
-  };
+  },[]);
 
   // 스크롤 상태 가져오기
   const getScrollState = () => {
@@ -47,6 +47,7 @@ const ChatWindow = ({ messages, roomId }: MessageListProps) => {
     }
   };
 
+  // 스크롤 값 추출
   useEffect(()=>{
     const chatFrame = chatFrameRef.current;
     const throttledScrollHandler = throttle(getScrollState, 200);
@@ -58,10 +59,10 @@ const ChatWindow = ({ messages, roomId }: MessageListProps) => {
     }
   },[]);
 
+  // 스크롤이 위치가 최하단일 때, 새로운 메시지가 추가되면 스크롤을 자동으로 최하단 이동
   useEffect(() => {
     scrollToBottom(); 
-    console.log("msg:", messages);
-  }, [messages]);
+  }, [messages, scrollToBottom]);
 
   return (
     <div
@@ -88,9 +89,9 @@ const ChatWindow = ({ messages, roomId }: MessageListProps) => {
           <button 
             aria-label="scroll-to-latest-message"
             onClick={setScrollEnd} 
-            className="outline-none absolute rounded-full bottom-0 right-[12px] w-[28px] h-[28px] bg bg-[#eeeeee] flex items-center justify-center text-[18px]"
+            className="outline-none text-[#666] absolute rounded-full bottom-0 right-[12px] w-[28px] h-[28px] bg bg-[#eeeeee] flex items-center justify-center text-[18px] hover:brightness-90 hover:text-black"
           >
-            <ArrowBttom/>
+            <ArrowBttom />
           </button>
         </div>
       </div>
@@ -109,9 +110,7 @@ type ChatProps = {
 
 //채팅 박스
 const ChatBox = ({ nickname, message, id, roomId }: ChatProps) => {
-  // const router = useRouter();
   const handleNicknameClick = () => {
-    // router.push(`/channel/${id}`);
     window.open(`/channel/${id}`, '_blank');
   };
 

@@ -16,19 +16,12 @@ const ChatLayout = ({ roomId, client_uid }: { roomId: string, client_uid:string|
   const toggleChat = useLiveControl(state => state.screen.actions.toggleChat);
 
   const { messages, sendMessage } = useChat(roomId);
-  const [newMessage, setNewMessage] = useState("");
 
   if (!isChatOpen) return null;
 
   const viewChatStyle: CSSProperties = {
     width: chatPosition === "side" ? "353px" : "auto",
     flex: chatPosition === "side" ? undefined : "1",
-  };
-
-  const handleSendMessage = async () => {
-    if (!newMessage.trim()) return;
-    await sendMessage(newMessage);
-    setNewMessage("");
   };
 
   return (
@@ -40,9 +33,7 @@ const ChatLayout = ({ roomId, client_uid }: { roomId: string, client_uid:string|
       <ChatHeader ChatFold={toggleChat} uid={roomId}/>
       <ChatWindow messages={messages} roomId={roomId} />
       <ChatInput
-        value={newMessage}
-        onChange={(e) => setNewMessage(e.target.value)}
-        onSend={handleSendMessage}
+        sendMessage={sendMessage}
         client_uid={client_uid}
       />
     </aside>

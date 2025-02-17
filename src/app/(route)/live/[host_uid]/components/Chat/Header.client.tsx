@@ -37,7 +37,7 @@ const ChatHeader = (props: ChatHeaderProps) => {
                 name="ChatFold"
                 width={28}
                 height={28}
-                className="rounded-lg hover:bg-[#58585820] hover:text-black"
+                className="rounded-lg hover:text-black hover:brightness-90 bg-white"
               />
             </button>
           </div>
