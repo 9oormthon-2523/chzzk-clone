@@ -6,7 +6,7 @@ import useLiveControl from "@/app/_store/stores/live/useLiveControl";
 
 interface LiveWrapperProps {
   children?: ReactNode;
-}
+};
 
 /**
  * streaming 페이지 전체 래퍼 컴포넌트

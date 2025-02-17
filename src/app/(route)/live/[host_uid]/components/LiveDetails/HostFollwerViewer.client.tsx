@@ -6,10 +6,9 @@ interface Props {
     error:Error | null;
 };
 
-/**
- * 호스트 팔로워 수 컴포넌트
- */
-
+/*
+* 호스트 팔로워 수 컴포넌트
+*/
 const HostFollowerViwer = (props:Props) => {
     const { 
         data,

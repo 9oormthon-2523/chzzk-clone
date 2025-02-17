@@ -5,7 +5,7 @@ import useLiveControl from "@/app/_store/stores/live/useLiveControl";
 
 interface LiveStreamWrapperProps {
     children?: ReactNode;
-}
+};
 
 /**
  * 라이브 스트리밍 래퍼 컴포넌트

@@ -1,9 +1,7 @@
+import StateRenderer from "../StateRenderer.client";
 /**
  * 스트리밍 시청자 수 컴포넌트 
  */
-
-import StateRenderer from "../StateRenderer.client";
-
 const StreamAudienceCnt = () => {
 
   return (

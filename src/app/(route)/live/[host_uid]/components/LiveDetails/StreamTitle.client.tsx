@@ -1,9 +1,7 @@
 import StateRenderer from "../StateRenderer.client";
-
 /**
  * 스트리밍 제목 컴포넌트
  */
-
 const StreamTitle = () => {
     
     return (

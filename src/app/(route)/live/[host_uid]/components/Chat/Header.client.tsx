@@ -2,15 +2,15 @@ import React from 'react';
 import { usePathname } from 'next/navigation';
 import SvgIcon from '../../../../../_components/SVGIcon.server';
 
-/**
- * 채팅 헤더
- */
-
 interface ChatHeaderProps {
   ChatFold: () => void;
   uid: string;
-}
+};
 
+
+/**
+* 채팅 헤더 컴포넌트
+*/
 const ChatHeader = (props: ChatHeaderProps) => {
   const { ChatFold, uid } = props;
   const pathname = usePathname();

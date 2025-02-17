@@ -1,9 +1,7 @@
 import useLiveControl from "@/app/_store/stores/live/useLiveControl";
-
 /**
  * 스트리밍 태그 컴포넌트
  */
-
 const StreamTags = () => {
     const tags = useLiveControl(state => state.streamRoom.state.tags);
     

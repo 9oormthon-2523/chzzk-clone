@@ -2,7 +2,7 @@ import { ReactNode } from "react";
 
 interface Props {
     children?:ReactNode;
-} 
+};
 
 /**
  * 스트리밍 정보 래핑 컴포넌트

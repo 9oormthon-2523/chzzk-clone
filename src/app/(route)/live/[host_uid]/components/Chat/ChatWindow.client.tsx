@@ -5,16 +5,15 @@ import { getColorFromNickname } from "@/app/_utils/chat/hashColor";
 import { IoShieldCheckmarkSharp } from "react-icons/io5";
 import { throttle } from "@/app/_utils/live/local/throttle.client";
 import ArrowBttom from "@public/livePage/Chat/arrowBottom.svg"
-/**
- * 채팅 창
- */
 
-//프롭스는 나중에
 type MessageListProps = {
   messages: Message[];
   roomId: string;
 };
 
+/**
+ * 채팅 창 컴포넌트
+ */
 const ChatWindow = ({ messages, roomId }: MessageListProps) => {
   const chatFrameRef = useRef<HTMLDivElement>(null);
   const isScrollendRef = useRef<boolean>(true); 

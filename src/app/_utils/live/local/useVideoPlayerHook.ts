@@ -79,7 +79,9 @@ export const useHoverState = (payload: useHoverStatePayload) => {
     // 마우스 이동 감지 + 의존성
     useEffect(()=>{
         HoverHandler();
-        return () => {if (timerRef.current) clearTimeout(timerRef.current);}
+        return () => {
+          if (timerRef.current) clearTimeout(timerRef.current);
+        }
     },[volumeLevel, HoverHandler]);
 
     return { isHover, HoverHandler };

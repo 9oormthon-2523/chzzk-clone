@@ -1,9 +1,7 @@
-/**
- * 호스트 닉네임 컴포넌트트
- */
-
 import StateRenderer from "../StateRenderer.client";
-
+/**
+ * 호스트 닉네임 컴포넌트
+ */
 const HostNickName = () => {
     
     return (

@@ -1,15 +1,13 @@
 import React, { useState } from "react";
 import SvgIcon from "@/app/_components/SVGIcon.server";
-/**
- * 채팅 입력란
- */
-
 
 type MessageInputProps = {
   sendMessage: (message: string) => Promise<void>;
   client_uid: string|null;
 };
-
+/**
+ * 채팅 입력 컴포넌트
+ */
 const ChatInput = ({ client_uid, sendMessage }: MessageInputProps) => {
   const [newMessage, setNewMessage] = useState("");
 

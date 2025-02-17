@@ -1,8 +1,9 @@
-import SvgIcon from "@/app/_components/SVGIcon.server";
 import { useFollowAction } from "@/app/_store/queries/follow/mutation";
 import useLiveControl from "@/app/_store/stores/live/useLiveControl";
-import { FollowInfo } from "@/app/_types/follow.type";
 import { CSSProperties, useEffect, useState } from "react";
+import SvgIcon from "@/app/_components/SVGIcon.server";
+import { FollowInfo } from "@/app/_types/follow.type";
+
 
 interface Props {
     data:FollowInfo[]|undefined; 
