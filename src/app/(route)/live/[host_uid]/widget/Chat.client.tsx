@@ -5,7 +5,7 @@ import ChatWindow from "../components/Chat/ChatWindow.client";
 import ChatHeader from "../components/Chat/Header.client";
 import ChatInput from "../components/Chat/Input.client";
 import { useChat } from "@/app/_hooks/useChat";
-import { CSSProperties, useState } from "react";
+import { CSSProperties } from "react";
 
 import useLiveControl from "@/app/_store/stores/live/useLiveControl";
 
@@ -22,7 +22,7 @@ const ChatLayout = ({ roomId, client_uid }: { roomId: string, client_uid:string|
   const viewChatStyle: CSSProperties = {
     width: chatPosition === "side" ? "353px" : "auto",
     flex: chatPosition === "side" ? undefined : "1",
-  };
+  } as const;
 
   return (
     <aside

@@ -13,7 +13,7 @@ const StreamAudienceCnt = () => {
     >
       <StateRenderer keyName="audience_cnt" storeName="streamRoom"/>명 시청 중 •
     </strong>
-  )
+  );
 };
 
 export default StreamAudienceCnt;

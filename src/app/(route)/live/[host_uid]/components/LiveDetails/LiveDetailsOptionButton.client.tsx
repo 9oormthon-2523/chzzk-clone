@@ -7,7 +7,7 @@ const LiveOptionButton = () => {
     <button className="bg-gray-100 rounded-[17px] px-2 h-[34px] inline-flex items-center justify-center gap-x-[4px] text-sm leading-none font-sans cursor-pointer transition-all duration-200 ease-in-out relative align-top focus:outline-none">
         <SvgIcon name="VideoDots" width={16} height={4}/>
     </button>
-  )
-}
+  );
+};
 
-export default LiveOptionButton
+export default LiveOptionButton;

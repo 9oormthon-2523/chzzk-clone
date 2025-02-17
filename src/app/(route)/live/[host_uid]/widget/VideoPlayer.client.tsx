@@ -6,6 +6,8 @@ import PlayerHeader from '../components/VideoPlayer/PlayerHeader/PlayerHeader.cl
 import PlayerStateSign from '../components/VideoPlayer/ETC/PlayerStateSign.client'
 import PlayerOverlay from '../components/VideoPlayer/ETC/PlayerOverlay.client' 
 import OpacityAnimation from '@/app/_utils/live/local/useOpacityAnimation.client'
+import useLiveControl from '@/app/_store/stores/live/useLiveControl'
+import useLive from '@/app/_hooks/live/useLive'
 
 // 스타일
 import { 
@@ -14,30 +16,21 @@ import {
   frameVideoPlayer_style, 
   containerVideoPlayer_style 
 } from '../style/VideoPlayerStyle'
-import useLiveControl from '@/app/_store/stores/live/useLiveControl'
-import useLive from '@/app/_hooks/live/useLive'
 
 /**
- * 라이브 스트리밍 플레이어 컴포넌트
+ * 라이브 비디오 플레이어 컴포넌트
  */
-
-interface VideoPlayerProps {
-  uid:string
-  is_active:boolean
-}
-
-const VideoPlayer = (props:VideoPlayerProps) => {
-  const { uid, is_active } = props;
+const VideoPlayer = () => {
   const isChatOpen = useLiveControl(state => state.screen.state.isChatOpen);
   const isFullOrWide = useLiveControl(state => state.screen.state.isFullOrWide);
-
+  
   // 라이브 스트리밍 훅
   const {
     videoElRef,
     audioElRef,
     canvasElRef,
     ratio:[h_rate, w_rate],
-  } = useLive({ host_uid: uid, streaming_is_active: is_active });
+  } = useLive();
 
   //마우스 호버 훅
   const { isHover, HoverHandler } = useHoverState({});
@@ -132,7 +125,7 @@ const VideoPlayer = (props:VideoPlayerProps) => {
       </div>
     </div>
   );
-}
+};
 
  
 export default VideoPlayer;

@@ -12,6 +12,7 @@ import LiveStreamWrapper from "../components/Wrapper/LiveStreamWrapper.client";
 import dynamic from "next/dynamic";
 import ChatLayout from "./Chat.client";
 import VideoLoadingCompo from "../components/Loading/VideoLoadingCompo.client";
+import usePing from "@/app/_utils/live/db/usePing.client";
 
 const VideoPlayer = dynamic(() => import("./VideoPlayer.client"), { 
   ssr: false,
@@ -27,7 +28,11 @@ export default function StreamingTestPage(props: StreamingPageProps) {
   const isOpen = useNavToggle((state) => state.isOpen);
   const isFullOrWide = useLiveControl(state => state.screen.state.isFullOrWide);
 
+  // 초기값 세팅
   useLiveInfo(props);
+
+  // 핑(시청자 수)
+  usePing(props.streamRoom.client_uid);
   
   return (
     <>
@@ -37,8 +42,7 @@ export default function StreamingTestPage(props: StreamingPageProps) {
 
           {/* 비디오 플레이어 */}
           <VideoPlayer 
-            uid={props.streamRoom.host_uid}
-            is_active={props.streamRoom.is_active}  
+
           />
           
           {/* 방송 정보 */}
@@ -53,4 +57,4 @@ export default function StreamingTestPage(props: StreamingPageProps) {
       </LiveTotalWrapper>
     </>
   );
-}
+};

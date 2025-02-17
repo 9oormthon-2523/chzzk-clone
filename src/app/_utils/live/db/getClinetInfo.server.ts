@@ -4,9 +4,8 @@ import { createClient } from "@/app/_utils/supabase/client";
  * 라이브 페이지 초기 데이터 가져오기 (시청자)
  * */ 
 
-
 const getClientInfo = async () => {
-    const supabase = await createClient();
+    const supabase = createClient();
 
     try {
         const { data, error } = await supabase.auth.getUser();

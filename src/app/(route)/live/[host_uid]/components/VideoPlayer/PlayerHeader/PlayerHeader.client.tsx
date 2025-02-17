@@ -1,6 +1,6 @@
 "use client"
 import React from 'react'
-import LiveBox from '../../LiveDetails/LiveBox';
+import LiveBox from './LiveBox';
 import PlayerHeaderButton, { PlayerHeaderButtonProps } from './PlayerHeaderButton.client';
 import useLiveControl from '@/app/_store/stores/live/useLiveControl';
 
@@ -33,7 +33,7 @@ const PlayerHeader = () => {;
           </div>
       </div>
     </div>
-  )
-}
+  );
+};
 //리사이즈 될 때마다 불필요하게 렌더링 되서 memo사용
 export default React.memo(PlayerHeader);

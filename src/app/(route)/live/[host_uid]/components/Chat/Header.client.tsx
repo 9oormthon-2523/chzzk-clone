@@ -1,6 +1,6 @@
 import React from 'react';
-import SvgIcon from '../../../../../_components/SVGIcon.server';
 import { usePathname } from 'next/navigation';
+import SvgIcon from '../../../../../_components/SVGIcon.server';
 
 /**
  * 채팅 헤더

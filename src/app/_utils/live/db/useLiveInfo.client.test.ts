@@ -1,17 +1,16 @@
 
 "use client"
 
-import useLiveControl from "@/app/_store/stores/live/useLiveControl";
 import { HostInfoState, StreamRoomState } from "@/app/_types/live/liveType";
-import { useEffect, useRef } from "react";
+import useLiveControl from "@/app/_store/stores/live/useLiveControl";
 import { createClient } from "../../supabase/client";
 import { useParams } from 'next/navigation';
+import { useEffect, useRef } from "react";
 
 interface Payload {
-  hostInfo:HostInfoState,
-  streamRoom:StreamRoomState,
-}
-
+  hostInfo:HostInfoState;
+  streamRoom:StreamRoomState;
+};
 
 /**
  * 초기값 세팅 및 실시간 데이터 구독 훅

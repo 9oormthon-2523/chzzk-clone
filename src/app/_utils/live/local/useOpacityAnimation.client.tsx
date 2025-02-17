@@ -17,16 +17,15 @@ const AnimatedComponent = (props: P & OpacityAnimationProps) => {
   const { isHover, ...rest } = props;
 
   return (
+      <div style={{ opacity: isHover ? 1 : 0, transition: 'opacity 0.3s ease' }}>
+        <WrappedComponent {...(rest as P)} />
+      </div>
+    );
+  };
 
-    <div style={{ opacity: isHover ? 1 : 0, transition: 'opacity 0.3s ease' }}>
-      <WrappedComponent {...(rest as P)} />
-    </div>
-  );
-};
+  AnimatedComponent.displayName = `OpacityAnimation(${WrappedComponent.displayName || WrappedComponent.name || 'Component'})`;
 
-AnimatedComponent.displayName = `OpacityAnimation(${WrappedComponent.displayName || WrappedComponent.name || 'Component'})`;
-
-return AnimatedComponent;
+  return AnimatedComponent;
 };
 
 export default OpacityAnimation;

@@ -6,8 +6,8 @@ import SvgIcon from "@/app/_components/SVGIcon.server";
 
 
 type MessageInputProps = {
-  sendMessage: (message: string) => Promise<void>
-  client_uid: string|null
+  sendMessage: (message: string) => Promise<void>;
+  client_uid: string|null;
 };
 
 const ChatInput = ({ client_uid, sendMessage }: MessageInputProps) => {

@@ -26,7 +26,7 @@ const PlayerOverlay = () => {
         />
     );
     
-}
+};
 
 //리사이즈 될 때마다 불필요하게 렌더링 되서 memo사용
 export default React.memo(PlayerOverlay);

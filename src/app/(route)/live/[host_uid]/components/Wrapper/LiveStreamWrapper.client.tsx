@@ -50,6 +50,7 @@ const LiveStreamWrapper = (props:LiveStreamWrapperProps) => {
             )}
 
         </main>
-)}
+    );
+};
 
 export default LiveStreamWrapper;

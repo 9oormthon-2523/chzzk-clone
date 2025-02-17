@@ -13,7 +13,7 @@ export const StreamCategory = () => {
                 </span>
             </span>
         </div>
-    )
-}
+    );
+};
 
 export default StreamCategory;

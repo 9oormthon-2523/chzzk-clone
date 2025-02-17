@@ -6,9 +6,9 @@ import { createClient } from "@/app/_utils/supabase/client";
  */
 
 interface initDto {
-  hostInfo: getHostInitDto
-  streamRoom:getStreamRoomDto,
-}
+  hostInfo: getHostInitDto;
+  streamRoom:getStreamRoomDto;
+};
 
 export const getLiveInit = async (id: string): Promise<null | initDto> => {
     const supabase = createClient(); 

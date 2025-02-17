@@ -1,9 +1,9 @@
 import { FollowInfo } from "@/app/_types/follow.type";
 
 interface Props {
-    data:FollowInfo[]|undefined, 
-    isLoading:boolean, 
-    error:Error | null,
+    data:FollowInfo[]|undefined;
+    isLoading:boolean;
+    error:Error | null;
 };
 
 /**

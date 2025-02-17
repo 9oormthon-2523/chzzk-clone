@@ -31,7 +31,7 @@ const PlayerBottomVolumeControl = () => {
                 style={{ background: `linear-gradient(to right, #527cdc ${Number(isMuted ? 0 : volumeLevel)}%, #e5e5e5 ${Number(isMuted ? 0 : volumeLevel)}%)`}}
             />
         </div>
-    )
-}
+    );
+};
 
 export default PlayerBottomVolumeControl;

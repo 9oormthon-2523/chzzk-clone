@@ -17,7 +17,7 @@ const LiveInfoWrapper = (props: Props) => {
                 {children}
             </div>
         </div>
-    )
-}
+    );
+};
 
 export default LiveInfoWrapper;

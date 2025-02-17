@@ -7,7 +7,6 @@ import useLiveInfo from "@/app/_utils/live/db/useLiveInfo.client";
 import LiveStreamWrapper from "../components/Wrapper/LiveStreamWrapper.client";
 import LiveWrapper from "../components/Wrapper/LiveTotalWrapper.clinet";
 import LiveDetails from "./LiveDetails.client";
-import ChatLayout from "./Chat.client";
 import dynamic from "next/dynamic";
 
 const VideoPlayer = dynamic(() => import("./VideoPlayer.client"), { ssr: false });
@@ -43,7 +42,7 @@ export default function StreamingPage(props: StreamingPageProps) {
   });
 
   // 호스트 핑(시청자 수)
-  usePing({ client_uid, host_uid:roomInit.uid, is_active:liveInfo.is_active });
+  // usePing({ client_uid, host_uid:roomInit.uid, is_active:liveInfo.is_active });
   
   return (
     <>
@@ -52,10 +51,10 @@ export default function StreamingPage(props: StreamingPageProps) {
                 <LiveStreamWrapper>
                   
                     {/* 비디오 플레이어 */}
-                    <VideoPlayer 
+                    {/* <VideoPlayer 
                         uid={roomInit.uid} 
                         is_active={liveInfo.is_active}
-                    />
+                    /> */}
 
                     {/* 방송 정보 */}
                     {!isFullOrWide &&
@@ -70,8 +69,6 @@ export default function StreamingPage(props: StreamingPageProps) {
 
                   </LiveStreamWrapper>
 
-            {/* 채팅창 */}
-            {/* <ChatLayout client_uid={client_uid} roomId={roomInit.uid}/> */}
       </LiveWrapper>
     </>
   );
