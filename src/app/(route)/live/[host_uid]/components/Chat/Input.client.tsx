@@ -36,7 +36,7 @@ const ChatInput = ({ value, onChange, onSend, client_uid }: MessageInputProps) =
             aria-label="채팅 입력"
             disabled={!client_uid}
             style={{ cursor: client_uid ? undefined : 'not-allowed' }}
-            className="h-[40px] p-[10px] bg-transparent border-[0px] text-[#2e3033] max-h-[60px] min-h-[20px] outline-none overflow-hidden resize-none whitespace-normal flex-grow"
+            className="h-[40px] p-[10px] bg-transparent border-[0px] text-[#2e3033] max-h-[60px] min-h-[20px] outline-none overflow-hidden resize-none whitespace-normal flex-grow placeholder:text-xs"
             value={value}
             onChange={onChange}
             onKeyDown={onPressEnter}
@@ -46,7 +46,7 @@ const ChatInput = ({ value, onChange, onSend, client_uid }: MessageInputProps) =
             maxLength={100}
           />
 
-          <span className="w-full text-right text-sm text-gray-400 mt-1">{value.length}/100</span>
+          <span className="w-[50px] text-right text-sm text-gray-400 mt-1">{value.length}/100</span>
         </div>
       </div>
 
