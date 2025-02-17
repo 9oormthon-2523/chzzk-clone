@@ -36,7 +36,7 @@ const ChatInput = ({ value, onChange, onSend, client_uid }: MessageInputProps) =
             aria-label="채팅 입력"
             disabled={!client_uid}
             style={{ cursor: client_uid ? undefined : 'not-allowed' }}
-            className="h-[40px] p-[10px] bg-transparent border-[0px] text-[#2e3033] max-h-[60px] min-h-[20px] outline-none overflow-hidden resize-none whitespace-normal flex-grow placeholder:text-xs"
+            className="h-[40px] p-[10px] bg-transparent border-[0px] text-[#2e3033] max-h-[60px] min-h-[20px] outline-none overflow-hidden resize-none whitespace-normal flex-grow "
             value={value}
             onChange={onChange}
             onKeyDown={onPressEnter}
@@ -53,8 +53,10 @@ const ChatInput = ({ value, onChange, onSend, client_uid }: MessageInputProps) =
       <div className="items-center flex mt-[10px] p-[2px_0] relative">
         <button
           type="button"
-          className="bg-[#f5f5f5] rounded-[8px] flex-none text-[13px] h-[28px] ml-auto p-[0_9px]"
+          className={`rounded-[8px] flex-none text-[13px] h-[28px] ml-auto p-[0_9px] 
+            ${value.length > 0 ? 'bg-[#1bb373] text-white' : 'bg-[#f5f5f5] text-[#2e3033]'}`}
           onClick={onSend}
+          disabled={value.length <= 0}
         >
           채팅
         </button>
