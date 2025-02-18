@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import { createClient } from '@supabase/supabase-js';
-
+import Image from 'next/image';
 // Components
 import Header from '@/app/_components/Header/Header.server';
 import NavBar from '../../(main)/_components/NavBar/NavBar.client';
@@ -81,9 +81,11 @@ const CategoryPage = () => {
         <div className="px-8 pt-4 flex justify-between bg-white  rounded-lg p-6">
           {categoryData ? (
             <div className="flex items-center gap-4">
-              <img
+              <Image
                 src={categoryData.backgroundImage}
                 alt={categoryData.name}
+                width={80}
+                height={80}
                 className="w-20 h-20 rounded-lg object-cover shadow-md"
               />
               <div>

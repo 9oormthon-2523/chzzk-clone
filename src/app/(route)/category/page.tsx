@@ -8,7 +8,7 @@ import CategoryCard from './_components/CategoryCard';
 import { categories } from './categoriesData';
 import { useRouter } from 'next/navigation';
 
-const category = () => {
+const Category = () => {
   const router = useRouter();
   return (
     <div>
@@ -28,4 +28,4 @@ const category = () => {
   );
 };
 
-export default category;
+export default Category;
