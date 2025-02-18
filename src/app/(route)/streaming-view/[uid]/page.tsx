@@ -1,7 +1,7 @@
 import React from 'react';
 import { prefetchUserStreaming } from '@/app/_store/queries/streamingSettings/query';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
-import StreamingView from '../../../_components/StreamingArea/StreamingView';
+import StreamingView from '../../../_components/StreamingArea/StreamingView.client';
 
 const StreamingViewPage = async ({ params }: { params: Promise<{ uid: string }> }) => {
   const { uid } = await params;

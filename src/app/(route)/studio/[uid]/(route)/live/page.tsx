@@ -3,7 +3,7 @@ import Setting from './_components/Settings/Setting';
 import { prefetchUserStreaming } from '@/app/_store/queries/streamingSettings/query';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import ChatLayout from '@/app/(route)/live/[host_uid]/widget/Chat.client';
-import StreamingView from './_components/StreamingView';
+import StreamingView from './_components/StreamingView.client';
 
 const StudioLivePage = async ({ params }: { params: Promise<{ uid: string }> }) => {
   const { uid } = await params;

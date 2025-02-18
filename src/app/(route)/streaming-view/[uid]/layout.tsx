@@ -14,7 +14,7 @@ const StudioLayout = async ({ children, params }: { children: ReactNode; params:
   return (
     <UIDProvider uid={uid}>
       <div className="fixed w-full h-full">
-        <section className="flex overflow-auto flex-1 flex-col bg-[#f1f3f5] h-full">{children}</section>
+        <section className="flex overflow-auto flex-1 flex-col bg-zinc-300 h-full">{children}</section>
       </div>
     </UIDProvider>
   );

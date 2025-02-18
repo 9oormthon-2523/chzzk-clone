@@ -2,13 +2,9 @@
 
 import React from 'react';
 import Link from 'next/link';
-import useStudioManager from '@/app/_hooks/studio/useStudioManager.client';
-import StreamingStatus from '@/app/_components/StreamingArea/StreamingStatus';
+import StreamingStatus from '@/app/_components/StreamingArea/StreamingStatus.client';
 
 const StreamingView = ({ uid }: { uid: string }) => {
-  // const { screenTrackRef } = useStudioManager(uid);
-  // console.log(screenTrackRef);
-
   return (
     <div className="relative flex flex-col justify-center items-center min-h-[500px] bg-gray-200 bg-[url('https://ssl.pstatic.net/static/nng/glive-center/resource/p/static/media/player_loading_chzzk.784104a77733493ed42f.gif')] bg-cover bg-center">
       <p className="text-white">방송 시작 및 종료를 위한 페이지로 이동합니다.</p>
@@ -16,7 +12,7 @@ const StreamingView = ({ uid }: { uid: string }) => {
       <div className="mt-[30px]">
         <Link
           href={`/streaming-view/${uid}`}
-          target="_blank "
+          target="_blank"
           className="rounded-2xl bg-white text-[#697183] text-[15px] font-blackHanSans py-2 px-4"
         >
           이동하기

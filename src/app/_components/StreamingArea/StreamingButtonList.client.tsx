@@ -62,6 +62,7 @@ const StreamingButtonList = () => {
                 screen: false,
                 mic: false,
               }));
+              alert('스트리밍이 정지되었습니다. 공유된 비디오와 마이크 연결이 끊어집니다.');
             }
           }}
           text="스트리밍 정지"
