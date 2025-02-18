@@ -5,11 +5,11 @@ import { useUID } from '@/app/_store/context/useUid';
 import { useUserStreaming } from '@/app/_store/queries/streamingSettings/query';
 import React, { useState } from 'react';
 import ActionButton from './ActionButton.client';
+import { useStreamingWorker } from '@/app/_hooks/studio/worker/useStreamingWorker';
 
 const StreamingButtonList = () => {
   const uid = useUID();
-  const { streamOn, streamOff, addTrackShare, stopTrackShare, volumeControl } =
-    useStudioManager(uid);
+  const { streamOn, streamOff, addTrackShare, stopTrackShare, volumeControl } = useStudioManager(uid);
   const { audioState, controlAudio, audioVolume } = volumeControl;
   const { data, isLoading } = useUserStreaming(uid);
   const [loadingStatus, setLoadingStatus] = useState({
@@ -17,6 +17,7 @@ const StreamingButtonList = () => {
     mic: false,
     screen: false,
   });
+  const { sendMessage } = useStreamingWorker(uid);
 
   // db 데이터 안불러와졌을때
   if (isLoading || !data) {
@@ -29,6 +30,7 @@ const StreamingButtonList = () => {
       <ActionButton
         action={async () => {
           await streamOn();
+          sendMessage('streamOn');
         }}
         text="스트리밍 시작하기"
       />
@@ -41,6 +43,7 @@ const StreamingButtonList = () => {
         <ActionButton
           action={async () => {
             await streamOff();
+            sendMessage('streamOff');
           }}
           text="스트리밍 종료"
         />
@@ -132,9 +135,7 @@ const StreamingButtonList = () => {
             min={0}
             max={100}
             value={audioVolume.screen}
-            onChange={(e) =>
-              controlAudio('screen', Number(e.currentTarget.value))
-            }
+            onChange={(e) => controlAudio('screen', Number(e.currentTarget.value))}
             className="w-full"
           />
         </div>

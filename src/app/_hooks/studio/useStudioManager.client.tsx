@@ -7,7 +7,6 @@ import { extractMediaTrack, unpublishMediaTracks } from './media/useMediaTrack';
 import { useStreamingOnOff } from '@/app/_store/queries/streamingSettings/mutation';
 import useStreamCleanup from './client/useStreamCleanup.client';
 
-
 /**
  * 호스트가 사용하는 스트리밍 훅
  */
@@ -33,9 +32,7 @@ const useStudioManager = (uid: string) => {
 
   useStreamCleanup(uid, clientRef);
   const { onMutation, offMutation } = useStreamingOnOff(uid);
-  const { activateChannel, deactivateChannel } = useAudienceCnt({ host_uid:uid });
-
-
+  const { activateChannel, deactivateChannel } = useAudienceCnt({ host_uid: uid });
 
   // 사용법 addTrackShare():스크린 + 마이크 / addTrackShare("mic"):마이크 / addTrackShare("screen"): 스크린
   const addTrackShare = (type: mediaResource = 'all') =>
@@ -96,6 +93,7 @@ const useStudioManager = (uid: string) => {
     addTrackShare,
     stopTrackShare,
     volumeControl: { ...audioConrol, audioVolume },
+    screenTrackRef,
   };
 };
 
