@@ -15,7 +15,7 @@ export interface LiveControlState {
     audioTrack: Module<AudioTrack,AudioAction>;
     hostInfo: Module<HostInfoState, HostInfoAction>;   
     streamRoom: Module<StreamRoomState, StreamRoomAction>;   
-}
+};
 
 const useLiveControl = create<LiveControlState>((set) => ({
     // 스크린 모드 제어
