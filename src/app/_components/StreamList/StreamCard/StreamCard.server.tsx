@@ -1,20 +1,9 @@
 import React from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
+import { StreamCardType } from '@/app/_types/streamcard/streamcard.type';
 
-interface StreamCardProps {
-  uid: string;
-  title: string;
-  start_time: string;
-  is_active: boolean;
-  audience_cnt: number;
-  nickname: string;
-  thumbnail: string;
-  profile_img: string;
-  tags: string[];
-}
-
-const StreamCard = (card: StreamCardProps) => {
+const StreamCard = (card: StreamCardType) => {
   const { title, nickname, audience_cnt, uid, thumbnail, is_active, profile_img, tags } = card;
   const router = useRouter();
   const defaultImage = '/channelPage/blank_profile.svg';
