@@ -1,9 +1,21 @@
 'use client';
 
+import useLive from '@/app/_hooks/live/useLive';
+import { useUID } from '@/app/_store/context/useUid';
 import { useState } from 'react';
 
-const MiniVideo = ({ videoElRef }: { videoElRef: React.RefObject<HTMLVideoElement | null> }) => {
+interface Props {
+  is_active: boolean;
+}
+
+const MiniVideo = ({ is_active }: Props) => {
   const [isHidden, setIsHidden] = useState(false);
+
+  const uid = useUID();
+  const { videoElRef } = useLive({
+    host_uid: uid,
+    streaming_is_active: is_active,
+  });
 
   return (
     <>
