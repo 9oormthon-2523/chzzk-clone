@@ -1,3 +1,5 @@
+import { Database } from "../../_utils/supabase/database.types";
+
 // get base
 export type HostInfoType = Database["public"]["Tables"]["users"]["Row"];
 export type StreamRoomType = Database["public"]["Tables"]["streaming_rooms"]["Row"];
