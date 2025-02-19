@@ -1,39 +1,45 @@
-import { getHostInfoPayload } from '@/app/_types/live/liveType';
+import { getHostInitDto, getStreamRoomDto } from '@/app/_types/live/liveType';
 import { createClient } from "@/app/_utils/supabase/client";
 
 /**
  * 라이브 페이지 초기 데이터 가져오기 (호스트)
  */
 
+interface initDto {
+  hostInfo: getHostInitDto;
+  streamRoom:getStreamRoomDto;
+};
 
-export const getLiveInitDto = async (id: string): Promise<null | getHostInfoPayload> => {
+export const getLiveInit = async (id: string): Promise<null | initDto> => {
     const supabase = createClient(); 
     
     try {
-        const { data: roomData, error: roomError } = await supabase
+        const { data: streamRoom, error: roomError } = await supabase
             .from('streaming_rooms')
-            .select('uid, title, start_time, is_active, audience_cnt, nickname, tags, category') // thumbnail 제외
-            .eq('uid', id);
+            .select('title, start_time, is_active, audience_cnt, nickname, tags, category') 
+            .eq('uid', id)
+            .single<getStreamRoomDto>();
 
         if (roomError) {
             console.error("해당 유저의 streaming_rooms이 존재하지 않아요");
             return null; 
         }
 
-        const { data: hostData, error: hostError } = await supabase
+        const { data: hostInfo, error: hostError } = await supabase
             .from('users')
             .select('nickname, profile_img')
-            .eq('id', id);
+            .eq('id', id)
+            .single<getHostInitDto>();
 
         if (hostError) {
             console.error("호스트의 정보를 찾을 수 없습니다.");
             return null;
         }
 
-        if (roomData && roomData.length > 0 && hostData && hostData.length > 0) {
+        if (hostInfo && streamRoom) {
             return {
-                roomInit: roomData[0],
-                hostInfo: hostData[0],
+                hostInfo,
+                streamRoom,
             };
         } else {
             console.error(`${id}와 매칭되는 데이터가 없습니다.`);

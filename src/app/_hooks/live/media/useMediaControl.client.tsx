@@ -4,11 +4,11 @@ import { RefObject, useCallback, useEffect, useRef } from "react";
 
 
 interface useMeidaControl_payload {
-    audiolimit:RefObject<boolean>
-    videoElRef: RefObject<HTMLVideoElement | null>
-    canvasElRef: RefObject<HTMLCanvasElement | null>
-    audioTrackRef: RefObject<IRemoteAudioTrack | null>
-    videoTrackRef: RefObject<IRemoteVideoTrack | null>
+    audiolimit:RefObject<boolean>;
+    videoElRef: RefObject<HTMLVideoElement | null>;
+    canvasElRef: RefObject<HTMLCanvasElement | null>;
+    audioTrackRef: RefObject<IRemoteAudioTrack | null>;
+    videoTrackRef: RefObject<IRemoteVideoTrack | null>;
 }
 
 const useMediaControl = (payload:useMeidaControl_payload) => {
@@ -144,7 +144,7 @@ const useMediaControl = (payload:useMeidaControl_payload) => {
     
     return {
         EraseCanvas,
-    }
-}
+    };
+};
 
 export default useMediaControl;

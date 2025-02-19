@@ -18,10 +18,15 @@ const PlayerOverlay = () => {
     const videoToggle = useLiveControl(state => state.videoTrack.actions.videoToggle);
 
     return (
-        <div onClick={videoToggle} style={style} aria-label="비디오 오버레이 박스" className={`absolute w-full h-full`}/>
+        <div 
+            id='video-player-controller-overlay'
+            onClick={videoToggle} 
+            style={style} 
+            className={`absolute w-full h-full`}
+        />
     );
     
-}
+};
 
 //리사이즈 될 때마다 불필요하게 렌더링 되서 memo사용
 export default React.memo(PlayerOverlay);

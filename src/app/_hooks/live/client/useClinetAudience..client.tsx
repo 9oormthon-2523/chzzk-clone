@@ -64,7 +64,7 @@ const useClientAudience = (payload:useClientAudience_payload) => {
         clientRef,
         initClient,
         clearClient,
-    }
-}
+    };
+};
 
 export default useClientAudience;

@@ -1,47 +1,8 @@
 
 import { create } from "zustand";
 
-/** LIVE STATE TYPE **/
-//#region
-
-type chatType = "side"|"bottom";
-
-// 스크린 제어
-interface ScreenState {
-    isChatOpen: boolean;
-    isWidescreen: boolean;
-    isFullscreen: boolean;
-    isFullOrWide: boolean; 
-    chatPosition: chatType;
-}
-
-interface ScreenAction {
-    toggleChat: () => void;
-    offFullScreen: () => void;
-    toggleFullscreen: () => void;
-    toggleWideScreen: () => void;
-    updateChatPosition: (type : chatType) => void;
-}
-
-export type VideoTrack = {
-    isEnabled: boolean; 
-};
-
-interface VideoAction {
-    videoToggle:() => void;
-};
-  
-export type AudioTrack = {
-    isMuted: boolean; 
-    volumeLevel: number; 
-};
-
-interface AudioAction {
-    volumeControl: (vol: number) => void;
-    audioMute: (mute:boolean) => void;
-};
-
-//#endregion
+import { AudioAction, AudioTrack, chatType, HostInfoAction, ScreenAction, ScreenState, StreamRoomAction, VideoAction, VideoTrack } from "./useLiveControl.type";
+import { HostInfoState, StreamRoomState } from "@/app/_types/live/liveType";
 
 interface Module<TState, TAction> {
     state: TState;
@@ -49,12 +10,12 @@ interface Module<TState, TAction> {
 }
 
 export interface LiveControlState {
-    screen: Module<ScreenState,ScreenAction>;
+    screen: Module<ScreenState, ScreenAction>;
     videoTrack: Module<VideoTrack,VideoAction>;
     audioTrack: Module<AudioTrack,AudioAction>;
-}
-
-
+    hostInfo: Module<HostInfoState, HostInfoAction>;   
+    streamRoom: Module<StreamRoomState, StreamRoomAction>;   
+};
 
 const useLiveControl = create<LiveControlState>((set) => ({
     // 스크린 모드 제어
@@ -137,17 +98,6 @@ const useLiveControl = create<LiveControlState>((set) => ({
     
         actions: {
 
-            // videoToggle: () => {
-            //     set(({ videoTrack }) => {
-            //         const updatedState = {
-            //             ...videoTrack.state,
-            //             isEnabled: !videoTrack.state.isEnabled,
-            //         };
-    
-            //         return { videoTrack: { ...videoTrack, state: updatedState } };
-            //     });
-            // },
-
             videoToggle: () => {
                 set((state) => {
                     const videoState = !state.videoTrack.state.isEnabled;
@@ -210,7 +160,82 @@ const useLiveControl = create<LiveControlState>((set) => ({
                 });
             },
         }
-    }
+    },
+
+    hostInfo: {
+        state:{
+            nickname:null,
+            profile_img:null,
+        },
+
+        actions:{
+            // 개별 필드 업데이트트
+            updateField: (key, value) => {
+                set(({ hostInfo }) => ({
+                    hostInfo:{
+                        ...hostInfo,
+                        state: {
+                            ...hostInfo.state,
+                            [key]: value,
+                        }
+                    }
+                }));
+            },
+
+             // 여러 필드 업데이트
+             updateState: (newState) =>
+                set((state) => ({
+                    hostInfo: {
+                    ...state.hostInfo,
+                    state: {
+                      ...state.hostInfo.state,
+                      ...newState,
+                    },
+                },
+            })),
+        },
+    },
+
+    // 스트리밍 룸 정보 제어
+    streamRoom: {
+        state:{
+            host_uid: "",
+            client_uid: null,
+            title:null,
+            tags:[],
+            category:null,
+            audience_cnt:0,
+            is_active:false,
+            start_time:null,
+        },
+
+        actions:{
+            // 개별 필드 업데이트
+            updateField: (key, value) => {
+                set(({ streamRoom }) => ({
+                    streamRoom:{
+                        ...streamRoom,
+                        state: {
+                            ...streamRoom.state,
+                            [key]: value,
+                        }
+                    }
+                }));
+            },
+
+            // 여러 필드 업데이트
+            updateState: (newState) =>
+                set((state) => ({
+                  streamRoom: {
+                    ...state.streamRoom,
+                    state: {
+                      ...state.streamRoom.state,
+                      ...newState,
+                    },
+                },
+            })),
+        }
+    },
   }));
   
   export default useLiveControl;

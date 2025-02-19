@@ -12,7 +12,6 @@ interface useMediaPublish_payload {
     videoElRef : RefObject<null | HTMLVideoElement>;
     audioTrackRef : RefObject<null | IRemoteAudioTrack>;
     videoTrackRef : RefObject<null | IRemoteVideoTrack>;
-    
     updateRatio: (a: number, b: number) => void;
 }
 
@@ -194,7 +193,7 @@ const useMediaPublish = (payload : useMediaPublish_payload) => {
     return {
         mediaControls: { mediaPublished, mediaUnpublished },
         resourceCleaners: { cleanAudioTrack, cleanVideoTrack },
-    }
-}
+    };
+};
 
 export default useMediaPublish;

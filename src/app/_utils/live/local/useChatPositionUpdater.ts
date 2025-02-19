@@ -1,7 +1,8 @@
-// import useScreenControl from "./useScreenControl";
-
 import useLiveControl from "@/app/_store/stores/live/useLiveControl";
 
+/**
+ * 채팅 포지션 업데이트
+ */
 const useChatPositionUpdater = () => {
 
     const HEIGHT_RATE = 0.6;

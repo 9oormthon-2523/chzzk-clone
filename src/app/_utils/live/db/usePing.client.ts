@@ -1,5 +1,7 @@
+import useLiveControl from '@/app/_store/stores/live/useLiveControl';
 import { createClient } from '@/app/_utils/supabase/client';
 import { RealtimeChannel } from '@supabase/supabase-js';
+import { useParams } from 'next/navigation';
 import { useEffect, useRef } from 'react';
 
 /**
@@ -7,15 +9,11 @@ import { useEffect, useRef } from 'react';
  * 시청자 수를 세기 위함
  */
 
-interface usePingPayload {
-    client_uid: string | undefined
-    host_uid: string
-    is_active: boolean
-}
-
-const usePing = (payload: usePingPayload) => {
-    const { client_uid, host_uid, is_active } = payload;
+const usePing = (client_uid:string|null) => {    
     const supabase = createClient();
+    const { host_uid } = useParams<{ host_uid: string }>();
+    const is_active = useLiveControl(state => state.streamRoom.state.is_active);
+
     const channelRef = useRef<RealtimeChannel | null>(null);
 
     useEffect(() => {

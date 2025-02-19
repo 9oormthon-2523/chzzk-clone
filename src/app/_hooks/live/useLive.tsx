@@ -3,20 +3,15 @@ import useClientAudience from "./client/useClinetAudience..client";
 import useMediaPublish from "./client/useMediaPublish.client";
 import useMediaControl from "./media/useMediaControl.client";
 import { useEffect, useRef, useState } from "react";
+import useLiveControl from "@/app/_store/stores/live/useLiveControl";
+import { useParams } from "next/navigation";
 
-interface useLive_payload {
-    host_uid:string;
-    streaming_is_active:boolean;
-}
-
-const useLive = (payload:useLive_payload) => {
-    const {
-        host_uid,
-        streaming_is_active,
-    } = payload;
-
+const useLive = () => {
     const [ratio, setRatio] = useState<[number, number]>([1.83, 0.55]); 
     const updateRatio = (a:number, b:number) => setRatio([a,b]);
+
+    const { host_uid } = useParams<{ host_uid: string }>();
+    const streaming_is_active = useLiveControl(state => state.streamRoom.state.is_active);
 
     // host_uid Agora에서 받는 users의 uid는 스트림을 임의의 number로 바꿔버림 
     // 때문에 기존 uid로 식별 불가능해서 미디어를 받을 때 uid를 따로 저장
@@ -111,7 +106,7 @@ const useLive = (payload:useLive_payload) => {
 
     useEffect(()=>{
         const streamState = streaming_is_active ? "Stream_ON" : "Stream_OFF";
-    
+        
         if (streamState === "Stream_ON") {
             startStreamRef.current();
         } else if (streamState === "Stream_OFF") {
@@ -119,14 +114,13 @@ const useLive = (payload:useLive_payload) => {
         } 
 
     }, [streaming_is_active]);
-     
 
      return {
         ratio,
         videoElRef,
         audioElRef,
         canvasElRef,
-     }
-}
+     };
+};
 
 export default useLive;
