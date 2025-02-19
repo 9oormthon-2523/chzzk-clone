@@ -37,6 +37,7 @@ const ChatInput = ({ value, onChange, onSend, client_uid }: MessageInputProps) =
           <input
             type="text"
             id='chat-input'
+            autoComplete='off'
             disabled={!client_uid}
             style={{ cursor: client_uid ? undefined : 'not-allowed' }}
             className="h-[40px] p-[10px] bg-transparent border-[0px] text-[#2e3033] outline-none overflow-hidden flex-grow"
