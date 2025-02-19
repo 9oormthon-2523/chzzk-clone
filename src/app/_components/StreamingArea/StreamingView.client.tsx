@@ -6,6 +6,7 @@ import StreamingStatus from './StreamingStatus.client';
 import { useUserStreaming } from '@/app/_store/queries/streamingSettings/query';
 import { useUID } from '@/app/_store/context/useUid';
 import ExplainBtn from './ExplainBtn.client';
+import ChatLayout from '@/app/(route)/live/[host_uid]/widget/Chat.client';
 
 const StreamingButtonList = dynamic(() => import('./StreamingButtonList.client'), {
   ssr: false,
@@ -25,7 +26,7 @@ const StreamingView = () => {
 
   return (
     <BeforeUnloadWrapper>
-      <div className="relative flex flex-col justify-center items-center  bg-gray-200 bg-[url('https://ssl.pstatic.net/static/nng/glive-center/resource/p/static/media/player_loading_chzzk.784104a77733493ed42f.gif')] bg-cover bg-center w-[90%] h-[90%]">
+      <div className="relative flex flex-col justify-center items-center  bg-gray-200 bg-[url('https://ssl.pstatic.net/static/nng/glive-center/resource/p/static/media/player_loading_chzzk.784104a77733493ed42f.gif')] bg-cover bg-center w-[50%] h-[90%]">
         {/* 사용 설명서 모달 버튼 */}
         <ExplainBtn />
 
@@ -43,6 +44,9 @@ const StreamingView = () => {
         {/* 공유중인 비디오 */}
         <MiniVideo is_active={data?.is_active || false} />
       </div>
+
+      {/* 채팅 레아아웃 */}
+      <ChatLayout roomId={uid} client_uid={uid} />
     </BeforeUnloadWrapper>
   );
 };
