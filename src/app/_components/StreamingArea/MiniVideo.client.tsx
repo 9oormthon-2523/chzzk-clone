@@ -20,7 +20,7 @@ const MiniVideo = ({ is_active }: Props) => {
   return (
     <>
       <div
-        className={`fixed bottom-0 right-0 w-[40%] aspect-video bg-slat flex justify-center items-center bg-green-100 
+        className={`fixed bottom-0 right-0 w-[40%] aspect-video bg-slat flex justify-center items-center bg-black bg-opacity-70
         transition-all duration-500 ease-in-out 
         ${isHidden ? 'translate-x-[150%] translate-y-[150%] scale-0 opacity-0' : 'translate-x-0 translate-y-0 scale-100 opacity-100'}`}
       >
